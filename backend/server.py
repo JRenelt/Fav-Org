@@ -1048,12 +1048,23 @@ async def remove_dead_links():
 
 @api_router.put("/bookmarks/{bookmark_id}/status")
 async def update_bookmark_status(bookmark_id: str, status: dict):
-    """Manueller Update des Link-Status (tote Links zu aktiv umstellen)"""
+    """Manueller Update des Link-Status (mit neuen Status-Typen)"""
     try:
-        is_active = status.get("is_active", True)
+        status_type = status.get("status_type", "active")  # active, dead, localhost, duplicate
+        
+        update_data = {}
+        if status_type == "active":
+            update_data = {"is_dead_link": False, "status_type": "active"}
+        elif status_type == "dead":
+            update_data = {"is_dead_link": True, "status_type": "dead"}
+        elif status_type == "localhost":
+            update_data = {"is_dead_link": False, "status_type": "localhost"}
+        elif status_type == "duplicate":
+            update_data = {"is_dead_link": False, "status_type": "duplicate"}
+        
         result = await db.bookmarks.update_one(
             {"id": bookmark_id},
-            {"$set": {"is_dead_link": not is_active}}
+            {"$set": update_data}
         )
         
         if result.matched_count == 0:
@@ -1062,12 +1073,41 @@ async def update_bookmark_status(bookmark_id: str, status: dict):
         await bookmark_manager.category_manager.update_bookmark_counts()
         
         return {
-            "message": f"Bookmark status updated to {'active' if is_active else 'dead'}",
+            "message": f"Bookmark status updated to {status_type}",
             "bookmark_id": bookmark_id,
-            "is_active": is_active
+            "status_type": status_type
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to update bookmark status: {str(e)}")
+
+@api_router.post("/bookmarks/find-duplicates")
+async def find_duplicates():
+    """Duplikate finden und mit 'duplicate' Status markieren"""
+    try:
+        duplicate_groups = await bookmark_manager.duplicate_detector.find_and_mark_duplicates()
+        marked_count = sum(len(group) - 1 for group in duplicate_groups)  # Alle außer dem ersten pro Gruppe
+        
+        return {
+            "duplicate_groups": len(duplicate_groups),
+            "marked_count": marked_count,
+            "message": f"Found {len(duplicate_groups)} duplicate groups, marked {marked_count} duplicates"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to find duplicates: {str(e)}")
+
+@api_router.delete("/bookmarks/duplicates")
+async def remove_duplicates():
+    """Alle als Duplikat markierte Bookmarks löschen"""
+    try:
+        result = await db.bookmarks.delete_many({"status_type": "duplicate"})
+        await bookmark_manager.category_manager.update_bookmark_counts()
+        
+        return {
+            "removed_count": result.deleted_count,
+            "message": f"Removed {result.deleted_count} duplicate bookmarks"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to remove duplicates: {str(e)}")
 
 @api_router.delete("/bookmarks/all")
 async def delete_all_bookmarks():
