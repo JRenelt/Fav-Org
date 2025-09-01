@@ -167,40 +167,40 @@ backend:
 
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
-    implemented: false
-    working: false
+    implemented: true
+    working: "NA"
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: false
+      - working: "NA"
         agent: "main"
-        comment: "BookmarkDialog ist deklariert aber nicht vollständig implementiert"
+        comment: "BookmarkDialog vollständig implementiert mit Formvalidierung, Fehlerbehandlung und dynamischen Kategorien"
 
   - task: "Export Dialog (XML/CSV separate buttons)"
-    implemented: false
-    working: false
+    implemented: true
+    working: "NA"
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: false
+      - working: "NA"
         agent: "main"
-        comment: "ExportDialog existiert aber keine separaten XML/CSV Buttons"
+        comment: "ExportDialog mit separaten XML/CSV Buttons und verbesserter UI implementiert"
 
   - task: "Header Layout Fix"
-    implemented: false
-    working: false
+    implemented: true
+    working: "NA"
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: false
+      - working: "NA"
         agent: "main"
-        comment: "Header-Layout muss angepasst werden: 'Favorites Manager' links, Icons rechts"
+        comment: "Header-Layout korrigiert: 'Favorites Manager' links, Statistiken/Hilfe/Einstellungen rechts"
 
   - task: "Status Color System"
     implemented: true
@@ -212,19 +212,19 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "CSS-Variablen für Status-Farben definiert: Aktiv (Grün), Tot (Rot), Ungeprüft (Weiß)"
+        comment: "CSS-Variablen für Status-Farben definiert und Dialog-Styles erweitert"
 
   - task: "Scripts Download Button"
-    implemented: false
-    working: false
+    implemented: true
+    working: "NA"
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: false
+      - working: "NA"
         agent: "main"
-        comment: "Button existiert aber downloadCollector-Funktion ist falsch verknüpft"
+        comment: "Download-Button korrigiert: trennt downloadCollector() von createSamples()"
 
 metadata:
   created_by: "main_agent"
