@@ -188,6 +188,15 @@ class FavoritesService {
     }
   }
 
+  async updateBookmarkStatus(id, isActive) {
+    try {
+      const response = await axios.put(`${this.baseURL}/bookmarks/${id}/status`, { is_active: isActive });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to update bookmark status');
+    }
+  }
+
   async moveBookmarks(bookmarkIds, targetCategory, targetSubcategory = null) {
     try {
       const response = await axios.post(`${this.baseURL}/bookmarks/move`, {
