@@ -1530,6 +1530,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
           bookmarks={bookmarks}
           onDeleteBookmark={onDeleteBookmark}
           onEditBookmark={onEditBookmark}
+          onToggleStatus={handleToggleStatus}
           searchQuery={searchQuery}
           statusFilter={statusFilter}
         />
