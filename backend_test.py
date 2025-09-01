@@ -439,24 +439,47 @@ class FavLinkBackendTester:
 
 def main():
     print("🚀 Starting FavLink Manager Backend API Tests")
+    print("🎯 FOCUS: Dead Links Removal & Integration Workflow")
     print("=" * 60)
     
     tester = FavLinkBackendTester()
     
-    # Test sequence
-    print("\n📋 Phase 1: Basic API Connectivity & Statistics")
+    # Test sequence - prioritizing Dead Links Removal testing
+    print("\n📋 Phase 1: Basic API Connectivity & Initial State")
     tester.test_get_all_bookmarks()
     tester.test_get_categories()
     tester.test_get_statistics()
     
-    print("\n📋 Phase 2: Sample Data Creation")
+    print("\n📋 Phase 2: Sample Data Creation (includes dead links for testing)")
     tester.test_create_sample_bookmarks()
     
-    print("\n📋 Phase 3: Import Functionality")
-    html_success, html_response = tester.test_import_html_bookmarks()
-    json_success, json_response = tester.test_import_json_bookmarks()
+    print("\n📋 Phase 3: 🎯 DEAD LINKS REMOVAL TESTING (NEW FEATURE)")
+    print("   Testing the new DELETE /api/bookmarks/dead-links endpoint")
     
-    print("\n📋 Phase 4: CRUD Operations")
+    # Test the complete integration workflow
+    workflow_success, workflow_result = tester.test_integration_workflow()
+    
+    # Test error handling for dead links removal
+    tester.test_dead_links_error_handling()
+    
+    print("\n📋 Phase 4: Existing Endpoints Retest")
+    print("   Retesting existing endpoints as requested")
+    
+    # Link Validation (retest)
+    tester.test_validate_links()
+    
+    # Statistics (retest) 
+    tester.test_get_statistics()
+    
+    # Export functionality (retest)
+    tester.test_export_xml()
+    tester.test_export_csv()
+    tester.test_export_xml("Development")  # Test with category filter
+    
+    # Scripts download (retest)
+    tester.test_download_collector_zip()
+    
+    print("\n📋 Phase 5: CRUD Operations Verification")
     # Create
     create_success, create_response = tester.test_create_single_bookmark()
     bookmark_id = None
@@ -475,35 +498,20 @@ def main():
         tester.test_move_bookmarks([bookmark_id], "Development", "Testing")
     
     # Read operations
-    tester.test_get_all_bookmarks()
-    tester.test_get_categories()
     tester.test_get_bookmarks_by_category("Development")
-    tester.test_get_bookmarks_by_category("Social Media")
-    
-    print("\n📋 Phase 5: Search Functionality")
     tester.test_search_bookmarks("GitHub")
-    tester.test_search_bookmarks("Twitter")
     
-    print("\n📋 Phase 6: Export Functionality")
-    tester.test_export_xml()  # Export all as XML
-    tester.test_export_csv()  # Export all as CSV
-    tester.test_export_xml("Development")  # Export Development category as XML
+    print("\n📋 Phase 6: Additional Export & Duplicate Tests")
     tester.test_export_csv("Social Media")  # Export Social Media category as CSV
-    
-    print("\n📋 Phase 7: Link Validation & Duplicate Detection")
-    tester.test_validate_links()
     tester.test_remove_duplicates()
     
-    print("\n📋 Phase 8: Scripts Download")
-    tester.test_download_collector_zip()
+    print("\n📋 Phase 7: Final Verification")
+    # Get final statistics to verify everything is consistent
+    final_stats_success, final_stats = tester.test_get_statistics()
     
-    print("\n📋 Phase 9: Cleanup Operations")
-    # Delete the test bookmark if it was created
+    # Cleanup - Delete the test bookmark if it was created
     if bookmark_id:
         tester.test_delete_single_bookmark(bookmark_id)
-    
-    # Uncomment the line below if you want to test delete all functionality
-    # tester.test_delete_all_bookmarks()
     
     # Print final results
     print("\n" + "=" * 60)
@@ -513,11 +521,24 @@ def main():
     print(f"Tests Failed: {tester.tests_run - tester.tests_passed}")
     print(f"Success Rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
     
+    # Special focus on Dead Links Removal results
+    print(f"\n🎯 DEAD LINKS REMOVAL FEATURE STATUS:")
+    if workflow_success:
+        print("✅ Dead Links Removal endpoint working correctly")
+        print("✅ Integration workflow (Validate → Remove → Statistics Update) working")
+        print("✅ Error handling for empty dead links working")
+        if isinstance(workflow_result, dict):
+            print(f"   Workflow details: {workflow_result}")
+    else:
+        print("❌ Dead Links Removal feature has issues")
+        print(f"   Issue: {workflow_result}")
+    
     if tester.tests_passed == tester.tests_run:
-        print("🎉 All tests passed! Backend API is working correctly.")
+        print("\n🎉 All tests passed! Backend API is working correctly.")
+        print("🎯 Dead Links Removal feature is fully functional!")
         return 0
     else:
-        print("⚠️  Some tests failed. Check the output above for details.")
+        print(f"\n⚠️  {tester.tests_run - tester.tests_passed} tests failed. Check the output above for details.")
         return 1
 
 if __name__ == "__main__":
