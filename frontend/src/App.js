@@ -1291,7 +1291,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
   );
 };
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onCreateBookmark }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark }) => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -1316,12 +1316,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onChange={handleFileUpload}
             style={{ display: 'none' }}
           />
-          <label htmlFor="file-upload">
-            <Button className="upload-btn" size="sm">
-              <Upload className="w-4 h-4 mr-2" />
-              Datei wählen
-            </Button>
-          </label>
         </div>
         
         <div className="cleanup-section">
@@ -1339,13 +1333,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
             </SelectContent>
           </Select>
-        </div>
-        
-        <div className="add-section">
-          <Button onClick={onCreateBookmark} className="add-btn">
-            <Plus className="w-4 h-4 mr-2" />
-            Neuer Favorit
-          </Button>
         </div>
       </div>
       
