@@ -659,6 +659,12 @@ async def create_sample_bookmarks():
     """30 Beispiel-Bookmarks mit Unterkategorien erstellen"""
     return await bookmark_manager.create_sample_bookmarks()
 
+@api_router.post("/bookmarks/create-test-data")
+async def create_test_data():
+    """50 Testdaten mit Duplikaten und toten Links erstellen"""
+    result = await bookmark_manager.create_comprehensive_test_data()
+    return result
+
 @api_router.get("/statistics", response_model=Statistics)
 async def get_statistics():
     """Erweiterte Statistiken mit Unterkategorien abrufen"""
