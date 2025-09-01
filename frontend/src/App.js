@@ -1699,18 +1699,17 @@ function App() {
     setFilteredBookmarks(filtered);
   }, [bookmarks, activeCategory, activeSubcategory]);
 
-  const handleCreateTestData = async () => {
+  const handleToggleStatus = async (bookmarkId, isActive) => {
     try {
       setIsLoading(true);
-      const result = await favoritesService.createTestData();
-      toast.success(`Testdaten erfolgreich erstellt: ${result.created_count} Favoriten mit ${result.duplicates} Duplikaten und ${result.dead_links} toten Links.`);
+      await favoritesService.updateBookmarkStatus(bookmarkId, isActive);
+      toast.success(`Bookmark-Status erfolgreich auf ${isActive ? 'aktiv' : 'tot'} gesetzt.`);
       // Daten neu laden
       await loadBookmarks();
-      await loadCategories(); 
       await loadStatistics();
     } catch (error) {
-      console.error('Testdaten creation error:', error);
-      toast.error('Testdaten-Erstellung fehlgeschlagen: ' + error.message);
+      console.error('Status toggle error:', error);
+      toast.error('Status-Änderung fehlgeschlagen: ' + error.message);
     } finally {
       setIsLoading(false);
     }
