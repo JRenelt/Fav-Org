@@ -151,16 +151,6 @@ body {
   transition: var(--transition-colors);
 }
 
-.script-btn {
-  background: var(--blue-500);
-  color: white;
-  border: none;
-}
-
-.script-btn:hover {
-  background: #2563eb;
-}
-
 .export-btn {
   background: var(--green-500);
   color: white;
