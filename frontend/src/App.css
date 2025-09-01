@@ -179,11 +179,13 @@ body {
   background-color: rgba(34, 211, 238, 0.1);
 }
 
-/* Main Content Layout */
+/* App Content - angepasst für fixierte Footer */
 .app-content {
   display: flex;
   margin-top: 64px;
   min-height: calc(100vh - 64px - 60px);
+  max-height: calc(100vh - 64px - 60px);
+  overflow: hidden;
 }
 
 /* Sidebar - fixiert und dunkler Hintergrund */
