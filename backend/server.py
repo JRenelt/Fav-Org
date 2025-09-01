@@ -149,18 +149,23 @@ class BookmarkParser:
         
         try:
             data = json.loads(content)
+            logging.info(f"Parsed JSON data keys: {data.keys() if isinstance(data, dict) else 'not dict'}")
             
-            # Firefox JSON Format erkennen
-            if 'children' in data and 'root' in str(data).lower():
+            # Firefox JSON Format erkennen (hat 'children' und 'title' auf oberster Ebene)
+            if isinstance(data, dict) and 'children' in data and 'title' in data:
+                logging.info("Detected Firefox JSON format")
                 bookmarks = self._parse_firefox_json(data)
             # Chrome JSON Format erkennen  
-            elif 'roots' in data:
+            elif isinstance(data, dict) and 'roots' in data:
+                logging.info("Detected Chrome JSON format")
                 bookmarks = self._parse_chrome_json(data)
             # Safari JSON Format
             elif isinstance(data, list) and all('Title' in item for item in data if isinstance(item, dict)):
+                logging.info("Detected Safari JSON format")
                 bookmarks = self._parse_safari_json(data)
             # Standard/Generic JSON Format
             else:
+                logging.info("Using generic JSON parser")
                 bookmarks = self._parse_generic_json(data)
                 
         except Exception as e:
