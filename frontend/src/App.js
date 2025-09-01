@@ -23,7 +23,12 @@ import {
   Link as LinkIcon,
   AlertTriangle,
   CheckCircle,
-  XCircle
+  XCircle,
+  BarChart3,
+  TrendingUp,
+  Activity,
+  Target,
+  Plus
 } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -34,6 +39,24 @@ const API = `${BACKEND_URL}/api`;
 class FavoritesService {
   constructor() {
     this.baseURL = API;
+  }
+
+  async createSamples() {
+    try {
+      const response = await axios.post(`${this.baseURL}/bookmarks/create-samples`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to create samples');
+    }
+  }
+
+  async getStatistics() {
+    try {
+      const response = await axios.get(`${this.baseURL}/statistics`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to fetch statistics');
+    }
   }
 
   async importBookmarks(file) {
@@ -130,7 +153,8 @@ class UIStateManager {
       searchQuery: '',
       isLoading: false,
       showSettings: false,
-      showHelp: false
+      showHelp: false,
+      showStatistics: false
     };
     this.listeners = [];
   }
@@ -154,7 +178,7 @@ class UIStateManager {
 
 // React Komponenten
 
-const Header = ({ onSettingsClick, onHelpClick, searchQuery, onSearchChange, onClearSearch }) => {
+const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, onSearchChange, onClearSearch }) => {
   return (
     <header className="header-fixed">
       <div className="header-content">
@@ -187,6 +211,14 @@ const Header = ({ onSettingsClick, onHelpClick, searchQuery, onSearchChange, onC
         </div>
 
         <div className="header-actions">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onStatisticsClick}
+            className="header-btn stats-btn"
+          >
+            <BarChart3 className="w-5 h-5" />
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -324,6 +356,122 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark }) => {
   );
 };
 
+const StatisticsDialog = ({ isOpen, onClose, statistics }) => {
+  if (!statistics) return null;
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('de-DE', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="statistics-dialog max-w-4xl">
+        <DialogHeader>
+          <DialogTitle>
+            <BarChart3 className="w-5 h-5 mr-2" />
+            Favoriten-Statistiken
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="statistics-content">
+          {/* Übersicht */}
+          <div className="stats-overview">
+            <div className="stat-card">
+              <div className="stat-icon">
+                <LinkIcon className="w-8 h-8 text-cyan-400" />
+              </div>
+              <div className="stat-info">
+                <h3>{statistics.total_bookmarks}</h3>
+                <p>Gesamt Favoriten</p>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FolderOpen className="w-8 h-8 text-blue-400" />
+              </div>
+              <div className="stat-info">
+                <h3>{statistics.total_categories}</h3>
+                <p>Kategorien</p>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <CheckCircle className="w-8 h-8 text-green-400" />
+              </div>
+              <div className="stat-info">
+                <h3>{statistics.active_links}</h3>
+                <p>Aktive Links</p>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <XCircle className="w-8 h-8 text-red-400" />
+              </div>
+              <div className="stat-info">
+                <h3>{statistics.dead_links}</h3>
+                <p>Tote Links</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Kategorien */}
+          <div className="top-categories">
+            <h4 className="section-title">
+              <TrendingUp className="w-5 h-5 mr-2" />
+              Top Kategorien
+            </h4>
+            <div className="categories-list">
+              {statistics.top_categories.slice(0, 8).map((category, index) => (
+                <div key={category.name} className="category-stat">
+                  <div className="category-rank">#{index + 1}</div>
+                  <div className="category-info">
+                    <span className="category-name">{category.name}</span>
+                    <div className="category-progress">
+                      <div 
+                        className="progress-bar"
+                        style={{ width: `${category.percentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="category-numbers">
+                    <span className="category-count">{category.count}</span>
+                    <span className="category-percentage">{category.percentage}%</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Zusätzliche Informationen */}
+          <div className="additional-stats">
+            <div className="stat-item">
+              <Activity className="w-5 h-5 text-cyan-400" />
+              <span>Kürzlich hinzugefügt (7 Tage): <strong>{statistics.recent_bookmarks}</strong></span>
+            </div>
+            <div className="stat-item">
+              <Target className="w-5 h-5 text-green-400" />
+              <span>Erfolgsrate: <strong>{statistics.total_bookmarks > 0 ? Math.round((statistics.active_links / statistics.total_bookmarks) * 100) : 0}%</strong></span>
+            </div>
+            <div className="stat-item">
+              <RefreshCw className="w-5 h-5 text-blue-400" />
+              <span>Zuletzt aktualisiert: <strong>{formatDate(statistics.last_updated)}</strong></span>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const SettingsDialog = ({ isOpen, onClose }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -397,6 +545,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
               <li><strong>Dead-Link-Check:</strong> Überprüfung defekter Links</li>
               <li><strong>Duplikat-Bereinigung:</strong> Entfernung doppelter Einträge</li>
               <li><strong>Suche:</strong> Durchsuchen aller Favoriten</li>
+              <li><strong>Statistiken:</strong> Übersicht über Ihre Favoriten</li>
             </ul>
           </div>
           
@@ -404,9 +553,11 @@ const HelpDialog = ({ isOpen, onClose }) => {
             <h4>Buttons</h4>
             <ul>
               <li><strong>Importieren:</strong> Favoriten-Datei hochladen</li>
+              <li><strong>Beispiele erstellen:</strong> 30 Test-Favoriten generieren</li>
               <li><strong>Links prüfen:</strong> Alle Links auf Funktionalität testen</li>
               <li><strong>Duplikate entfernen:</strong> Doppelte Einträge bereinigen</li>
               <li><strong>Alle löschen:</strong> Komplette Favoriten-Liste leeren</li>
+              <li><strong>Statistiken:</strong> Detaillierte Übersicht anzeigen</li>
             </ul>
           </div>
         </div>
@@ -417,6 +568,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
 
 const ActionToolbar = ({ 
   onImport, 
+  onCreateSamples,
   onValidateLinks, 
   onRemoveDuplicates, 
   onDeleteAll, 
@@ -449,6 +601,16 @@ const ActionToolbar = ({
             Favoriten importieren
           </Button>
         </label>
+        
+        <Button
+          variant="outline"
+          onClick={onCreateSamples}
+          disabled={isLoading}
+          className="sample-btn"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Beispiele erstellen
+        </Button>
         
         <Button
           variant="outline"
@@ -510,11 +672,13 @@ const ActionToolbar = ({
 function App() {
   const [bookmarks, setBookmarks] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [statistics, setStatistics] = useState(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showStatistics, setShowStatistics] = useState(false);
   const [filteredBookmarks, setFilteredBookmarks] = useState([]);
   const [bookmarkCounts, setBookmarkCounts] = useState({ total: 0 });
 
@@ -545,6 +709,15 @@ function App() {
     }
   }, []);
 
+  const loadStatistics = useCallback(async () => {
+    try {
+      const data = await favoritesService.getStatistics();
+      setStatistics(data);
+    } catch (error) {
+      toast.error('Fehler beim Laden der Statistiken: ' + error.message);
+    }
+  }, []);
+
   // Favoriten filtern
   useEffect(() => {
     let filtered = bookmarks;
@@ -566,6 +739,21 @@ function App() {
   }, [bookmarks, activeCategory, searchQuery]);
 
   // Event Handlers
+  const handleCreateSamples = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.createSamples();
+      toast.success(`${result.created_count} Beispiel-Favoriten erstellt!`);
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+    } catch (error) {
+      toast.error('Beispiele erstellen fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleImport = async (file) => {
     try {
       setIsLoading(true);
@@ -573,6 +761,7 @@ function App() {
       toast.success(`${result.imported_count} Favoriten erfolgreich importiert!`);
       await loadBookmarks();
       await loadCategories();
+      await loadStatistics();
     } catch (error) {
       toast.error('Import fehlgeschlagen: ' + error.message);
     } finally {
@@ -586,6 +775,7 @@ function App() {
       const result = await favoritesService.validateLinks();
       toast.success(`${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links.`);
       await loadBookmarks();
+      await loadStatistics();
     } catch (error) {
       toast.error('Link-Validierung fehlgeschlagen: ' + error.message);
     } finally {
@@ -600,6 +790,7 @@ function App() {
       toast.success(`${result.bookmarks_removed} Duplikate entfernt.`);
       await loadBookmarks();
       await loadCategories();
+      await loadStatistics();
     } catch (error) {
       toast.error('Duplikat-Entfernung fehlgeschlagen: ' + error.message);
     } finally {
@@ -614,6 +805,7 @@ function App() {
       toast.success(`${result.deleted_count} Favoriten gelöscht.`);
       await loadBookmarks();
       await loadCategories();
+      await loadStatistics();
     } catch (error) {
       toast.error('Löschen fehlgeschlagen: ' + error.message);
     } finally {
@@ -627,6 +819,7 @@ function App() {
       toast.success('Favorit gelöscht.');
       await loadBookmarks();
       await loadCategories();
+      await loadStatistics();
     } catch (error) {
       toast.error('Löschen fehlgeschlagen: ' + error.message);
     }
@@ -636,17 +829,24 @@ function App() {
     setSearchQuery('');
   };
 
+  const handleStatisticsClick = async () => {
+    await loadStatistics();
+    setShowStatistics(true);
+  };
+
   // Initial Load
   useEffect(() => {
     loadBookmarks();
     loadCategories();
-  }, [loadBookmarks, loadCategories]);
+    loadStatistics();
+  }, [loadBookmarks, loadCategories, loadStatistics]);
 
   return (
     <div className="app">
       <Header
         onSettingsClick={() => setShowSettings(true)}
         onHelpClick={() => setShowHelp(true)}
+        onStatisticsClick={handleStatisticsClick}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onClearSearch={handleClearSearch}
@@ -663,6 +863,7 @@ function App() {
         <main className="main-content">
           <ActionToolbar
             onImport={handleImport}
+            onCreateSamples={handleCreateSamples}
             onValidateLinks={handleValidateLinks}
             onRemoveDuplicates={handleRemoveDuplicates}
             onDeleteAll={handleDeleteAll}
@@ -689,6 +890,12 @@ function App() {
       <footer className="app-footer">
         <p>&copy; ID2 - Jörg Renelt * 2025 Hamburg</p>
       </footer>
+
+      <StatisticsDialog
+        isOpen={showStatistics}
+        onClose={() => setShowStatistics(false)}
+        statistics={statistics}
+      />
 
       <SettingsDialog
         isOpen={showSettings}

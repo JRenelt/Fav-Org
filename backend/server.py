@@ -58,6 +58,16 @@ class BookmarkCreate(BaseModel):
     url: str
     category: str = "Uncategorized"
 
+class Statistics(BaseModel):
+    total_bookmarks: int
+    total_categories: int
+    dead_links: int
+    active_links: int
+    categories_distribution: Dict[str, int]
+    top_categories: List[Dict[str, Any]]
+    recent_bookmarks: int  # Last 7 days
+    last_updated: datetime
+
 class BookmarkParser:
     """Klasse für das Parsen verschiedener Browser-Favoriten-Formate"""
     
@@ -239,6 +249,58 @@ class CategoryManager:
                 upsert=True
             )
 
+class StatisticsManager:
+    """Klasse für Statistik-Verwaltung"""
+    
+    def __init__(self, database):
+        self.db = database
+    
+    async def generate_statistics(self) -> Statistics:
+        """Generiert umfassende Statistiken"""
+        
+        # Alle Bookmarks abrufen
+        bookmarks = await self.db.bookmarks.find().to_list(1000)
+        categories = await self.db.categories.find().to_list(1000)
+        
+        total_bookmarks = len(bookmarks)
+        total_categories = len(categories)
+        
+        # Dead Links zählen
+        dead_links = sum(1 for b in bookmarks if b.get('is_dead_link', False))
+        active_links = total_bookmarks - dead_links
+        
+        # Kategorien-Verteilung
+        categories_distribution = {}
+        for bookmark in bookmarks:
+            category = bookmark.get('category', 'Uncategorized')
+            categories_distribution[category] = categories_distribution.get(category, 0) + 1
+        
+        # Top Kategorien (nach Bookmark-Anzahl sortiert)
+        top_categories = [
+            {"name": cat, "count": count, "percentage": round((count / total_bookmarks) * 100, 1) if total_bookmarks > 0 else 0}
+            for cat, count in sorted(categories_distribution.items(), key=lambda x: x[1], reverse=True)
+        ]
+        
+        # Kürzlich hinzugefügte Bookmarks (letzten 7 Tage)
+        seven_days_ago = datetime.now(timezone.utc) - timezone.utc.localize(datetime.now()).replace(tzinfo=None) + datetime.timedelta(days=-7)
+        recent_bookmarks = sum(
+            1 for b in bookmarks 
+            if b.get('date_added') and 
+            (datetime.fromisoformat(b['date_added'].replace('Z', '+00:00')) if isinstance(b['date_added'], str) 
+             else b['date_added']) > seven_days_ago
+        )
+        
+        return Statistics(
+            total_bookmarks=total_bookmarks,
+            total_categories=total_categories,
+            dead_links=dead_links,
+            active_links=active_links,
+            categories_distribution=categories_distribution,
+            top_categories=top_categories,
+            recent_bookmarks=recent_bookmarks,
+            last_updated=datetime.now(timezone.utc)
+        )
+
 class BookmarkManager:
     """Hauptklasse für Bookmark-Verwaltung"""
     
@@ -248,6 +310,79 @@ class BookmarkManager:
         self.validator = LinkValidator()
         self.duplicate_detector = DuplicateDetector()
         self.category_manager = CategoryManager(database)
+        self.statistics_manager = StatisticsManager(database)
+    
+    async def create_sample_bookmarks(self) -> Dict[str, Any]:
+        """Erstellt 30 Beispiel-Bookmarks für Tests"""
+        
+        sample_bookmarks = [
+            # Development (8 Bookmarks)
+            {"title": "GitHub", "url": "https://github.com", "category": "Development"},
+            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development"},
+            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "category": "Development"},
+            {"title": "CodePen", "url": "https://codepen.io", "category": "Development"},
+            {"title": "GitLab", "url": "https://gitlab.com", "category": "Development"},
+            {"title": "Bitbucket", "url": "https://bitbucket.org", "category": "Development"},
+            {"title": "VS Code", "url": "https://code.visualstudio.com", "category": "Development"},
+            {"title": "Docker Hub", "url": "https://hub.docker.com", "category": "Development"},
+            
+            # News & Media (6 Bookmarks)
+            {"title": "Hacker News", "url": "https://news.ycombinator.com", "category": "News"},
+            {"title": "Reddit", "url": "https://reddit.com", "category": "News"},
+            {"title": "BBC News", "url": "https://bbc.com/news", "category": "News"},
+            {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "News"},
+            {"title": "Ars Technica", "url": "https://arstechnica.com", "category": "News"},
+            {"title": "The Verge", "url": "https://theverge.com", "category": "News"},
+            
+            # Social Media (4 Bookmarks)
+            {"title": "Twitter", "url": "https://twitter.com", "category": "Social Media"},
+            {"title": "LinkedIn", "url": "https://linkedin.com", "category": "Social Media"},
+            {"title": "Instagram", "url": "https://instagram.com", "category": "Social Media"},
+            {"title": "Mastodon", "url": "https://mastodon.social", "category": "Social Media"},
+            
+            # Tools & Utilities (5 Bookmarks)
+            {"title": "Google", "url": "https://google.com", "category": "Tools"},
+            {"title": "Gmail", "url": "https://gmail.com", "category": "Tools"},
+            {"title": "Google Drive", "url": "https://drive.google.com", "category": "Tools"},
+            {"title": "Dropbox", "url": "https://dropbox.com", "category": "Tools"},
+            {"title": "Notion", "url": "https://notion.so", "category": "Tools"},
+            
+            # Entertainment (4 Bookmarks)
+            {"title": "YouTube", "url": "https://youtube.com", "category": "Entertainment"},
+            {"title": "Netflix", "url": "https://netflix.com", "category": "Entertainment"},
+            {"title": "Spotify", "url": "https://spotify.com", "category": "Entertainment"},
+            {"title": "Twitch", "url": "https://twitch.tv", "category": "Entertainment"},
+            
+            # Reference (3 Bookmarks + Duplikate + Dead Links)
+            {"title": "Wikipedia", "url": "https://wikipedia.org", "category": "Reference"},
+            {"title": "Wikipedia DE", "url": "https://de.wikipedia.org", "category": "Reference"},
+            {"title": "Archive.org", "url": "https://archive.org", "category": "Reference"},
+            
+            # Duplikate für Tests
+            {"title": "Google Search", "url": "https://www.google.com/", "category": "Tools"},  # Duplikat
+            {"title": "YouTube Videos", "url": "https://www.youtube.com/", "category": "Media"},  # Duplikat
+            {"title": "GitHub Repository", "url": "https://www.github.com", "category": "Development"},  # Duplikat
+            
+            # Dead Links für Tests
+            {"title": "Dead Link Example 1", "url": "https://this-domain-does-not-exist-12345.com", "category": "Testing"},
+            {"title": "Dead Link Example 2", "url": "https://broken-url-test.invalid", "category": "Testing"},
+            {"title": "Dead Link Example 3", "url": "https://fake-website-xyz.nonexistent", "category": "Testing"},
+        ]
+        
+        # Bookmarks erstellen
+        created_count = 0
+        for bookmark_data in sample_bookmarks:
+            bookmark = Bookmark(**bookmark_data)
+            await self.db.bookmarks.insert_one(bookmark.dict())
+            created_count += 1
+        
+        # Kategorien aktualisieren
+        await self.category_manager.update_bookmark_counts()
+        
+        return {
+            "created_count": created_count,
+            "message": f"Successfully created {created_count} sample bookmarks"
+        }
     
     async def import_bookmarks(self, content: str, file_type: str) -> Dict[str, Any]:
         """Importiert Bookmarks aus verschiedenen Formaten"""
@@ -354,6 +489,16 @@ class BookmarkManager:
 bookmark_manager = BookmarkManager(db)
 
 # API Endpoints
+
+@api_router.post("/bookmarks/create-samples")
+async def create_sample_bookmarks():
+    """30 Beispiel-Bookmarks erstellen"""
+    return await bookmark_manager.create_sample_bookmarks()
+
+@api_router.get("/statistics", response_model=Statistics)
+async def get_statistics():
+    """Statistiken abrufen"""
+    return await bookmark_manager.statistics_manager.generate_statistics()
 
 @api_router.post("/bookmarks/import")
 async def import_bookmarks_endpoint(file: UploadFile = File(...)):
