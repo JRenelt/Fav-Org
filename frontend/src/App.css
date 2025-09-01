@@ -63,13 +63,13 @@ body {
   background: var(--content-bg);
 }
 
-/* Header - Kompakte fixierte Navigation */
+/* Header - gleiche Farbe wie Footer */
 .header-fixed {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background: var(--primary-blue);
+  background: var(--gray-800);
   border-bottom: 3px solid var(--primary-cyan);
   z-index: 1000;
   height: 64px;
