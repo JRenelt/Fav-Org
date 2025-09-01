@@ -11,7 +11,7 @@ class FavLinkBackendTester:
         self.tests_run = 0
         self.tests_passed = 0
 
-    def run_test(self, name, method, endpoint, expected_status, data=None, files=None):
+    def run_test(self, name, method, endpoint, expected_status, data=None, files=None, expect_json=True):
         """Run a single API test"""
         url = f"{self.api_url}/{endpoint}"
         headers = {}
@@ -40,16 +40,21 @@ class FavLinkBackendTester:
             if success:
                 self.tests_passed += 1
                 print(f"✅ Passed - Status: {response.status_code}")
-                try:
-                    response_data = response.json()
-                    print(f"   Response: {json.dumps(response_data, indent=2)[:200]}...")
-                except:
+                if expect_json:
+                    try:
+                        response_data = response.json()
+                        print(f"   Response: {json.dumps(response_data, indent=2)[:200]}...")
+                        return success, response_data
+                    except:
+                        print(f"   Response: {response.text[:200]}...")
+                        return success, {}
+                else:
                     print(f"   Response: {response.text[:200]}...")
+                    return success, response.text
             else:
                 print(f"❌ Failed - Expected {expected_status}, got {response.status_code}")
                 print(f"   Response: {response.text[:300]}...")
-
-            return success, response.json() if response.text and response.status_code < 500 else {}
+                return success, {}
 
         except Exception as e:
             print(f"❌ Failed - Error: {str(e)}")
