@@ -1494,11 +1494,7 @@ function App() {
         onExportClick={() => setShowExport(true)}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
-        onDeleteAllClick={() => {
-          if (window.confirm('Möchten Sie wirklich ALLE Favoriten löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
-            handleDeleteAll();
-          }
-        }}
+        onDeleteAllClick={handleDeleteAll}
       />
 
       <div className="app-content">
