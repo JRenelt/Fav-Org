@@ -1785,6 +1785,7 @@ function App() {
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
         onExport={handleExport}
+        onCreateTestData={handleCreateTestData}
       />
 
       <HelpDialog
