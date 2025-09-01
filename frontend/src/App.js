@@ -1303,7 +1303,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
             <div className="help-content">
               <div className="help-section">
                 <h4>FavOrg</h4>
-                <p><strong>Version:</strong> V1.0.0</p>
+                <p><strong>Version:</strong> V1.0.1</p>
                 <p><strong>Entwickelt von:</strong> ID2 - Jörg Renelt</p>
                 <p><strong>Ort:</strong> Hamburg, Deutschland</p>
                 <p><strong>Jahr:</strong> 2025</p>
