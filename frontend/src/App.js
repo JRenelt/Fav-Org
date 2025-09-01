@@ -185,6 +185,15 @@ class FavoritesService {
     }
   }
 
+  async removeDeadLinks() {
+    try {
+      const response = await axios.delete(`${this.baseURL}/bookmarks/dead-links`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to remove dead links');
+    }
+  }
+
   async removeDuplicates() {
     try {
       const response = await axios.post(`${this.baseURL}/bookmarks/remove-duplicates`);
