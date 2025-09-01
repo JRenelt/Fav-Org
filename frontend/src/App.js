@@ -1853,6 +1853,7 @@ function App() {
           bookmarks={filteredBookmarks}
           onDeleteBookmark={handleDeleteBookmark}
           onEditBookmark={handleEditBookmark}
+          onToggleStatus={handleToggleStatus}
           onFileSelected={handleFileSelected}
         />
       </div>
