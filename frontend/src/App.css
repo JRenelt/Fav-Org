@@ -220,7 +220,128 @@ body {
   height: calc(100vh - 64px - 60px - 80px); /* Abzüglich Header, Footer und Toolbar */
 }
 
-/* Loading State - angepasste Farben */
+.sidebar-content {
+  padding: 24px;
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary-cyan);
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-colors);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.category-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.category-item.active {
+  background-color: var(--primary-cyan);
+  color: var(--primary-white);
+}
+
+.category-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.bookmark-count {
+  margin-left: auto;
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+}
+
+.category-item.active .bookmark-count {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--primary-white);
+}
+
+/* Action Toolbar - fixiert */
+.action-toolbar {
+  background: var(--content-bg);
+  border-bottom: 1px solid var(--gray-600);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+  height: 80px;
+}
+
+.toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.import-btn {
+  background: var(--primary-cyan);
+  color: var(--primary-white);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: var(--transition-colors);
+}
+
+.import-btn:hover {
+  background: #0EA5E9;
+}
+
+.validate-btn, .duplicate-btn {
+  border: 2px solid var(--gray-600);
+  color: var(--text-primary);
+  background: var(--content-bg);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: var(--transition-colors);
+}
+
+.validate-btn:hover, .duplicate-btn:hover {
+  border-color: var(--primary-cyan);
+  color: var(--primary-cyan);
+  background: rgba(34, 211, 238, 0.1);
+}
+
+.delete-all-btn {
+  background: var(--red-500);
+  color: var(--primary-white);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: var(--transition-colors);
+}
+
+.delete-all-btn:hover {
+  background: var(--red-600);
+}
 .loading-state {
   display: flex;
   flex-direction: column;
