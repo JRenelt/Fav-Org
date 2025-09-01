@@ -355,7 +355,7 @@ body {
   color: var(--primary-cyan);
 }
 
-/* Empty State */
+/* Empty State - angepasste Farben */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -369,17 +369,17 @@ body {
 .empty-icon {
   width: 64px;
   height: 64px;
-  color: var(--gray-400);
+  color: var(--text-muted);
 }
 
 .empty-state h3 {
   font-size: 1.5rem;
-  color: var(--gray-600);
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .empty-state p {
-  color: var(--gray-500);
+  color: var(--text-secondary);
   max-width: 400px;
 }
 
