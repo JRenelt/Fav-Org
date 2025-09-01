@@ -1120,9 +1120,9 @@ body {
   overflow-y: auto;
 }
 
-/* Modern Settings Dialog - 15% + weitere 30% = 45% breiter gesamt */
+/* Modern Settings Dialog - 45% + weitere 10% für Import/Export = 55% breiter gesamt */
 .settings-dialog-modern {
-  max-width: 870px; /* 600px + 45% = 870px */
+  max-width: 930px; /* 600px + 55% = 930px */
   max-height: 85vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
