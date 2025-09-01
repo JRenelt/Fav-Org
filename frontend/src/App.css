@@ -1118,11 +1118,16 @@ body {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .settings-header {
   border-bottom: 1px solid var(--border-primary);
-  padding-bottom: 16px;
+  padding: 20px 24px 16px;
+  flex-shrink: 0;
+  position: relative;
 }
 
 .settings-title {
@@ -1131,11 +1136,14 @@ body {
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-primary);
+  margin-right: 40px;
 }
 
 .settings-body {
-  padding: 0;
-  margin: 20px 0;
+  padding: 20px 24px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .settings-tabs-modern {
@@ -1344,8 +1352,9 @@ body {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding-top: 16px;
+  padding: 16px 24px;
   border-top: 1px solid var(--border-primary);
+  flex-shrink: 0;
 }
 
 .save-btn-modern {
