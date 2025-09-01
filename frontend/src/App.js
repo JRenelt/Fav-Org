@@ -1076,35 +1076,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport }) => {
               </div>
 
               <div className="settings-section">
-                <h3 className="section-title">Testdaten</h3>
-                <p className="section-description">
-                  Erstellen Sie Testdaten mit 50 Favoriten (inkl. Duplikate und tote Links) für Entwicklung und Tests.
-                </p>
-                
-                <Button
-                  onClick={handleCreateTestData}
-                  disabled={isExporting}
-                  className="test-data-btn-modern"
-                >
-                  {isExporting ? (
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <Database className="w-4 h-4 mr-2" />
-                  )}
-                  50 Testdaten erstellen
-                </Button>
-                
-                <div className="test-data-info">
-                  <div className="info-item-modern">
-                    <Database className="w-4 h-4 text-yellow-500" />
-                    <div>
-                      <strong>Testdaten:</strong> 50 Favoriten mit verschiedenen Kategorien, 10 Duplikate und 15 tote Links für umfassende Tests
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="settings-section">
                 <h3 className="section-title">Export-Optionen</h3>
                 <p className="section-description">
                   Exportieren Sie alle Ihre Favoriten in verschiedene Dateiformate.
@@ -1149,6 +1120,35 @@ const SettingsDialog = ({ isOpen, onClose, onExport }) => {
                     <FileSpreadsheet className="w-4 h-4 text-blue-500" />
                     <div>
                       <strong>CSV:</strong> Tabellenformat, kompatibel mit Excel und anderen Tabellenkalculationen
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="settings-section">
+                <h3 className="section-title">Testdaten</h3>
+                <p className="section-description">
+                  Erstellen Sie Testdaten mit 50 Favoriten (inkl. Duplikate und tote Links) für Entwicklung und Tests.
+                </p>
+                
+                <Button
+                  onClick={handleCreateTestData}
+                  disabled={isExporting}
+                  className="test-data-btn-modern"
+                >
+                  {isExporting ? (
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Database className="w-4 h-4 mr-2" />
+                  )}
+                  50 Testdaten erstellen
+                </Button>
+                
+                <div className="test-data-info">
+                  <div className="info-item-modern">
+                    <Database className="w-4 h-4 text-yellow-500" />
+                    <div>
+                      <strong>Testdaten:</strong> 50 Favoriten mit verschiedenen Kategorien, 10 Duplikate und 15 tote Links für umfassende Tests
                     </div>
                   </div>
                 </div>
