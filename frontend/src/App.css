@@ -773,6 +773,18 @@ body {
   font-size: 0.875rem;
 }
 
+.error-text {
+  color: var(--red-500);
+  font-weight: 400;
+  font-size: 0.8125rem;
+}
+
+.form-group input.error,
+.form-group select.error {
+  border-color: var(--red-500);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
 .form-actions, .settings-actions {
   display: flex;
   justify-content: flex-end;
@@ -780,11 +792,104 @@ body {
   margin-top: 16px;
 }
 
+/* Export Dialog Styles */
+.export-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .export-options {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin: 16px 0;
+  gap: 20px;
+}
+
+.export-section {
+  margin-bottom: 16px;
+}
+
+.export-section h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.export-section p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.export-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.export-format-btn {
+  width: 100%;
+  height: 50px;
+  justify-content: flex-start;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition-colors);
+}
+
+.xml-btn {
+  background: var(--green-500);
+  color: white;
+  border: none;
+}
+
+.xml-btn:hover:not(:disabled) {
+  background: #059669;
+}
+
+.csv-btn {
+  background: var(--blue-500);
+  color: white;
+  border: none;
+}
+
+.csv-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.export-format-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.export-info {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.info-item {
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item strong {
+  color: var(--text-primary);
+}
+
+.export-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-primary);
 }
 
 .settings-tabs {
