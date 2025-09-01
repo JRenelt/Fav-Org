@@ -1357,3 +1357,27 @@ body {
 .save-btn-modern:hover:not(:disabled) {
   background: var(--cyan-500);
 }
+
+/* Test Data Button */
+.test-data-btn-modern {
+  width: 100%;
+  height: 44px;
+  background: var(--yellow-500);
+  color: white;
+  border: none;
+  font-weight: 500;
+  transition: var(--transition-colors);
+  margin-bottom: 16px;
+}
+
+.test-data-btn-modern:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.test-data-info {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+}
