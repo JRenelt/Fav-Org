@@ -1802,13 +1802,14 @@ function App() {
     }
   };
 
-  const handleToggleStatus = async (bookmarkId, newStatus) => {
+  const handleToggleStatus = async (bookmarkId, isActive) => {
     try {
-      await favoritesService.updateBookmark(bookmarkId, { is_dead_link: newStatus });
-      toast.success('Link-Status aktualisiert.');
+      await favoritesService.updateBookmarkStatus(bookmarkId, isActive);
+      toast.success(`Link-Status auf ${isActive ? 'aktiv' : 'tot'} gesetzt.`);
       await loadBookmarks();
       await loadStatistics();
     } catch (error) {
+      console.error('Status toggle error:', error);
       toast.error('Status-Update fehlgeschlagen: ' + error.message);
     }
   };
