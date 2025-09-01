@@ -209,8 +209,8 @@ body {
 }
 
 .header-btn {
-  width: 36px;
-  height: 36px;
+  width: 45px; /* von 36px auf 45px (25% größer) */
+  height: 45px; /* von 36px auf 45px (25% größer) */
   border-radius: 6px;
   color: var(--text-secondary);
   background: transparent;
