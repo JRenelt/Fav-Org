@@ -1447,7 +1447,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
         <input
           type="file"
           id="file-upload"
-          accept=".html,.json,.xml,.csv"
+          accept=".html,.json,.xml,.csv,.jsonlz4"
           onChange={onFileSelected}
           style={{ display: 'none' }}
         />
