@@ -25,6 +25,19 @@
   --red-500: #ef4444;
   --orange-500: #f97316;
   
+  /* Status Badge Colors */
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-300: #86efac;
+  --green-800: #166534;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-300: #fca5a5;
+  --red-800: #991b1b;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-800: #1f2937;
+  
   /* Status Farben */
   --status-active: #10b981;
   --status-dead: #ef4444;
