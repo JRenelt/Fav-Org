@@ -1046,6 +1046,29 @@ async def remove_dead_links():
         "message": f"Removed {result.deleted_count} dead links"
     }
 
+@api_router.put("/bookmarks/{bookmark_id}/status")
+async def update_bookmark_status(bookmark_id: str, status: dict):
+    """Manueller Update des Link-Status (tote Links zu aktiv umstellen)"""
+    try:
+        is_active = status.get("is_active", True)
+        result = await db.bookmarks.update_one(
+            {"id": bookmark_id},
+            {"$set": {"is_dead_link": not is_active}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        await bookmark_manager.category_manager.update_bookmark_counts()
+        
+        return {
+            "message": f"Bookmark status updated to {'active' if is_active else 'dead'}",
+            "bookmark_id": bookmark_id,
+            "is_active": is_active
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to update bookmark status: {str(e)}")
+
 @api_router.delete("/bookmarks/all")
 async def delete_all_bookmarks():
     """Alle Bookmarks löschen"""
