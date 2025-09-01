@@ -326,6 +326,117 @@ class FavLinkBackendTester:
         )
         return success, response
 
+    def test_remove_dead_links(self):
+        """Test removing all dead links (NEW FEATURE)"""
+        success, response = self.run_test(
+            "Remove Dead Links (NEW)",
+            "DELETE",
+            "bookmarks/dead-links",
+            200
+        )
+        return success, response
+
+    def test_integration_workflow(self):
+        """Test the complete integration workflow: Validate → Check Dead Links → Remove → Update Statistics"""
+        print("\n🔄 Starting Integration Workflow Test...")
+        
+        # Step 1: Get initial statistics
+        print("   Step 1: Getting initial statistics...")
+        stats_success, initial_stats = self.test_get_statistics()
+        if not stats_success:
+            return False, "Failed to get initial statistics"
+        
+        initial_dead_links = initial_stats.get('dead_links', 0)
+        initial_total = initial_stats.get('total_bookmarks', 0)
+        print(f"   Initial state: {initial_total} total bookmarks, {initial_dead_links} dead links")
+        
+        # Step 2: Validate all links
+        print("   Step 2: Validating all links...")
+        validate_success, validate_response = self.test_validate_links()
+        if not validate_success:
+            return False, "Link validation failed"
+        
+        dead_links_found = validate_response.get('dead_links_found', 0)
+        print(f"   Validation result: {dead_links_found} dead links found")
+        
+        # Step 3: Get updated statistics after validation
+        print("   Step 3: Getting statistics after validation...")
+        stats_success, post_validate_stats = self.test_get_statistics()
+        if not stats_success:
+            return False, "Failed to get post-validation statistics"
+        
+        post_validate_dead_links = post_validate_stats.get('dead_links', 0)
+        print(f"   Post-validation: {post_validate_dead_links} dead links in statistics")
+        
+        # Step 4: Remove dead links if any exist
+        if post_validate_dead_links > 0:
+            print("   Step 4: Removing dead links...")
+            remove_success, remove_response = self.test_remove_dead_links()
+            if not remove_success:
+                return False, "Dead links removal failed"
+            
+            removed_count = remove_response.get('removed_count', 0)
+            print(f"   Removal result: {removed_count} dead links removed")
+            
+            # Step 5: Get final statistics
+            print("   Step 5: Getting final statistics...")
+            stats_success, final_stats = self.test_get_statistics()
+            if not stats_success:
+                return False, "Failed to get final statistics"
+            
+            final_dead_links = final_stats.get('dead_links', 0)
+            final_total = final_stats.get('total_bookmarks', 0)
+            print(f"   Final state: {final_total} total bookmarks, {final_dead_links} dead links")
+            
+            # Verify the workflow worked correctly
+            expected_total = initial_total - removed_count
+            if final_total == expected_total and final_dead_links == 0:
+                print("   ✅ Integration workflow completed successfully!")
+                return True, {
+                    "initial_total": initial_total,
+                    "initial_dead_links": initial_dead_links,
+                    "dead_links_found": dead_links_found,
+                    "removed_count": removed_count,
+                    "final_total": final_total,
+                    "final_dead_links": final_dead_links
+                }
+            else:
+                return False, f"Workflow verification failed: expected {expected_total} total, got {final_total}; expected 0 dead links, got {final_dead_links}"
+        else:
+            print("   No dead links found, workflow completed without removal")
+            return True, {
+                "initial_total": initial_total,
+                "initial_dead_links": initial_dead_links,
+                "dead_links_found": dead_links_found,
+                "removed_count": 0,
+                "final_total": initial_total,
+                "final_dead_links": 0
+            }
+
+    def test_dead_links_error_handling(self):
+        """Test error handling when removing dead links with none present"""
+        # First ensure no dead links exist by running the removal
+        self.test_remove_dead_links()
+        
+        # Now test removing dead links when none exist
+        success, response = self.run_test(
+            "Remove Dead Links (No Dead Links Present)",
+            "DELETE",
+            "bookmarks/dead-links",
+            200
+        )
+        
+        if success:
+            removed_count = response.get('removed_count', 0)
+            if removed_count == 0:
+                print("   ✅ Correctly handled case with no dead links to remove")
+                return True, response
+            else:
+                print(f"   ⚠️  Unexpected: {removed_count} links removed when none should exist")
+                return False, response
+        
+        return success, response
+
 def main():
     print("🚀 Starting FavLink Manager Backend API Tests")
     print("=" * 60)
