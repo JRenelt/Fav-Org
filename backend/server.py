@@ -408,7 +408,8 @@ class StatisticsManager:
         ]
         
         # Kürzlich hinzugefügte Bookmarks
-        seven_days_ago = datetime.now(timezone.utc) - timezone.timedelta(days=7)
+        from datetime import timedelta
+        seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
         recent_bookmarks = sum(
             1 for b in bookmarks 
             if b.get('date_added') and 
