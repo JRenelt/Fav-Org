@@ -1173,20 +1173,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
   return (
     <main className="main-content">
       <div className="main-header">
-        <div className="status-filter-section">
-          <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-            <SelectTrigger className="status-filter">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Alle Status</SelectItem>
-              <SelectItem value="active">Nur aktive</SelectItem>
-              <SelectItem value="dead">Nur tote</SelectItem>
-              <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        
         <input
           type="file"
           id="file-upload"
@@ -1198,24 +1184,40 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
       
       <div className="search-section">
         <div className="search-container">
-          <Search className="search-icon" />
-          <Input
-            type="text"
-            placeholder="Favoriten durchsuchen..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="search-input"
-          />
-          {searchQuery && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClearSearch}
-              className="clear-search-btn"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          )}
+          <div className="search-input-wrapper">
+            <Search className="search-icon" />
+            <Input
+              type="text"
+              placeholder="Favoriten durchsuchen..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="search-input"
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClearSearch}
+                className="clear-search-btn"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+          
+          <div className="status-filter-wrapper">
+            <Select value={statusFilter} onValueChange={onStatusFilterChange}>
+              <SelectTrigger className="status-filter">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle Status</SelectItem>
+                <SelectItem value="active">Nur aktive</SelectItem>
+                <SelectItem value="dead">Nur tote</SelectItem>
+                <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
