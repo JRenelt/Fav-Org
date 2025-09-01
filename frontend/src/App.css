@@ -119,6 +119,12 @@ body {
   line-height: 1.2;
 }
 
+.bookmark-count {
+  color: var(--cyan-400);
+  font-weight: 500;
+  margin-left: 8px;
+}
+
 .app-subtitle {
   font-size: 0.75rem;
   color: var(--text-secondary);
