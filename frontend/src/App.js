@@ -65,28 +65,6 @@ class FavoritesService {
     }
   }
 
-  async downloadCollector() {
-    try {
-      const response = await axios.get(`${this.baseURL}/download/collector`, {
-        responseType: 'blob'
-      });
-      
-      // Trigger download
-      const blob = new Blob([response.data], { type: 'application/zip' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = 'bookmark_collector.zip';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      return { message: "Sammelprogramm heruntergeladen" };
-    } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Failed to download collector');
-    }
-  }
-
   async getStatistics() {
     try {
       const response = await axios.get(`${this.baseURL}/statistics`);
