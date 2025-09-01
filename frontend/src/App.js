@@ -279,7 +279,7 @@ class UIStateManager {
 
 // React Komponenten
 
-const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick }) => {
+const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUploadClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, deadLinksCount }) => {
   return (
     <header className="header-fixed">
       <div className="header-content">
@@ -295,21 +295,21 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick
 
         <div className="header-actions">
           <Button 
-            onClick={onStatisticsClick} 
-            className="action-btn script-btn"
+            onClick={onCreateBookmarkClick} 
+            className="action-btn create-btn"
             size="sm"
           >
-            <Download className="w-4 h-4 mr-2" />
-            Scripts
+            <Plus className="w-4 h-4 mr-2" />
+            Neu
           </Button>
           
           <Button 
-            onClick={onExportClick} 
-            className="action-btn export-btn"
+            onClick={onFileUploadClick} 
+            className="action-btn upload-btn"
             size="sm"
           >
-            <Archive className="w-4 h-4 mr-2" />
-            Export
+            <Upload className="w-4 h-4 mr-2" />
+            Datei wählen
           </Button>
           
           <Button 
@@ -318,7 +318,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick
             size="sm"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
-            Prüfen
+            {deadLinksCount > 0 ? `Tote Links entfernen [${deadLinksCount}]` : 'Prüfen'}
           </Button>
           
           <Button 
@@ -333,15 +333,6 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick
 
         <div className="header-right">
           <Button
-            onClick={onStatisticsClick}
-            className="header-btn"
-            size="sm"
-            title="Statistiken"
-          >
-            <BarChart3 className="w-4 h-4" />
-          </Button>
-          
-          <Button
             onClick={onHelpClick}
             className="header-btn"
             size="sm"
@@ -354,7 +345,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick
             onClick={onSettingsClick}
             className="header-btn"
             size="sm" 
-            title="Einstellungen"
+            title="System-Einstellungen"
           >
             <Settings className="w-4 h-4" />
           </Button>
