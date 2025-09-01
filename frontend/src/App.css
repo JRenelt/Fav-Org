@@ -339,7 +339,7 @@ body {
   overflow-y: auto;
 }
 
-/* Loading State */
+/* Loading State - angepasste Farben */
 .loading-state {
   display: flex;
   flex-direction: column;
@@ -353,6 +353,10 @@ body {
   width: 32px;
   height: 32px;
   color: var(--primary-cyan);
+}
+
+.loading-state p {
+  color: var(--text-secondary);
 }
 
 /* Empty State - angepasste Farben */
