@@ -228,6 +228,94 @@ class FavLinkBackendTester:
         )
         return success, response
 
+    def test_update_bookmark(self, bookmark_id, update_data):
+        """Test updating a bookmark"""
+        success, response = self.run_test(
+            f"Update Bookmark ({bookmark_id})",
+            "PUT",
+            f"bookmarks/{bookmark_id}",
+            200,
+            data=update_data
+        )
+        return success, response
+
+    def test_move_bookmarks(self, bookmark_ids, target_category, target_subcategory=None):
+        """Test moving bookmarks to different category"""
+        move_data = {
+            "bookmark_ids": bookmark_ids,
+            "target_category": target_category,
+            "target_subcategory": target_subcategory
+        }
+        
+        success, response = self.run_test(
+            f"Move Bookmarks to {target_category}",
+            "POST",
+            "bookmarks/move",
+            200,
+            data=move_data
+        )
+        return success, response
+
+    def test_export_xml(self, category=None):
+        """Test XML export functionality"""
+        export_data = {"format": "xml"}
+        if category:
+            export_data["category"] = category
+            
+        success, response = self.run_test(
+            f"Export XML{' (Category: ' + category + ')' if category else ''}",
+            "POST",
+            "export",
+            200,
+            data=export_data
+        )
+        return success, response
+
+    def test_export_csv(self, category=None):
+        """Test CSV export functionality"""
+        export_data = {"format": "csv"}
+        if category:
+            export_data["category"] = category
+            
+        success, response = self.run_test(
+            f"Export CSV{' (Category: ' + category + ')' if category else ''}",
+            "POST",
+            "export",
+            200,
+            data=export_data
+        )
+        return success, response
+
+    def test_get_statistics(self):
+        """Test statistics endpoint"""
+        success, response = self.run_test(
+            "Get Statistics",
+            "GET",
+            "statistics",
+            200
+        )
+        return success, response
+
+    def test_download_collector_zip(self):
+        """Test downloading collector scripts as ZIP"""
+        success, response = self.run_test(
+            "Download Collector ZIP",
+            "GET",
+            "download/collector",
+            200
+        )
+        return success, response
+
+    def test_create_sample_bookmarks(self):
+        """Test creating sample bookmarks"""
+        success, response = self.run_test(
+            "Create Sample Bookmarks",
+            "POST",
+            "bookmarks/create-samples",
+            200
+        )
+        return success, response
+
 def main():
     print("🚀 Starting FavLink Manager Backend API Tests")
     print("=" * 60)
