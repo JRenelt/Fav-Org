@@ -266,7 +266,7 @@ class UIStateManager {
 
 // React Komponenten
 
-const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUploadClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, deadLinksCount, hasValidated }) => {
+const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUploadClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, deadLinksCount, hasValidated, totalBookmarks }) => {
   return (
     <header className="header-fixed">
       <div className="header-content">
@@ -275,7 +275,10 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
             <LinkIcon className="w-6 h-6" />
           </div>
           <div className="app-info">
-            <h1 className="app-title">Favorites Manager</h1>
+            <h1 className="app-title">
+              Favorites Manager 
+              <span className="bookmark-count">[{totalBookmarks}]</span>
+            </h1>
             <p className="app-subtitle">Verwalten Sie Ihre Lesezeichen</p>
           </div>
         </div>
