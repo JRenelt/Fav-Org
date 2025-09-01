@@ -540,68 +540,109 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
+// Export Dialog Component
 const ExportDialog = ({ isOpen, onClose, onExport }) => {
-  const [format, setFormat] = useState('xml');
-  const [category, setCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isExporting, setIsExporting] = useState(false);
 
-  const handleExport = () => {
-    onExport(format, category === 'all' ? null : category);
-    onClose();
+  const handleExport = async (format) => {
+    setIsExporting(true);
+    try {
+      await onExport(format, selectedCategory);
+      onClose();
+    } catch (error) {
+      toast.error(`Export fehlgeschlagen: ${error.message}`);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="export-dialog">
         <DialogHeader>
-          <DialogTitle>Favoriten exportieren</DialogTitle>
+          <DialogTitle>
+            <Download className="w-5 h-5 mr-2" />
+            Favoriten exportieren
+          </DialogTitle>
         </DialogHeader>
         
-        <div className="export-options">
-          <div className="form-group">
-            <Label>Format</Label>
-            <Select value={format} onValueChange={setFormat}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="xml">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4" />
-                    XML
-                  </div>
-                </SelectItem>
-                <SelectItem value="csv">
-                  <div className="flex items-center gap-2">
-                    <FileSpreadsheet className="w-4 h-4" />
-                    CSV
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="export-content">
+          <div className="export-options">
+            <div className="export-section">
+              <h4>Kategorien-Filter</h4>
+              <p className="text-sm text-gray-500 mb-3">
+                Wählen Sie eine Kategorie oder lassen Sie das Feld leer für alle Favoriten.
+              </p>
+              <Select value={selectedCategory || ""} onValueChange={(value) => setSelectedCategory(value || null)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Alle Kategorien exportieren" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Alle Kategorien</SelectItem>
+                  <SelectItem value="Development">Development</SelectItem>
+                  <SelectItem value="News">News</SelectItem>
+                  <SelectItem value="Social Media">Social Media</SelectItem>
+                  <SelectItem value="Tools">Tools</SelectItem>
+                  <SelectItem value="Entertainment">Entertainment</SelectItem>
+                  <SelectItem value="Reference">Reference</SelectItem>
+                  <SelectItem value="Testing">Testing</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="export-section">
+              <h4>Export-Format wählen</h4>
+              <p className="text-sm text-gray-500 mb-4">
+                Wählen Sie das gewünschte Dateiformat für den Export Ihrer Favoriten.
+              </p>
+              
+              <div className="export-buttons">
+                <Button
+                  onClick={() => handleExport('xml')}
+                  disabled={isExporting}
+                  className="export-format-btn xml-btn"
+                  size="lg"
+                >
+                  {isExporting ? (
+                    <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
+                  ) : (
+                    <FileText className="w-5 h-5 mr-2" />
+                  )}
+                  Als XML exportieren
+                </Button>
+                
+                <Button
+                  onClick={() => handleExport('csv')}
+                  disabled={isExporting}
+                  className="export-format-btn csv-btn"
+                  size="lg"
+                >
+                  {isExporting ? (
+                    <RefreshCw className="w-5 h-5 mr-2 animate-spin" />
+                  ) : (
+                    <FileSpreadsheet className="w-5 h-5 mr-2" />
+                  )}
+                  Als CSV exportieren
+                </Button>
+              </div>
+            </div>
+
+            <div className="export-info">
+              <div className="info-item">
+                <strong>XML-Format:</strong> Strukturierte Daten mit Metainformationen, ideal für den Re-Import
+              </div>
+              <div className="info-item">
+                <strong>CSV-Format:</strong> Tabellendaten, kompatibel mit Excel und anderen Tabellenkalkulationen
+              </div>
+            </div>
           </div>
-          
-          <div className="form-group">
-            <Label>Kategorie</Label>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Alle Kategorien</SelectItem>
-                {/* Weitere Kategorien könnten hier hinzugefügt werden */}
-              </SelectContent>
-            </Select>
+
+          <div className="export-actions">
+            <Button variant="outline" onClick={onClose} disabled={isExporting}>
+              Abbrechen
+            </Button>
           </div>
-        </div>
-        
-        <div className="form-actions">
-          <Button variant="outline" onClick={onClose}>
-            Abbrechen
-          </Button>
-          <Button onClick={handleExport}>
-            <Download className="w-4 h-4 mr-2" />
-            Exportieren
-          </Button>
         </div>
       </DialogContent>
     </Dialog>
