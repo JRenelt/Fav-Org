@@ -1294,7 +1294,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
   );
 };
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onFileSelected }) => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
