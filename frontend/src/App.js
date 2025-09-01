@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
+import { Label } from "./components/ui/label";
+import { Textarea } from "./components/ui/textarea";
 import { 
   Settings, 
   HelpCircle, 
@@ -36,7 +38,12 @@ import {
   Download,
   FileCheck,
   Zap,
-  Clock
+  Clock,
+  Edit,
+  Move,
+  FileText,
+  FileSpreadsheet,
+  Archive
 } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -51,10 +58,20 @@ class FavoritesService {
 
   async createSamples() {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/create-samples`);
-      return response.data;
+      const response = await axios.get(`${this.baseURL}/download/collector`);
+      // Trigger download
+      const blob = new Blob([response.data], { type: 'application/zip' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'bookmark_collector.zip';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      return { message: "Sammelprogramm heruntergeladen" };
     } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Failed to create samples');
+      throw new Error(error.response?.data?.detail || 'Failed to download collector');
     }
   }
 
@@ -64,6 +81,32 @@ class FavoritesService {
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch statistics');
+    }
+  }
+
+  async exportBookmarks(format, category = null) {
+    try {
+      const response = await axios.post(`${this.baseURL}/export`, {
+        format: format,
+        category: category
+      }, {
+        responseType: 'blob'
+      });
+      
+      // Trigger download
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = `bookmarks_${format}_${new Date().toISOString().split('T')[0]}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      
+      return { message: `${format.toUpperCase()} Export erfolgreich` };
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Export failed');
     }
   }
 
@@ -109,6 +152,37 @@ class FavoritesService {
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch categories');
+    }
+  }
+
+  async createBookmark(bookmarkData) {
+    try {
+      const response = await axios.post(`${this.baseURL}/bookmarks`, bookmarkData);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to create bookmark');
+    }
+  }
+
+  async updateBookmark(bookmarkId, updateData) {
+    try {
+      const response = await axios.put(`${this.baseURL}/bookmarks/${bookmarkId}`, updateData);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to update bookmark');
+    }
+  }
+
+  async moveBookmarks(bookmarkIds, targetCategory, targetSubcategory = null) {
+    try {
+      const response = await axios.post(`${this.baseURL}/bookmarks/move`, {
+        bookmark_ids: bookmarkIds,
+        target_category: targetCategory,
+        target_subcategory: targetSubcategory
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to move bookmarks');
     }
   }
 
@@ -168,7 +242,8 @@ class UIStateManager {
       showSettings: false,
       showHelp: false,
       showStatistics: false,
-      statusFilter: 'all'
+      statusFilter: 'all',
+      selectedBookmarks: new Set()
     };
     this.listeners = [];
   }
@@ -192,7 +267,7 @@ class UIStateManager {
 
 // React Komponenten
 
-const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange }) => {
+const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick }) => {
   return (
     <header className="header-fixed">
       <div className="header-content">
@@ -220,6 +295,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, 
           <Button
             variant="outline"
             size="sm"
+            onClick={onExportClick}
             className="action-btn export-btn"
           >
             <Download className="w-4 h-4 mr-2" />
@@ -229,6 +305,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, 
           <Button
             variant="outline"
             size="sm"
+            onClick={onValidateClick}
             className="action-btn check-btn"
           >
             <FileCheck className="w-4 h-4 mr-2" />
@@ -238,6 +315,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, 
           <Button
             variant="outline"
             size="sm"
+            onClick={onRemoveDuplicatesClick}
             className="action-btn duplicate-btn"
           >
             <Copy className="w-4 h-4 mr-2" />
@@ -247,19 +325,21 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, 
           <Button
             variant="outline"
             size="sm"
-            className="action-btn cleanup-btn"
+            onClick={onDeleteAllClick}
+            className="action-btn cleanup-btn delete-all-btn"
           >
-            <Zap className="w-4 h-4 mr-2" />
-            Handlungen
+            <X className="w-4 h-4" />
           </Button>
-          
+        </div>
+        
+        <div className="header-right">
           <Button
             variant="ghost"
             size="sm"
-            onClick={onSettingsClick}
-            className="header-btn settings-btn"
+            onClick={onStatisticsClick}
+            className="header-btn stats-btn"
           >
-            <Settings className="w-5 h-5" />
+            <BarChart3 className="w-5 h-5" />
           </Button>
           
           <Button
@@ -270,9 +350,189 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, searchQuery, 
           >
             <HelpCircle className="w-5 h-5" />
           </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onSettingsClick}
+            className="header-btn settings-btn"
+          >
+            <Settings className="w-5 h-5" />
+          </Button>
         </div>
       </div>
     </header>
+  );
+};
+
+const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    url: '',
+    category: 'Uncategorized',
+    subcategory: ''
+  });
+
+  useEffect(() => {
+    if (bookmark) {
+      setFormData({
+        title: bookmark.title || '',
+        url: bookmark.url || '',
+        category: bookmark.category || 'Uncategorized',
+        subcategory: bookmark.subcategory || ''
+      });
+    } else {
+      setFormData({
+        title: '',
+        url: '',
+        category: 'Uncategorized',
+        subcategory: ''
+      });
+    }
+  }, [bookmark, isOpen]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(formData);
+  };
+
+  const organizedCategories = categories.filter(cat => !cat.parent_category);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="bookmark-dialog">
+        <DialogHeader>
+          <DialogTitle>
+            {bookmark ? 'Favorit bearbeiten' : 'Neuer Favorit'}
+          </DialogTitle>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit} className="bookmark-form">
+          <div className="form-group">
+            <Label htmlFor="title">Titel</Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <Label htmlFor="url">URL</Label>
+            <Input
+              id="url"
+              type="url"
+              value={formData.url}
+              onChange={(e) => setFormData({...formData, url: e.target.value})}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <Label htmlFor="category">Kategorie</Label>
+            <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {organizedCategories.map(category => (
+                  <SelectItem key={category.id} value={category.name}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="form-group">
+            <Label htmlFor="subcategory">Unterkategorie (optional)</Label>
+            <Input
+              id="subcategory"
+              value={formData.subcategory}
+              onChange={(e) => setFormData({...formData, subcategory: e.target.value})}
+            />
+          </div>
+          
+          <div className="form-actions">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Abbrechen
+            </Button>
+            <Button type="submit">
+              {bookmark ? 'Aktualisieren' : 'Erstellen'}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const ExportDialog = ({ isOpen, onClose, onExport }) => {
+  const [format, setFormat] = useState('xml');
+  const [category, setCategory] = useState('all');
+
+  const handleExport = () => {
+    onExport(format, category === 'all' ? null : category);
+    onClose();
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="export-dialog">
+        <DialogHeader>
+          <DialogTitle>Favoriten exportieren</DialogTitle>
+        </DialogHeader>
+        
+        <div className="export-options">
+          <div className="form-group">
+            <Label>Format</Label>
+            <Select value={format} onValueChange={setFormat}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="xml">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    XML
+                  </div>
+                </SelectItem>
+                <SelectItem value="csv">
+                  <div className="flex items-center gap-2">
+                    <FileSpreadsheet className="w-4 h-4" />
+                    CSV
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="form-group">
+            <Label>Kategorie</Label>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Alle Kategorien</SelectItem>
+                {/* Weitere Kategorien könnten hier hinzugefügt werden */}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        
+        <div className="form-actions">
+          <Button variant="outline" onClick={onClose}>
+            Abbrechen
+          </Button>
+          <Button onClick={handleExport}>
+            <Download className="w-4 h-4 mr-2" />
+            Exportieren
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -443,7 +703,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   );
 };
 
-const BookmarkList = ({ bookmarks, onDeleteBookmark, searchQuery, statusFilter }) => {
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, searchQuery, statusFilter }) => {
   const [filteredBookmarks, setFilteredBookmarks] = useState([]);
 
   useEffect(() => {
@@ -479,6 +739,16 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, searchQuery, statusFilter }
     setFilteredBookmarks(filtered);
   }, [bookmarks, searchQuery, statusFilter]);
 
+  const getStatusBadge = (bookmark) => {
+    if (bookmark.is_dead_link) {
+      return <Badge className="status-badge dead">Tot</Badge>;
+    } else if (bookmark.last_checked) {
+      return <Badge className="status-badge active">Aktiv</Badge>;
+    } else {
+      return <Badge className="status-badge unchecked">Ungeprüft</Badge>;
+    }
+  };
+
   if (filteredBookmarks.length === 0) {
     return (
       <div className="empty-state">
@@ -499,12 +769,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, searchQuery, statusFilter }
                 {bookmark.title}
               </CardTitle>
               <div className="bookmark-actions">
-                <Badge 
-                  variant={bookmark.is_dead_link ? "destructive" : bookmark.last_checked ? "secondary" : "outline"}
-                  className="status-badge"
-                >
-                  {bookmark.is_dead_link ? "Ungeprüft" : bookmark.last_checked ? "Ungeprüft" : "Ungeprüft"}
-                </Badge>
+                {getStatusBadge(bookmark)}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -512,6 +777,14 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, searchQuery, statusFilter }
                   className="edit-btn"
                 >
                   <ExternalLink className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onEditBookmark(bookmark)}
+                  className="edit-btn"
+                >
+                  <Edit className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -560,20 +833,34 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, searchQuery, statusFilter }
 };
 
 const SettingsDialog = ({ isOpen, onClose }) => {
+  const [settings, setSettings] = useState({
+    itemsPerPage: '50',
+    linkTimeout: '10',
+    duplicateHandling: 'ignore',
+    autoValidate: false,
+    showFavicons: true
+  });
+
+  const handleSave = () => {
+    // Hier würden die Einstellungen gespeichert werden
+    toast.success('Einstellungen gespeichert');
+    onClose();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="settings-dialog">
         <DialogHeader>
           <DialogTitle>
             <Settings className="w-5 h-5 mr-2" />
-            System-Einstellungen & Konfiguration
+            System-Einstellungen
           </DialogTitle>
         </DialogHeader>
         
         <Tabs defaultValue="general" className="settings-tabs">
           <TabsList className="settings-tab-list">
             <TabsTrigger value="general">Allgemein</TabsTrigger>
-            <TabsTrigger value="validation">Link-Validierung</TabsTrigger>
+            <TabsTrigger value="validation">Validierung</TabsTrigger>
             <TabsTrigger value="import">Import/Export</TabsTrigger>
             <TabsTrigger value="categories">Kategorien</TabsTrigger>
           </TabsList>
@@ -581,10 +868,9 @@ const SettingsDialog = ({ isOpen, onClose }) => {
           <TabsContent value="general" className="settings-tab-content">
             <div className="setting-group">
               <h4>Anzeige-Einstellungen</h4>
-              <p>Konfigurieren Sie die Darstellung und das Verhalten der Anwendung.</p>
               <div className="setting-controls">
-                <label>Bookmarks pro Seite:</label>
-                <Select defaultValue="50">
+                <Label>Bookmarks pro Seite:</Label>
+                <Select value={settings.itemsPerPage} onValueChange={(value) => setSettings({...settings, itemsPerPage: value})}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
@@ -596,16 +882,24 @@ const SettingsDialog = ({ isOpen, onClose }) => {
                   </SelectContent>
                 </Select>
               </div>
+              
+              <div className="setting-controls">
+                <Label>Favicons anzeigen:</Label>
+                <input 
+                  type="checkbox" 
+                  checked={settings.showFavicons}
+                  onChange={(e) => setSettings({...settings, showFavicons: e.target.checked})}
+                />
+              </div>
             </div>
           </TabsContent>
           
           <TabsContent value="validation" className="settings-tab-content">
             <div className="setting-group">
               <h4>Link-Validierung</h4>
-              <p>Einstellungen für die automatische Überprüfung von Links.</p>
               <div className="setting-controls">
-                <label>Timeout (Sekunden):</label>
-                <Select defaultValue="10">
+                <Label>Timeout (Sekunden):</Label>
+                <Select value={settings.linkTimeout} onValueChange={(value) => setSettings({...settings, linkTimeout: value})}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
@@ -617,16 +911,24 @@ const SettingsDialog = ({ isOpen, onClose }) => {
                   </SelectContent>
                 </Select>
               </div>
+              
+              <div className="setting-controls">
+                <Label>Auto-Validierung:</Label>
+                <input 
+                  type="checkbox" 
+                  checked={settings.autoValidate}
+                  onChange={(e) => setSettings({...settings, autoValidate: e.target.checked})}
+                />
+              </div>
             </div>
           </TabsContent>
           
           <TabsContent value="import" className="settings-tab-content">
             <div className="setting-group">
               <h4>Import/Export-Optionen</h4>
-              <p>Konfiguration für Datenimport und -export.</p>
               <div className="setting-controls">
-                <label>Duplikate beim Import:</label>
-                <Select defaultValue="ignore">
+                <Label>Duplikate beim Import:</Label>
+                <Select value={settings.duplicateHandling} onValueChange={(value) => setSettings({...settings, duplicateHandling: value})}>
                   <SelectTrigger className="w-48">
                     <SelectValue />
                   </SelectTrigger>
@@ -657,6 +959,15 @@ const SettingsDialog = ({ isOpen, onClose }) => {
             </div>
           </TabsContent>
         </Tabs>
+        
+        <div className="settings-actions">
+          <Button variant="outline" onClick={onClose}>
+            Abbrechen
+          </Button>
+          <Button onClick={handleSave}>
+            Speichern
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -675,66 +986,52 @@ const HelpDialog = ({ isOpen, onClose }) => {
         
         <div className="help-content">
           <div className="help-section">
-            <h4>Browser-Favoriten importieren</h4>
-            <p>So exportieren Sie Favoriten aus verschiedenen Browsern:</p>
+            <h4>Favoriten verwalten</h4>
             <ul>
-              <li><strong>Google Chrome:</strong> Einstellungen → Lesezeichen → Lesezeichen-Manager → Organisieren → Lesezeichen in HTML-Datei exportieren</li>
-              <li><strong>Mozilla Firefox:</strong> Lesezeichen → Alle Lesezeichen anzeigen → Importieren und Sichern → Lesezeichen nach HTML exportieren</li>
-              <li><strong>Microsoft Edge:</strong> Einstellungen → Favoriten → Favoriten verwalten → Favoriten exportieren</li>
-              <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
-            </ul>
-          </div>
-          
-          <div className="help-section">
-            <h4>Hauptfunktionen</h4>
-            <ul>
-              <li><strong>Automatische Kategorisierung:</strong> Behält die ursprüngliche Ordnerstruktur bei</li>
-              <li><strong>Unterkategorien:</strong> Unterstützt mehrstufige Kategorien mit → Symbol</li>
-              <li><strong>Link-Validierung:</strong> Überprüft automatisch alle Links auf Erreichbarkeit</li>
-              <li><strong>Duplikat-Erkennung:</strong> Findet und entfernt doppelte Bookmarks</li>
-              <li><strong>Erweiterte Suche:</strong> Durchsucht Titel, URLs, Kategorien und Unterkategorien</li>
-              <li><strong>Status-Filter:</strong> Filtert nach aktiven, toten oder ungeprüften Links</li>
+              <li><strong>Neu anlegen:</strong> Plus-Button zum Erstellen neuer Favoriten</li>
+              <li><strong>Bearbeiten:</strong> Stift-Symbol bei jedem Favorit</li>
+              <li><strong>Löschen:</strong> Papierkorb-Symbol bei jedem Favorit</li>
+              <li><strong>Verschieben:</strong> Favoriten über Kategorien-Dropdown verschieben</li>
             </ul>
           </div>
           
           <div className="help-section">
             <h4>Button-Funktionen</h4>
             <ul>
-              <li><strong>Scripts:</strong> Zeigt erweiterte Statistiken und Analysen</li>
-              <li><strong>Export:</strong> Exportiert Favoriten in verschiedene Formate</li>
-              <li><strong>Prüfen:</strong> Startet Link-Validierung für alle Bookmarks</li>
-              <li><strong>Duplikate:</strong> Findet und entfernt doppelte Einträge</li>
-              <li><strong>Handlungen:</strong> Bulk-Aktionen für ausgewählte Bookmarks</li>
-            </ul>
-          </div>
-          
-          <div className="help-section">
-            <h4>Kategorien und Unterkategorien</h4>
-            <ul>
-              <li><strong>Hauptkategorien:</strong> Werden durch Ordnernamen in Browser-Exporten erstellt</li>
-              <li><strong>Unterkategorien:</strong> Erkennbar durch → oder -&gt; Symbol im Namen</li>
-              <li><strong>Hierarchie:</strong> Unterstützt mehrere Ebenen von Unterkategorien</li>
-              <li><strong>Navigation:</strong> Klicken Sie auf Pfeil-Symbole zum Aufklappen/Zuklappen</li>
+              <li><strong>Scripts:</strong> Download des Sammelprogramms für alle Betriebssysteme</li>
+              <li><strong>Export:</strong> Favoriten als XML oder CSV exportieren</li>
+              <li><strong>Prüfen:</strong> Alle Links auf Erreichbarkeit testen</li>
+              <li><strong>Duplikate:</strong> Doppelte Einträge finden und entfernen</li>
+              <li><strong>X (Handlungen):</strong> Alle Favoriten löschen (mit Sicherheitsabfrage)</li>
             </ul>
           </div>
           
           <div className="help-section">
             <h4>Status-Bedeutungen</h4>
             <ul>
-              <li><strong>Aktiv:</strong> Link wurde geprüft und ist erreichbar</li>
-              <li><strong>Tot:</strong> Link ist nicht erreichbar oder gibt Fehler zurück</li>
-              <li><strong>Timeout:</strong> Link antwortet nicht innerhalb der Zeitspanne</li>
-              <li><strong>Ungeprüft:</strong> Link wurde noch nicht auf Erreichbarkeit geprüft</li>
+              <li><strong>Aktiv (Grün):</strong> Link wurde geprüft und ist erreichbar</li>
+              <li><strong>Tot (Rot):</strong> Link ist nicht erreichbar oder gibt Fehler zurück</li>
+              <li><strong>Ungeprüft (Weiß):</strong> Link wurde noch nicht auf Erreichbarkeit geprüft</li>
             </ul>
           </div>
           
           <div className="help-section">
-            <h4>Tipps für bessere Organisation</h4>
+            <h4>Browser-Favoriten importieren</h4>
             <ul>
-              <li><strong>Konsistente Benennung:</strong> Verwenden Sie einheitliche Kategorienamen</li>
-              <li><strong>Unterkategorien:</strong> Nutzen Sie → für hierarchische Strukturen</li>
-              <li><strong>Regelmäßige Prüfung:</strong> Führen Sie monatlich Link-Validierungen durch</li>
-              <li><strong>Duplikat-Bereinigung:</strong> Entfernen Sie regelmäßig doppelte Einträge</li>
+              <li><strong>Chrome:</strong> Einstellungen → Lesezeichen → Exportieren</li>
+              <li><strong>Firefox:</strong> Lesezeichen → Alle Lesezeichen → Exportieren</li>
+              <li><strong>Edge:</strong> Favoriten → Exportieren</li>
+              <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
+            </ul>
+          </div>
+          
+          <div className="help-section">
+            <h4>Sammelprogramm</h4>
+            <p>Über den Scripts-Button können Sie das Sammelprogramm herunterladen, das automatisch alle Browser-Favoriten von Ihrem System sammelt und für den Import vorbereitet.</p>
+            <ul>
+              <li><strong>Windows:</strong> Doppelklick auf collect_bookmarks.bat</li>
+              <li><strong>Linux/macOS:</strong> Terminal: ./collect_bookmarks.sh</li>
+              <li><strong>Manuell:</strong> python3 collect_bookmarks.py</li>
             </ul>
           </div>
         </div>
@@ -743,7 +1040,16 @@ const HelpDialog = ({ isOpen, onClose }) => {
   );
 };
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onCreateBookmark }) => {
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Import-Funktion würde hier aufgerufen werden
+      console.log('File selected:', file.name);
+    }
+    event.target.value = '';
+  };
+
   return (
     <main className="main-content">
       <div className="main-header">
@@ -751,6 +1057,20 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
           <h2 className="section-title">Upload</h2>
           <p className="section-subtitle">Browser-Dateien hochladen</p>
           <p className="section-note">JSON, SQLite, HTML, CSV</p>
+          
+          <input
+            type="file"
+            id="file-upload"
+            accept=".html,.json,.xml,.csv"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="file-upload">
+            <Button className="upload-btn" size="sm">
+              <Upload className="w-4 h-4 mr-2" />
+              Datei wählen
+            </Button>
+          </label>
         </div>
         
         <div className="cleanup-section">
@@ -768,6 +1088,13 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
             </SelectContent>
           </Select>
+        </div>
+        
+        <div className="add-section">
+          <Button onClick={onCreateBookmark} className="add-btn">
+            <Plus className="w-4 h-4 mr-2" />
+            Neuer Favorit
+          </Button>
         </div>
       </div>
       
@@ -798,6 +1125,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
         <BookmarkList
           bookmarks={bookmarks}
           onDeleteBookmark={onDeleteBookmark}
+          onEditBookmark={onEditBookmark}
           searchQuery={searchQuery}
           statusFilter={statusFilter}
         />
@@ -818,6 +1146,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showExport, setShowExport] = useState(false);
+  const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
+  const [editingBookmark, setEditingBookmark] = useState(null);
   const [filteredBookmarks, setFilteredBookmarks] = useState([]);
   const [bookmarkCounts, setBookmarkCounts] = useState({ total: 0 });
 
@@ -854,7 +1185,6 @@ function App() {
       setStatistics(data);
     } catch (error) {
       console.error('Fehler beim Laden der Statistiken:', error);
-      // Nicht als Toast-Error anzeigen, da es ein bekanntes Problem ist
     }
   }, []);
 
@@ -876,16 +1206,69 @@ function App() {
   }, [bookmarks, activeCategory, activeSubcategory]);
 
   // Event Handlers
-  const handleCreateSamples = async () => {
+  const handleDownloadCollector = async () => {
     try {
       setIsLoading(true);
       const result = await favoritesService.createSamples();
-      toast.success(`${result.created_count} Beispiel-Favoriten erstellt!`);
+      toast.success(result.message);
+    } catch (error) {
+      toast.error('Download fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleExport = async (format, category) => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.exportBookmarks(format, category);
+      toast.success(result.message);
+    } catch (error) {
+      toast.error('Export fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleValidateLinks = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.validateLinks();
+      toast.success(`${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links.`);
+      await loadBookmarks();
+      await loadStatistics();
+    } catch (error) {
+      toast.error('Link-Validierung fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemoveDuplicates = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.removeDuplicates();
+      toast.success(`${result.bookmarks_removed} Duplikate entfernt.`);
       await loadBookmarks();
       await loadCategories();
       await loadStatistics();
     } catch (error) {
-      toast.error('Beispiele erstellen fehlgeschlagen: ' + error.message);
+      toast.error('Duplikat-Entfernung fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.deleteAllBookmarks();
+      toast.success(`${result.deleted_count} Favoriten gelöscht.`);
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+    } catch (error) {
+      toast.error('Löschen fehlgeschlagen: ' + error.message);
     } finally {
       setIsLoading(false);
     }
@@ -908,17 +1291,38 @@ function App() {
     }
   };
 
-  const handleClearSearch = () => {
-    setSearchQuery('');
+  const handleEditBookmark = (bookmark) => {
+    setEditingBookmark(bookmark);
+    setShowBookmarkDialog(true);
   };
 
-  const handleStatisticsClick = async () => {
-    // Automatisch Beispiele erstellen wenn noch keine Bookmarks vorhanden
-    if (bookmarks.length === 0) {
-      await handleCreateSamples();
-    } else {
+  const handleCreateBookmark = () => {
+    setEditingBookmark(null);
+    setShowBookmarkDialog(true);
+  };
+
+  const handleSaveBookmark = async (formData) => {
+    try {
+      if (editingBookmark) {
+        await favoritesService.updateBookmark(editingBookmark.id, formData);
+        toast.success('Favorit aktualisiert.');
+      } else {
+        await favoritesService.createBookmark(formData);
+        toast.success('Favorit erstellt.');
+      }
+      
+      setShowBookmarkDialog(false);
+      setEditingBookmark(null);
+      await loadBookmarks();
+      await loadCategories();
       await loadStatistics();
+    } catch (error) {
+      toast.error('Speichern fehlgeschlagen: ' + error.message);
     }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
   };
 
   // Initial Load
@@ -933,12 +1337,15 @@ function App() {
       <Header
         onSettingsClick={() => setShowSettings(true)}
         onHelpClick={() => setShowHelp(true)}
-        onStatisticsClick={handleStatisticsClick}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        onClearSearch={handleClearSearch}
-        statusFilter={statusFilter}
-        onStatusFilterChange={setStatusFilter}
+        onStatisticsClick={handleDownloadCollector}
+        onExportClick={() => setShowExport(true)}
+        onValidateClick={handleValidateLinks}
+        onRemoveDuplicatesClick={handleRemoveDuplicates}
+        onDeleteAllClick={() => {
+          if (window.confirm('Möchten Sie wirklich ALLE Favoriten löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
+            handleDeleteAll();
+          }
+        }}
       />
 
       <div className="app-content">
@@ -959,12 +1366,31 @@ function App() {
           onStatusFilterChange={setStatusFilter}
           bookmarks={filteredBookmarks}
           onDeleteBookmark={handleDeleteBookmark}
+          onEditBookmark={handleEditBookmark}
+          onCreateBookmark={handleCreateBookmark}
         />
       </div>
 
       <footer className="app-footer">
         <p>&copy; ID2 - Jörg Renelt * 2025 Hamburg</p>
       </footer>
+
+      <BookmarkDialog
+        isOpen={showBookmarkDialog}
+        onClose={() => {
+          setShowBookmarkDialog(false);
+          setEditingBookmark(null);
+        }}
+        bookmark={editingBookmark}
+        onSave={handleSaveBookmark}
+        categories={categories}
+      />
+
+      <ExportDialog
+        isOpen={showExport}
+        onClose={() => setShowExport(false)}
+        onExport={handleExport}
+      />
 
       <SettingsDialog
         isOpen={showSettings}

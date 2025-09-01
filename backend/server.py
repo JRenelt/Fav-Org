@@ -1,5 +1,5 @@
 from fastapi import FastAPI, APIRouter, UploadFile, File, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -19,6 +19,8 @@ from urllib.parse import urlparse
 import xml.etree.ElementTree as ET
 import csv
 import io
+import zipfile
+import tempfile
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -61,6 +63,21 @@ class BookmarkCreate(BaseModel):
     url: str
     category: str = "Uncategorized"
     subcategory: Optional[str] = None
+
+class BookmarkUpdate(BaseModel):
+    title: Optional[str] = None
+    url: Optional[str] = None
+    category: Optional[str] = None
+    subcategory: Optional[str] = None
+
+class BookmarkMove(BaseModel):
+    bookmark_ids: List[str]
+    target_category: str
+    target_subcategory: Optional[str] = None
+
+class ExportRequest(BaseModel):
+    format: str  # "xml" or "csv"
+    category: Optional[str] = None
 
 class Statistics(BaseModel):
     total_bookmarks: int
@@ -239,6 +256,61 @@ class DuplicateDetector:
         
         return list(unique_bookmarks.values())
 
+class ExportManager:
+    """Klasse für Export-Funktionen"""
+    
+    def __init__(self):
+        pass
+    
+    def export_to_xml(self, bookmarks: List[Bookmark]) -> str:
+        """Exportiert Bookmarks zu XML"""
+        root = ET.Element("bookmarks")
+        root.set("version", "1.0")
+        root.set("generated", datetime.now(timezone.utc).isoformat())
+        
+        for bookmark in bookmarks:
+            bookmark_elem = ET.SubElement(root, "bookmark")
+            bookmark_elem.set("id", bookmark.id)
+            
+            ET.SubElement(bookmark_elem, "title").text = bookmark.title
+            ET.SubElement(bookmark_elem, "url").text = bookmark.url
+            ET.SubElement(bookmark_elem, "category").text = bookmark.category
+            if bookmark.subcategory:
+                ET.SubElement(bookmark_elem, "subcategory").text = bookmark.subcategory
+            ET.SubElement(bookmark_elem, "date_added").text = bookmark.date_added.isoformat()
+            ET.SubElement(bookmark_elem, "is_dead_link").text = str(bookmark.is_dead_link).lower()
+            if bookmark.last_checked:
+                ET.SubElement(bookmark_elem, "last_checked").text = bookmark.last_checked.isoformat()
+        
+        return ET.tostring(root, encoding='unicode', xml_declaration=True)
+    
+    def export_to_csv(self, bookmarks: List[Bookmark]) -> str:
+        """Exportiert Bookmarks zu CSV"""
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Header
+        writer.writerow([
+            'ID', 'Title', 'URL', 'Category', 'Subcategory', 
+            'Date Added', 'Is Dead Link', 'Last Checked'
+        ])
+        
+        # Data
+        for bookmark in bookmarks:
+            writer.writerow([
+                bookmark.id,
+                bookmark.title,
+                bookmark.url,
+                bookmark.category,
+                bookmark.subcategory or '',
+                bookmark.date_added.isoformat(),
+                bookmark.is_dead_link,
+                bookmark.last_checked.isoformat() if bookmark.last_checked else ''
+            ])
+        
+        output.seek(0)
+        return output.getvalue()
+
 class CategoryManager:
     """Klasse für Kategorie-Verwaltung mit Unterkategorien"""
     
@@ -368,6 +440,7 @@ class BookmarkManager:
         self.duplicate_detector = DuplicateDetector()
         self.category_manager = CategoryManager(database)
         self.statistics_manager = StatisticsManager(database)
+        self.export_manager = ExportManager()
     
     async def create_sample_bookmarks(self) -> Dict[str, Any]:
         """Erstellt 30 Beispiel-Bookmarks mit Unterkategorien"""
@@ -470,6 +543,48 @@ class BookmarkManager:
         bookmarks = await self.db.bookmarks.find(query).to_list(1000)
         return [Bookmark(**bookmark) for bookmark in bookmarks]
     
+    async def create_bookmark(self, bookmark_data: BookmarkCreate) -> Bookmark:
+        """Neues Bookmark erstellen"""
+        bookmark = Bookmark(**bookmark_data.dict())
+        await self.db.bookmarks.insert_one(bookmark.dict())
+        await self.category_manager.update_bookmark_counts()
+        return bookmark
+    
+    async def update_bookmark(self, bookmark_id: str, update_data: BookmarkUpdate) -> Bookmark:
+        """Bookmark aktualisieren"""
+        update_dict = {k: v for k, v in update_data.dict().items() if v is not None}
+        
+        result = await self.db.bookmarks.update_one(
+            {"id": bookmark_id},
+            {"$set": update_dict}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
+        
+        await self.category_manager.update_bookmark_counts()
+        
+        # Return updated bookmark
+        updated_bookmark = await self.db.bookmarks.find_one({"id": bookmark_id})
+        return Bookmark(**updated_bookmark)
+    
+    async def move_bookmarks(self, move_data: BookmarkMove) -> Dict[str, Any]:
+        """Bookmarks in andere Kategorie verschieben"""
+        result = await self.db.bookmarks.update_many(
+            {"id": {"$in": move_data.bookmark_ids}},
+            {"$set": {
+                "category": move_data.target_category,
+                "subcategory": move_data.target_subcategory
+            }}
+        )
+        
+        await self.category_manager.update_bookmark_counts()
+        
+        return {
+            "moved_count": result.modified_count,
+            "message": f"Moved {result.modified_count} bookmarks to {move_data.target_category}"
+        }
+    
     async def validate_all_links(self) -> Dict[str, Any]:
         """Alle Links validieren"""
         bookmarks = await self.get_all_bookmarks()
@@ -548,6 +663,55 @@ async def get_statistics():
     """Erweiterte Statistiken mit Unterkategorien abrufen"""
     return await bookmark_manager.statistics_manager.generate_statistics()
 
+@api_router.get("/download/collector")
+async def download_collector():
+    """Download des Sammelprogramms als ZIP"""
+    # Sammle alle Dateien aus dem scripts Ordner
+    scripts_dir = Path("/app/scripts")
+    
+    # Erstelle ZIP in Memory
+    zip_buffer = io.BytesIO()
+    
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        for file_path in scripts_dir.glob("*"):
+            if file_path.is_file():
+                zip_file.write(file_path, file_path.name)
+    
+    zip_buffer.seek(0)
+    
+    return StreamingResponse(
+        io.BytesIO(zip_buffer.read()),
+        media_type="application/zip",
+        headers={"Content-Disposition": "attachment; filename=bookmark_collector.zip"}
+    )
+
+@api_router.post("/export")
+async def export_bookmarks(export_request: ExportRequest):
+    """Exportiert Bookmarks in XML oder CSV Format"""
+    # Hole Bookmarks basierend auf Filter
+    if export_request.category:
+        bookmarks = await bookmark_manager.get_bookmarks_by_category(export_request.category)
+    else:
+        bookmarks = await bookmark_manager.get_all_bookmarks()
+    
+    # Exportiere basierend auf Format
+    if export_request.format.lower() == "xml":
+        content = bookmark_manager.export_manager.export_to_xml(bookmarks)
+        media_type = "application/xml"
+        filename = f"bookmarks_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xml"
+    elif export_request.format.lower() == "csv":
+        content = bookmark_manager.export_manager.export_to_csv(bookmarks)
+        media_type = "text/csv"
+        filename = f"bookmarks_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    else:
+        raise HTTPException(status_code=400, detail="Unsupported export format")
+    
+    return StreamingResponse(
+        io.StringIO(content),
+        media_type=media_type,
+        headers={"Content-Disposition": f"attachment; filename={filename}"}
+    )
+
 @api_router.post("/bookmarks/import")
 async def import_bookmarks_endpoint(file: UploadFile = File(...)):
     """Favoriten-Datei hochladen und importieren"""
@@ -603,10 +767,17 @@ async def search_bookmarks(query: str):
 @api_router.post("/bookmarks", response_model=Bookmark)
 async def create_bookmark(bookmark: BookmarkCreate):
     """Einzelnes Bookmark erstellen"""
-    new_bookmark = Bookmark(**bookmark.dict())
-    await db.bookmarks.insert_one(new_bookmark.dict())
-    await bookmark_manager.category_manager.update_bookmark_counts()
-    return new_bookmark
+    return await bookmark_manager.create_bookmark(bookmark)
+
+@api_router.put("/bookmarks/{bookmark_id}", response_model=Bookmark)
+async def update_bookmark(bookmark_id: str, update_data: BookmarkUpdate):
+    """Bookmark aktualisieren"""
+    return await bookmark_manager.update_bookmark(bookmark_id, update_data)
+
+@api_router.post("/bookmarks/move")
+async def move_bookmarks(move_data: BookmarkMove):
+    """Bookmarks in andere Kategorie verschieben"""
+    return await bookmark_manager.move_bookmarks(move_data)
 
 @api_router.delete("/bookmarks/{bookmark_id}")
 async def delete_bookmark(bookmark_id: str):

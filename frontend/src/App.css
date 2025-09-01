@@ -25,6 +25,11 @@
   --red-500: #ef4444;
   --orange-500: #f97316;
   
+  /* Status Farben */
+  --status-active: #10b981;
+  --status-dead: #ef4444;
+  --status-unchecked: #ffffff;
+  
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   
@@ -60,7 +65,7 @@ body {
   background: var(--bg-primary);
 }
 
-/* Header - BookmarkPro Style */
+/* Header - Improved Layout */
 .header-fixed {
   position: fixed;
   top: 0;
@@ -87,6 +92,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
 }
 
 .logo-icon {
@@ -124,6 +130,16 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 2;
+  justify-content: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .action-btn {
@@ -183,6 +199,16 @@ body {
 
 .cleanup-btn:hover {
   background: #dc2626;
+}
+
+.delete-all-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .header-btn {
@@ -252,11 +278,11 @@ body {
 }
 
 .stat-value.active {
-  color: var(--green-500);
+  color: var(--status-active);
 }
 
 .stat-value.dead {
-  color: var(--red-500);
+  color: var(--status-dead);
 }
 
 .stat-value.timeout {
@@ -431,7 +457,7 @@ body {
   background: var(--bg-secondary);
 }
 
-.upload-section, .cleanup-section {
+.upload-section, .cleanup-section, .add-section {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -463,6 +489,18 @@ body {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
+}
+
+.upload-btn, .add-btn {
+  margin-top: 8px;
+  height: 32px;
+  background: var(--cyan-400);
+  color: white;
+  border: none;
+}
+
+.upload-btn:hover, .add-btn:hover {
+  background: var(--cyan-500);
 }
 
 .search-section {
@@ -551,11 +589,11 @@ body {
 }
 
 .bookmark-card.active-link {
-  border-left: 3px solid var(--green-500);
+  border-left: 3px solid var(--status-active);
 }
 
 .bookmark-card.dead-link {
-  border-left: 3px solid var(--red-500);
+  border-left: 3px solid var(--status-dead);
 }
 
 .bookmark-header {
@@ -585,13 +623,28 @@ body {
   gap: 8px;
 }
 
+/* Status-Badges mit korrekten Farben */
 .status-badge {
   font-size: 0.75rem;
   padding: 4px 8px;
   border-radius: 4px;
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-primary);
+  font-weight: 500;
+  border: none;
+}
+
+.status-badge.active {
+  background: var(--status-active);
+  color: white;
+}
+
+.status-badge.dead {
+  background: var(--status-dead);
+  color: white;
+}
+
+.status-badge.unchecked {
+  background: var(--status-unchecked);
+  color: #000000;
 }
 
 .edit-btn, .delete-btn {
@@ -694,12 +747,44 @@ body {
 }
 
 /* Dialog Styles */
-.settings-dialog, .help-dialog {
+.settings-dialog, .help-dialog, .bookmark-dialog, .export-dialog {
   max-width: 600px;
   max-height: 80vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
+}
+
+.bookmark-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.form-actions, .settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
 }
 
 .settings-tabs {
@@ -735,6 +820,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 12px;
 }
 
 .setting-controls label {
@@ -833,6 +919,16 @@ body {
   .main-content {
     margin-left: 240px;
   }
+  
+  .header-content {
+    flex-direction: column;
+    height: auto;
+    padding: 16px 20px;
+  }
+  
+  .header-actions, .header-right {
+    margin-top: 8px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -842,10 +938,6 @@ body {
   
   .main-content {
     margin-left: 200px;
-  }
-  
-  .header-content {
-    padding: 0 16px;
   }
   
   .main-header {
