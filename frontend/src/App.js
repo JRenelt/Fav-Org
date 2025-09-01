@@ -1191,6 +1191,11 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               placeholder="Favoriten durchsuchen..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  onClearSearch();
+                }
+              }}
               className="search-input"
             />
             {searchQuery && (
