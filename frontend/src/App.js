@@ -1427,11 +1427,43 @@ const HelpDialog = ({ isOpen, onClose }) => {
                   <li><strong>Ungeprüft (Weiß):</strong> Link wurde noch nicht auf Erreichbarkeit geprüft</li>
                 </ul>
               </div>
+
+              <div className="help-section">
+                <h4>Manuelle Status-Korrektur</h4>
+                <ul>
+                  <li><strong>Status umschalten:</strong> Klicken Sie direkt auf den Status-Badge (Tot/Aktiv)</li>
+                  <li><strong>Localhost-Links:</strong> Können manuell von "Tot" auf "Aktiv" gesetzt werden</li>
+                  <li><strong>Temporäre Ausfälle:</strong> Links die vorübergehend nicht erreichbar waren</li>
+                  <li><strong>Interne Links:</strong> Firmen-interne URLs die nicht öffentlich erreichbar sind</li>
+                </ul>
+              </div>
+
+              <div className="help-section">
+                <h4>Duplikat-Erkennungsregeln</h4>
+                <p>Das System erkennt Duplikate anhand folgender Kriterien:</p>
+                <ul>
+                  <li><strong>Identische URLs:</strong> Exakte URL-Übereinstimmung</li>
+                  <li><strong>URL-Normalisierung:</strong> 
+                    - http:// und https:// werden als gleich behandelt
+                    - www. Präfixe werden ignoriert
+                    - Trailing Slashes (/) werden entfernt
+                    - Query-Parameter werden normalisiert
+                  </li>
+                  <li><strong>Beispiele für erkannte Duplikate:</strong>
+                    - https://example.com und http://example.com
+                    - www.example.com und example.com
+                    - example.com/ und example.com
+                    - example.com?param=1 und example.com?param=1&
+                  </li>
+                  <li><strong>Titel-Unterschiede:</strong> Verschiedene Titel bei gleicher URL werden als Duplikat erkannt</li>
+                  <li><strong>Kategorie-Unterschiede:</strong> Gleiche URL in verschiedenen Kategorien wird als Duplikat erkannt</li>
+                </ul>
+              </div>
               
               <div className="help-section">
                 <h4>Nach der Link-Prüfung</h4>
                 <ul>
-                  <li><strong>Automatische Aktualisierung:</strong> Der "Prüfen"-Button zeigt dann "Tote Links entfernen [Anzahl]"</li>
+                  <li><strong>Automatische Aktualisierung:</strong> Der "Prüfen"-Button zeigt dann "Prüfen [Anzahl]"</li>
                   <li><strong>Bereinigung:</strong> Klicken Sie erneut, um alle toten Links zu entfernen</li>
                   <li><strong>Statistiken:</strong> Sidebar zeigt aktuelle Zahlen zu Link-Status</li>
                 </ul>
