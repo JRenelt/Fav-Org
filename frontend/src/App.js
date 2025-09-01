@@ -48,13 +48,12 @@ import {
 } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 // Objektorientierte Frontend-Services
 
 class FavoritesService {
   constructor() {
-    this.baseURL = API;
+    this.baseURL = BACKEND_URL;
   }
 
   async createSamples() {
