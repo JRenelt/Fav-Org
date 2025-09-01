@@ -41,6 +41,7 @@ class Bookmark(BaseModel):
     title: str
     url: str
     category: str = "Uncategorized"
+    subcategory: Optional[str] = None
     date_added: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     is_dead_link: bool = False
     last_checked: Optional[datetime] = None
@@ -50,22 +51,28 @@ class Bookmark(BaseModel):
 class Category(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     name: str
+    parent_category: Optional[str] = None
     bookmark_count: int = 0
+    subcategory_count: int = 0
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class BookmarkCreate(BaseModel):
     title: str
     url: str
     category: str = "Uncategorized"
+    subcategory: Optional[str] = None
 
 class Statistics(BaseModel):
     total_bookmarks: int
     total_categories: int
-    dead_links: int
     active_links: int
+    dead_links: int
+    timeout_links: int
+    unchecked_links: int
     categories_distribution: Dict[str, int]
+    subcategories_distribution: Dict[str, Dict[str, int]]
     top_categories: List[Dict[str, Any]]
-    recent_bookmarks: int  # Last 7 days
+    recent_bookmarks: int
     last_updated: datetime
 
 class BookmarkParser:
@@ -78,31 +85,42 @@ class BookmarkParser:
         """Parse HTML-Bookmarks (Chrome, Firefox Export)"""
         bookmarks = []
         
-        # HTML-Parsing für Browser-Exports
-        from bs4 import BeautifulSoup
-        
         try:
+            from bs4 import BeautifulSoup
             soup = BeautifulSoup(content, 'html.parser')
-            links = soup.find_all('a')
             
-            current_folder = "Uncategorized"
+            current_folder = "Nicht zugeordnet"
+            current_subfolder = None
             
-            for link in links:
-                # Kategorie aus vorherigem H3-Tag extrahieren
-                h3 = link.find_previous('h3')
-                if h3:
-                    current_folder = h3.get_text().strip()
-                
-                href = link.get('href', '')
-                title = link.get_text().strip() or href
-                
-                if href and href.startswith(('http://', 'https://')):
-                    bookmarks.append({
-                        'title': title,
-                        'url': href,
-                        'category': current_folder
-                    })
+            # Durchlaufe alle Elemente sequenziell
+            for element in soup.find_all(['h3', 'a']):
+                if element.name == 'h3':
+                    folder_text = element.get_text().strip()
                     
+                    # Erkenne Unterkategorien durch Pfeil-Symbol oder →
+                    if '→' in folder_text or '->' in folder_text:
+                        parts = folder_text.split('→') if '→' in folder_text else folder_text.split('->')
+                        if len(parts) >= 2:
+                            current_folder = parts[0].strip()
+                            current_subfolder = parts[1].strip()
+                        else:
+                            current_subfolder = folder_text
+                    else:
+                        current_folder = folder_text
+                        current_subfolder = None
+                        
+                elif element.name == 'a':
+                    href = element.get('href', '')
+                    title = element.get_text().strip() or href
+                    
+                    if href and href.startswith(('http://', 'https://')):
+                        bookmarks.append({
+                            'title': title,
+                            'url': href,
+                            'category': current_folder,
+                            'subcategory': current_subfolder
+                        })
+                        
         except Exception as e:
             logging.error(f"Error parsing HTML bookmarks: {e}")
             
@@ -115,23 +133,24 @@ class BookmarkParser:
         try:
             data = json.loads(content)
             
-            def extract_bookmarks(node, category="Uncategorized"):
+            def extract_bookmarks(node, category="Nicht zugeordnet", subcategory=None):
                 if isinstance(node, dict):
                     if 'children' in node:
                         # Folder
                         folder_name = node.get('name', category)
                         for child in node['children']:
-                            extract_bookmarks(child, folder_name)
+                            extract_bookmarks(child, folder_name, subcategory)
                     elif 'url' in node:
                         # Bookmark
                         bookmarks.append({
                             'title': node.get('name', ''),
                             'url': node['url'],
-                            'category': category
+                            'category': category,
+                            'subcategory': subcategory
                         })
                 elif isinstance(node, list):
                     for item in node:
-                        extract_bookmarks(item, category)
+                        extract_bookmarks(item, category, subcategory)
             
             extract_bookmarks(data)
             
@@ -147,17 +166,22 @@ class LinkValidator:
         self.timeout = 10
         self.user_agent = "FavLink-Manager/1.0"
     
-    async def check_link(self, url: str) -> bool:
-        """Überprüft einen einzelnen Link"""
+    async def check_link(self, url: str) -> Dict[str, Any]:
+        """Überprüft einen einzelnen Link und gibt Status zurück"""
         try:
             async with aiohttp.ClientSession(
                 timeout=aiohttp.ClientTimeout(total=self.timeout),
                 headers={'User-Agent': self.user_agent}
             ) as session:
                 async with session.head(url, allow_redirects=True) as response:
-                    return response.status < 400
+                    if response.status < 400:
+                        return {"status": "active", "is_dead_link": False}
+                    else:
+                        return {"status": "dead", "is_dead_link": True}
+        except asyncio.TimeoutError:
+            return {"status": "timeout", "is_dead_link": True}
         except Exception:
-            return False
+            return {"status": "dead", "is_dead_link": True}
     
     async def validate_bookmarks(self, bookmarks: List[Bookmark]) -> List[Bookmark]:
         """Validiert alle Bookmarks auf Dead Links"""
@@ -170,8 +194,8 @@ class LinkValidator:
     
     async def _validate_single_bookmark(self, bookmark: Bookmark) -> Bookmark:
         """Validiert ein einzelnes Bookmark"""
-        is_valid = await self.check_link(bookmark.url)
-        bookmark.is_dead_link = not is_valid
+        link_result = await self.check_link(bookmark.url)
+        bookmark.is_dead_link = link_result["is_dead_link"]
         bookmark.last_checked = datetime.now(timezone.utc)
         return bookmark
 
@@ -191,13 +215,11 @@ class DuplicateDetector:
                 url_map[normalized_url] = []
             url_map[normalized_url].append(bookmark)
         
-        # Nur Gruppen mit mehr als einem Bookmark zurückgeben
         duplicates = [group for group in url_map.values() if len(group) > 1]
         return duplicates
     
     def _normalize_url(self, url: str) -> str:
         """Normalisiert URL für Duplikat-Vergleich"""
-        # Entferne trailing slash, www, und wandle zu lowercase um
         normalized = url.lower().rstrip('/')
         if normalized.startswith('https://www.'):
             normalized = normalized.replace('https://www.', 'https://')
@@ -218,71 +240,103 @@ class DuplicateDetector:
         return list(unique_bookmarks.values())
 
 class CategoryManager:
-    """Klasse für Kategorie-Verwaltung"""
+    """Klasse für Kategorie-Verwaltung mit Unterkategorien"""
     
     def __init__(self, database):
         self.db = database
     
     async def get_all_categories(self) -> List[Category]:
-        """Alle Kategorien abrufen"""
+        """Alle Kategorien mit Hierarchie abrufen"""
         categories = await self.db.categories.find().to_list(1000)
         return [Category(**cat) for cat in categories]
     
-    async def create_category(self, name: str) -> Category:
-        """Neue Kategorie erstellen"""
-        category = Category(name=name)
+    async def create_category(self, name: str, parent_category: Optional[str] = None) -> Category:
+        """Neue Kategorie oder Unterkategorie erstellen"""
+        category = Category(name=name, parent_category=parent_category)
         await self.db.categories.insert_one(category.dict())
         return category
     
     async def update_bookmark_counts(self):
-        """Bookmark-Anzahl für alle Kategorien aktualisieren"""
+        """Bookmark-Anzahl für alle Kategorien und Unterkategorien aktualisieren"""
+        # Hauptkategorien
         pipeline = [
             {"$group": {"_id": "$category", "count": {"$sum": 1}}}
         ]
-        
         counts = await self.db.bookmarks.aggregate(pipeline).to_list(None)
         
         for count_doc in counts:
             await self.db.categories.update_one(
-                {"name": count_doc["_id"]},
+                {"name": count_doc["_id"], "parent_category": None},
+                {"$set": {"bookmark_count": count_doc["count"]}},
+                upsert=True
+            )
+        
+        # Unterkategorien
+        subcategory_pipeline = [
+            {"$match": {"subcategory": {"$ne": None}}},
+            {"$group": {"_id": {"category": "$category", "subcategory": "$subcategory"}, "count": {"$sum": 1}}}
+        ]
+        subcounts = await self.db.bookmarks.aggregate(subcategory_pipeline).to_list(None)
+        
+        for count_doc in subcounts:
+            category_name = count_doc["_id"]["category"]
+            subcategory_name = count_doc["_id"]["subcategory"]
+            
+            await self.db.categories.update_one(
+                {"name": subcategory_name, "parent_category": category_name},
                 {"$set": {"bookmark_count": count_doc["count"]}},
                 upsert=True
             )
 
 class StatisticsManager:
-    """Klasse für Statistik-Verwaltung"""
+    """Klasse für erweiterte Statistik-Verwaltung"""
     
     def __init__(self, database):
         self.db = database
     
     async def generate_statistics(self) -> Statistics:
-        """Generiert umfassende Statistiken"""
+        """Generiert umfassende Statistiken mit Unterkategorien"""
         
-        # Alle Bookmarks abrufen
         bookmarks = await self.db.bookmarks.find().to_list(1000)
         categories = await self.db.categories.find().to_list(1000)
         
         total_bookmarks = len(bookmarks)
         total_categories = len(categories)
         
-        # Dead Links zählen
+        # Status-basierte Zählung
+        active_links = sum(1 for b in bookmarks if not b.get('is_dead_link', False) and b.get('last_checked'))
         dead_links = sum(1 for b in bookmarks if b.get('is_dead_link', False))
-        active_links = total_bookmarks - dead_links
+        timeout_links = 0  # Könnte erweitert werden
+        unchecked_links = sum(1 for b in bookmarks if not b.get('last_checked'))
         
         # Kategorien-Verteilung
         categories_distribution = {}
-        for bookmark in bookmarks:
-            category = bookmark.get('category', 'Uncategorized')
-            categories_distribution[category] = categories_distribution.get(category, 0) + 1
+        subcategories_distribution = {}
         
-        # Top Kategorien (nach Bookmark-Anzahl sortiert)
+        for bookmark in bookmarks:
+            category = bookmark.get('category', 'Nicht zugeordnet')
+            subcategory = bookmark.get('subcategory')
+            
+            categories_distribution[category] = categories_distribution.get(category, 0) + 1
+            
+            if subcategory:
+                if category not in subcategories_distribution:
+                    subcategories_distribution[category] = {}
+                subcategories_distribution[category][subcategory] = subcategories_distribution[category].get(subcategory, 0) + 1
+        
+        # Top Kategorien
         top_categories = [
-            {"name": cat, "count": count, "percentage": round((count / total_bookmarks) * 100, 1) if total_bookmarks > 0 else 0}
+            {
+                "name": cat, 
+                "count": count, 
+                "percentage": round((count / total_bookmarks) * 100, 1) if total_bookmarks > 0 else 0,
+                "subcategories": subcategories_distribution.get(cat, {})
+            }
             for cat, count in sorted(categories_distribution.items(), key=lambda x: x[1], reverse=True)
         ]
         
-        # Kürzlich hinzugefügte Bookmarks (letzten 7 Tage)
-        seven_days_ago = datetime.now(timezone.utc) - timezone.utc.localize(datetime.now()).replace(tzinfo=None) + datetime.timedelta(days=-7)
+        # Kürzlich hinzugefügte Bookmarks
+        seven_days_ago = datetime.now(timezone.utc) - timezone.timedelta(days=7)
         recent_bookmarks = sum(
             1 for b in bookmarks 
             if b.get('date_added') and 
@@ -293,9 +347,12 @@ class StatisticsManager:
         return Statistics(
             total_bookmarks=total_bookmarks,
             total_categories=total_categories,
-            dead_links=dead_links,
             active_links=active_links,
+            dead_links=dead_links,
+            timeout_links=timeout_links,
+            unchecked_links=unchecked_links,
             categories_distribution=categories_distribution,
+            subcategories_distribution=subcategories_distribution,
             top_categories=top_categories,
             recent_bookmarks=recent_bookmarks,
             last_updated=datetime.now(timezone.utc)
@@ -313,75 +370,67 @@ class BookmarkManager:
         self.statistics_manager = StatisticsManager(database)
     
     async def create_sample_bookmarks(self) -> Dict[str, Any]:
-        """Erstellt 30 Beispiel-Bookmarks für Tests"""
+        """Erstellt 30 Beispiel-Bookmarks mit Unterkategorien"""
         
         sample_bookmarks = [
-            # Development (8 Bookmarks)
-            {"title": "GitHub", "url": "https://github.com", "category": "Development"},
-            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development"},
-            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "category": "Development"},
-            {"title": "CodePen", "url": "https://codepen.io", "category": "Development"},
-            {"title": "GitLab", "url": "https://gitlab.com", "category": "Development"},
-            {"title": "Bitbucket", "url": "https://bitbucket.org", "category": "Development"},
-            {"title": "VS Code", "url": "https://code.visualstudio.com", "category": "Development"},
-            {"title": "Docker Hub", "url": "https://hub.docker.com", "category": "Development"},
+            # Development (8 Bookmarks) mit Unterkategorien
+            {"title": "GitHub", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
+            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "category": "Development", "subcategory": "Documentation"},
+            {"title": "CodePen", "url": "https://codepen.io", "category": "Development", "subcategory": "Code Sharing"},
+            {"title": "GitLab", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "Bitbucket", "url": "https://bitbucket.org", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "VS Code", "url": "https://code.visualstudio.com", "category": "Development", "subcategory": "IDE"},
+            {"title": "Docker Hub", "url": "https://hub.docker.com", "category": "Development", "subcategory": "Container"},
             
             # News & Media (6 Bookmarks)
-            {"title": "Hacker News", "url": "https://news.ycombinator.com", "category": "News"},
-            {"title": "Reddit", "url": "https://reddit.com", "category": "News"},
-            {"title": "BBC News", "url": "https://bbc.com/news", "category": "News"},
-            {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "News"},
-            {"title": "Ars Technica", "url": "https://arstechnica.com", "category": "News"},
-            {"title": "The Verge", "url": "https://theverge.com", "category": "News"},
+            {"title": "Hacker News", "url": "https://news.ycombinator.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "Reddit", "url": "https://reddit.com", "category": "News", "subcategory": "Social News"},
+            {"title": "BBC News", "url": "https://bbc.com/news", "category": "News", "subcategory": "World News"},
+            {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "Ars Technica", "url": "https://arstechnica.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "The Verge", "url": "https://theverge.com", "category": "News", "subcategory": "Tech News"},
             
             # Social Media (4 Bookmarks)
-            {"title": "Twitter", "url": "https://twitter.com", "category": "Social Media"},
-            {"title": "LinkedIn", "url": "https://linkedin.com", "category": "Social Media"},
-            {"title": "Instagram", "url": "https://instagram.com", "category": "Social Media"},
-            {"title": "Mastodon", "url": "https://mastodon.social", "category": "Social Media"},
+            {"title": "Twitter", "url": "https://twitter.com", "category": "Social Media", "subcategory": "Microblogging"},
+            {"title": "LinkedIn", "url": "https://linkedin.com", "category": "Social Media", "subcategory": "Professional"},
+            {"title": "Instagram", "url": "https://instagram.com", "category": "Social Media", "subcategory": "Photo Sharing"},
+            {"title": "Mastodon", "url": "https://mastodon.social", "category": "Social Media", "subcategory": "Decentralized"},
             
             # Tools & Utilities (5 Bookmarks)
-            {"title": "Google", "url": "https://google.com", "category": "Tools"},
-            {"title": "Gmail", "url": "https://gmail.com", "category": "Tools"},
-            {"title": "Google Drive", "url": "https://drive.google.com", "category": "Tools"},
-            {"title": "Dropbox", "url": "https://dropbox.com", "category": "Tools"},
-            {"title": "Notion", "url": "https://notion.so", "category": "Tools"},
+            {"title": "Google", "url": "https://google.com", "category": "Tools", "subcategory": "Search"},
+            {"title": "Gmail", "url": "https://gmail.com", "category": "Tools", "subcategory": "Email"},
+            {"title": "Google Drive", "url": "https://drive.google.com", "category": "Tools", "subcategory": "Cloud Storage"},
+            {"title": "Dropbox", "url": "https://dropbox.com", "category": "Tools", "subcategory": "Cloud Storage"},
+            {"title": "Notion", "url": "https://notion.so", "category": "Tools", "subcategory": "Productivity"},
             
             # Entertainment (4 Bookmarks)
-            {"title": "YouTube", "url": "https://youtube.com", "category": "Entertainment"},
-            {"title": "Netflix", "url": "https://netflix.com", "category": "Entertainment"},
-            {"title": "Spotify", "url": "https://spotify.com", "category": "Entertainment"},
-            {"title": "Twitch", "url": "https://twitch.tv", "category": "Entertainment"},
+            {"title": "YouTube", "url": "https://youtube.com", "category": "Entertainment", "subcategory": "Video"},
+            {"title": "Netflix", "url": "https://netflix.com", "category": "Entertainment", "subcategory": "Streaming"},
+            {"title": "Spotify", "url": "https://spotify.com", "category": "Entertainment", "subcategory": "Music"},
+            {"title": "Twitch", "url": "https://twitch.tv", "category": "Entertainment", "subcategory": "Gaming"},
             
-            # Reference (3 Bookmarks + Duplikate + Dead Links)
+            # Reference mit Duplikaten und Dead Links
             {"title": "Wikipedia", "url": "https://wikipedia.org", "category": "Reference"},
             {"title": "Wikipedia DE", "url": "https://de.wikipedia.org", "category": "Reference"},
             {"title": "Archive.org", "url": "https://archive.org", "category": "Reference"},
             
-            # Duplikate für Tests
-            {"title": "Google Search", "url": "https://www.google.com/", "category": "Tools"},  # Duplikat
-            {"title": "YouTube Videos", "url": "https://www.youtube.com/", "category": "Media"},  # Duplikat
-            {"title": "GitHub Repository", "url": "https://www.github.com", "category": "Development"},  # Duplikat
-            
             # Dead Links für Tests
-            {"title": "Dead Link Example 1", "url": "https://this-domain-does-not-exist-12345.com", "category": "Testing"},
-            {"title": "Dead Link Example 2", "url": "https://broken-url-test.invalid", "category": "Testing"},
-            {"title": "Dead Link Example 3", "url": "https://fake-website-xyz.nonexistent", "category": "Testing"},
+            {"title": "Dead Link 1", "url": "https://this-domain-does-not-exist-12345.com", "category": "Testing"},
+            {"title": "Dead Link 2", "url": "https://broken-url-test.invalid", "category": "Testing"},
         ]
         
-        # Bookmarks erstellen
         created_count = 0
         for bookmark_data in sample_bookmarks:
             bookmark = Bookmark(**bookmark_data)
             await self.db.bookmarks.insert_one(bookmark.dict())
             created_count += 1
         
-        # Kategorien aktualisieren
         await self.category_manager.update_bookmark_counts()
         
         return {
             "created_count": created_count,
-            "message": f"Successfully created {created_count} sample bookmarks"
+            "message": f"Successfully created {created_count} sample bookmarks with subcategories"
         }
     
     async def import_bookmarks(self, content: str, file_type: str) -> Dict[str, Any]:
@@ -395,15 +444,11 @@ class BookmarkManager:
             raise HTTPException(status_code=400, detail="Unsupported file type")
         
         bookmarks = [Bookmark(**data) for data in bookmark_data]
-        
-        # Duplikate entfernen
         bookmarks = self.duplicate_detector.remove_duplicates(bookmarks)
         
-        # In Datenbank speichern
         for bookmark in bookmarks:
             await self.db.bookmarks.insert_one(bookmark.dict())
         
-        # Kategorien aktualisieren
         await self.category_manager.update_bookmark_counts()
         
         return {
@@ -416,9 +461,13 @@ class BookmarkManager:
         bookmarks = await self.db.bookmarks.find().to_list(1000)
         return [Bookmark(**bookmark) for bookmark in bookmarks]
     
-    async def get_bookmarks_by_category(self, category: str) -> List[Bookmark]:
-        """Bookmarks nach Kategorie filtern"""
-        bookmarks = await self.db.bookmarks.find({"category": category}).to_list(1000)
+    async def get_bookmarks_by_category(self, category: str, subcategory: Optional[str] = None) -> List[Bookmark]:
+        """Bookmarks nach Kategorie und optional Unterkategorie filtern"""
+        query = {"category": category}
+        if subcategory:
+            query["subcategory"] = subcategory
+            
+        bookmarks = await self.db.bookmarks.find(query).to_list(1000)
         return [Bookmark(**bookmark) for bookmark in bookmarks]
     
     async def validate_all_links(self) -> Dict[str, Any]:
@@ -426,7 +475,6 @@ class BookmarkManager:
         bookmarks = await self.get_all_bookmarks()
         validated_bookmarks = await self.validator.validate_bookmarks(bookmarks)
         
-        # Aktualisierte Bookmarks speichern
         for bookmark in validated_bookmarks:
             await self.db.bookmarks.update_one(
                 {"id": bookmark.id},
@@ -448,9 +496,8 @@ class BookmarkManager:
         
         removed_count = 0
         for duplicate_group in duplicates:
-            # Behalte das neueste, lösche die anderen
             sorted_group = sorted(duplicate_group, key=lambda x: x.date_added, reverse=True)
-            for bookmark in sorted_group[1:]:  # Alle außer dem neuesten
+            for bookmark in sorted_group[1:]:
                 await self.db.bookmarks.delete_one({"id": bookmark.id})
                 removed_count += 1
         
@@ -479,7 +526,8 @@ class BookmarkManager:
             "$or": [
                 {"title": search_regex},
                 {"url": search_regex},
-                {"category": search_regex}
+                {"category": search_regex},
+                {"subcategory": search_regex}
             ]
         }).to_list(1000)
         
@@ -492,12 +540,12 @@ bookmark_manager = BookmarkManager(db)
 
 @api_router.post("/bookmarks/create-samples")
 async def create_sample_bookmarks():
-    """30 Beispiel-Bookmarks erstellen"""
+    """30 Beispiel-Bookmarks mit Unterkategorien erstellen"""
     return await bookmark_manager.create_sample_bookmarks()
 
 @api_router.get("/statistics", response_model=Statistics)
 async def get_statistics():
-    """Statistiken abrufen"""
+    """Erweiterte Statistiken mit Unterkategorien abrufen"""
     return await bookmark_manager.statistics_manager.generate_statistics()
 
 @api_router.post("/bookmarks/import")
@@ -509,7 +557,6 @@ async def import_bookmarks_endpoint(file: UploadFile = File(...)):
     content = await file.read()
     content_str = content.decode('utf-8')
     
-    # Dateierweiterung bestimmen
     file_extension = file.filename.split('.')[-1].lower()
     
     try:
@@ -524,13 +571,13 @@ async def get_bookmarks():
     return await bookmark_manager.get_all_bookmarks()
 
 @api_router.get("/bookmarks/category/{category}", response_model=List[Bookmark])
-async def get_bookmarks_by_category(category: str):
-    """Bookmarks nach Kategorie filtern"""
-    return await bookmark_manager.get_bookmarks_by_category(category)
+async def get_bookmarks_by_category(category: str, subcategory: Optional[str] = None):
+    """Bookmarks nach Kategorie und optional Unterkategorie filtern"""
+    return await bookmark_manager.get_bookmarks_by_category(category, subcategory)
 
 @api_router.get("/categories", response_model=List[Category])
 async def get_categories():
-    """Alle Kategorien abrufen"""
+    """Alle Kategorien mit Hierarchie abrufen"""
     return await bookmark_manager.category_manager.get_all_categories()
 
 @api_router.post("/bookmarks/validate")
