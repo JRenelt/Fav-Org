@@ -1494,10 +1494,13 @@ function App() {
     try {
       setIsLoading(true);
       const data = await favoritesService.getAllBookmarks();
-      setBookmarks(data);
-      setBookmarkCounts({ total: data.length });
+      setBookmarks(data || []);
+      setBookmarkCounts({ total: (data || []).length });
     } catch (error) {
-      toast.error('Fehler beim Laden der Favoriten: ' + error.message);
+      console.warn('No bookmarks found or error loading bookmarks:', error);
+      setBookmarks([]);
+      setBookmarkCounts({ total: 0 });
+      // Keine Toast-Fehlermeldung bei leeren Daten
     } finally {
       setIsLoading(false);
     }
