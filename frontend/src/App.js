@@ -1334,10 +1334,25 @@ function App() {
   const handleDownloadCollector = async () => {
     try {
       setIsLoading(true);
-      const result = await favoritesService.createSamples();
+      const result = await favoritesService.downloadCollector();
       toast.success(result.message);
     } catch (error) {
       toast.error('Download fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCreateSamples = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.createSamples();
+      toast.success(result.message);
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+    } catch (error) {
+      toast.error('Erstellen fehlgeschlagen: ' + error.message);
     } finally {
       setIsLoading(false);
     }
