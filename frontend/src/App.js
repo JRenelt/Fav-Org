@@ -1481,11 +1481,12 @@ function App() {
       <Header
         onSettingsClick={() => setShowSettings(true)}
         onHelpClick={() => setShowHelp(true)}
-        onStatisticsClick={handleDownloadCollector}
-        onExportClick={() => setShowExport(true)}
+        onCreateBookmarkClick={handleCreateBookmark}
+        onFileUploadClick={() => document.getElementById('file-upload').click()}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
         onDeleteAllClick={handleDeleteAll}
+        deadLinksCount={statistics?.dead_links || 0}
       />
 
       <div className="app-content">
