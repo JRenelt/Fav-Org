@@ -1109,3 +1109,250 @@ body {
   max-height: 400px;
   overflow-y: auto;
 }
+
+/* Modern Settings Dialog */
+.settings-dialog-modern {
+  max-width: 800px;
+  max-height: 90vh;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.settings-header {
+  border-bottom: 1px solid var(--border-primary);
+  padding-bottom: 16px;
+}
+
+.settings-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settings-body {
+  padding: 0;
+  margin: 20px 0;
+}
+
+.settings-tabs-modern {
+  width: 100%;
+}
+
+.settings-tab-list-modern {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.settings-tab-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: var(--transition-colors);
+  border: none;
+  background: transparent;
+}
+
+.settings-tab-trigger:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.settings-tab-trigger[data-state="active"] {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-icon {
+  font-size: 1rem;
+}
+
+.settings-tab-content-modern {
+  min-height: 400px;
+  padding: 0;
+}
+
+.settings-section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  border-bottom: 2px solid var(--cyan-400);
+  padding-bottom: 4px;
+}
+
+.section-description {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: var(--transition-colors);
+}
+
+.setting-item:hover {
+  border-color: var(--border-secondary);
+}
+
+.setting-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.setting-label {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+}
+
+.setting-description {
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+}
+
+.setting-select {
+  width: 160px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.setting-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--cyan-400);
+}
+
+.export-buttons-modern {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.export-btn-modern {
+  height: 44px;
+  font-weight: 500;
+  transition: var(--transition-colors);
+}
+
+.xml-btn-modern {
+  background: var(--green-500);
+  color: white;
+  border: none;
+}
+
+.xml-btn-modern:hover:not(:disabled) {
+  background: #059669;
+}
+
+.csv-btn-modern {
+  background: var(--blue-500);
+  color: white;
+  border: none;
+}
+
+.csv-btn-modern:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.export-info-modern {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item-modern {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.info-item-modern strong {
+  color: var(--text-primary);
+}
+
+.settings-danger-zone {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 24px;
+}
+
+.danger-title {
+  color: var(--red-500);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.danger-description {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+}
+
+.danger-btn {
+  color: var(--red-500);
+  border-color: var(--red-500);
+}
+
+.danger-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--red-500);
+  color: var(--red-500);
+}
+
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-primary);
+}
+
+.save-btn-modern {
+  background: var(--cyan-400);
+  color: white;
+  border: none;
+}
+
+.save-btn-modern:hover:not(:disabled) {
+  background: var(--cyan-500);
+}
