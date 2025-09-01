@@ -1173,24 +1173,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
   return (
     <main className="main-content">
       <div className="main-header">
-        <div className="upload-section">
-          <h2 className="section-title">Upload</h2>
-          <p className="section-subtitle">Browser-Dateien hochladen</p>
-          <p className="section-note">JSON, SQLite, HTML, CSV</p>
-          
-          <input
-            type="file"
-            id="file-upload"
-            accept=".html,.json,.xml,.csv"
-            onChange={handleFileUpload}
-            style={{ display: 'none' }}
-          />
-        </div>
-        
-        <div className="cleanup-section">
-          <h2 className="section-title">Bereinigung</h2>
-          <p className="section-subtitle">Tote Links entfernen</p>
-          
+        <div className="status-filter-section">
           <Select value={statusFilter} onValueChange={onStatusFilterChange}>
             <SelectTrigger className="status-filter">
               <SelectValue />
@@ -1203,6 +1186,14 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             </SelectContent>
           </Select>
         </div>
+        
+        <input
+          type="file"
+          id="file-upload"
+          accept=".html,.json,.xml,.csv"
+          onChange={handleFileUpload}
+          style={{ display: 'none' }}
+        />
       </div>
       
       <div className="search-section">
