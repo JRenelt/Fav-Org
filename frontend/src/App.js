@@ -1616,7 +1616,6 @@ function App() {
           bookmarks={filteredBookmarks}
           onDeleteBookmark={handleDeleteBookmark}
           onEditBookmark={handleEditBookmark}
-          onCreateBookmark={handleCreateBookmark}
         />
       </div>
 
