@@ -1399,3 +1399,63 @@ body {
   padding: 12px;
   margin-top: 8px;
 }
+
+/* Import/Export Navigation Menu */
+.import-export-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition-colors);
+}
+
+.nav-btn:hover {
+  background: var(--cyan-400);
+  color: white;
+  border-color: var(--cyan-400);
+}
+
+/* Browser Support Info */
+.import-formats-info {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+}
+
+.import-formats-info h4 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.browser-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.browser-item {
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
