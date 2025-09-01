@@ -1249,11 +1249,56 @@ const HelpDialog = ({ isOpen, onClose }) => {
         
         <Tabs value={activeHelpTab} onValueChange={setActiveHelpTab} className="help-tabs">
           <TabsList className="help-tab-list">
+            <TabsTrigger value="about">Über</TabsTrigger>
             <TabsTrigger value="basics">Grundlagen</TabsTrigger>
             <TabsTrigger value="buttons">Buttons</TabsTrigger>
             <TabsTrigger value="status">Status</TabsTrigger>
             <TabsTrigger value="import">Import</TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="about" className="help-tab-content">
+            <div className="help-content">
+              <div className="help-section">
+                <h4>FavLink Manager</h4>
+                <p><strong>Version:</strong> V1.0.0</p>
+                <p><strong>Entwickelt von:</strong> ID2 - Jörg Renelt</p>
+                <p><strong>Ort:</strong> Hamburg, Deutschland</p>
+                <p><strong>Jahr:</strong> 2025</p>
+              </div>
+              
+              <div className="help-section">
+                <h4>Programmbeschreibung</h4>
+                <p>
+                  <strong>FavLink Manager</strong> ist eine moderne SaaS-Anwendung zur intelligenten Verwaltung 
+                  von Browser-Favoriten. Die Anwendung ermöglicht es, Lesezeichen aus verschiedenen Browsern zu 
+                  importieren, zu organisieren und automatisch zu validieren.
+                </p>
+                
+                <p><strong>Hauptfunktionen:</strong></p>
+                <ul>
+                  <li><strong>Import aus allen gängigen Browsern:</strong> Chrome, Firefox, Edge, Safari</li>
+                  <li><strong>Intelligente Kategorisierung:</strong> Automatische Organisation in Kategorien und Unterkategorien</li>
+                  <li><strong>Link-Validierung:</strong> Automatische Erkennung von toten Links</li>
+                  <li><strong>Duplikat-Erkennung:</strong> Intelligente URL-Normalisierung und Bereinigung</li>
+                  <li><strong>Export-Funktionen:</strong> XML und CSV Export mit Filteroptionen</li>
+                  <li><strong>Umfassende Statistiken:</strong> Detaillierte Analyse Ihrer Lesezeichen-Sammlung</li>
+                </ul>
+              </div>
+
+              <div className="help-section">
+                <h4>Technologie</h4>
+                <p>
+                  Entwickelt mit moderner Web-Technologie für beste Performance und Benutzerfreundlichkeit:
+                </p>
+                <ul>
+                  <li><strong>Frontend:</strong> React mit modernem UI-Design</li>
+                  <li><strong>Backend:</strong> FastAPI mit Python</li>
+                  <li><strong>Datenbank:</strong> MongoDB für flexible Datenstrukturen</li>
+                  <li><strong>Validierung:</strong> Asynchrone Link-Prüfung für beste Performance</li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
           
           <TabsContent value="basics" className="help-tab-content">
             <div className="help-content">
