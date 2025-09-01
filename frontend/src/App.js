@@ -365,6 +365,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick
   );
 };
 
+// Bookmark Dialog Component
 const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -372,6 +373,8 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     category: 'Uncategorized',
     subcategory: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (bookmark) {
@@ -389,76 +392,145 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
         subcategory: ''
       });
     }
+    setErrors({});
   }, [bookmark, isOpen]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(formData);
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.title.trim()) {
+      newErrors.title = 'Titel ist ein Pflichtfeld';
+    }
+    
+    if (!formData.url.trim()) {
+      newErrors.url = 'URL ist ein Pflichtfeld';
+    } else {
+      try {
+        new URL(formData.url);
+      } catch {
+        newErrors.url = 'Bitte geben Sie eine gültige URL ein';
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const organizedCategories = categories.filter(cat => !cat.parent_category);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      await onSave(formData);
+    } catch (error) {
+      toast.error('Fehler beim Speichern: ' + error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Einzigartige Kategorien für Dropdown erstellen
+  const uniqueCategories = [...new Set(categories.map(cat => cat.name))];
+  const subcategoriesForCategory = categories
+    .filter(cat => cat.parent_category === formData.category)
+    .map(cat => cat.name);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bookmark-dialog">
         <DialogHeader>
           <DialogTitle>
+            <Plus className="w-5 h-5 mr-2" />
             {bookmark ? 'Favorit bearbeiten' : 'Neuer Favorit'}
           </DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="bookmark-form">
           <div className="form-group">
-            <Label htmlFor="title">Titel</Label>
+            <Label htmlFor="title">
+              Titel *
+              {errors.title && <span className="error-text"> - {errors.title}</span>}
+            </Label>
             <Input
               id="title"
               value={formData.title}
               onChange={(e) => setFormData({...formData, title: e.target.value})}
+              placeholder="Titel des Favoriten"
+              className={errors.title ? 'error' : ''}
               required
             />
           </div>
           
           <div className="form-group">
-            <Label htmlFor="url">URL</Label>
+            <Label htmlFor="url">
+              URL *
+              {errors.url && <span className="error-text"> - {errors.url}</span>}
+            </Label>
             <Input
               id="url"
               type="url"
               value={formData.url}
               onChange={(e) => setFormData({...formData, url: e.target.value})}
+              placeholder="https://example.com"
+              className={errors.url ? 'error' : ''}
               required
             />
           </div>
           
           <div className="form-group">
             <Label htmlFor="category">Kategorie</Label>
-            <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
+            <Select 
+              value={formData.category} 
+              onValueChange={(value) => setFormData({...formData, category: value, subcategory: ''})}
+            >
               <SelectTrigger>
-                <SelectValue />
+                <SelectValue placeholder="Kategorie wählen" />
               </SelectTrigger>
               <SelectContent>
-                {organizedCategories.map(category => (
-                  <SelectItem key={category.id} value={category.name}>
-                    {category.name}
-                  </SelectItem>
+                <SelectItem value="Uncategorized">Nicht zugeordnet</SelectItem>
+                {uniqueCategories.map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           
-          <div className="form-group">
-            <Label htmlFor="subcategory">Unterkategorie (optional)</Label>
-            <Input
-              id="subcategory"
-              value={formData.subcategory}
-              onChange={(e) => setFormData({...formData, subcategory: e.target.value})}
-            />
-          </div>
+          {subcategoriesForCategory.length > 0 && (
+            <div className="form-group">
+              <Label htmlFor="subcategory">Unterkategorie</Label>
+              <Select 
+                value={formData.subcategory} 
+                onValueChange={(value) => setFormData({...formData, subcategory: value})}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Unterkategorie wählen (optional)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Keine Unterkategorie</SelectItem>
+                  {subcategoriesForCategory.map(subcat => (
+                    <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           
           <div className="form-actions">
-            <Button type="button" variant="outline" onClick={onClose}>
+            <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               Abbrechen
             </Button>
-            <Button type="submit">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+              ) : bookmark ? (
+                <Edit className="w-4 h-4 mr-2" />
+              ) : (
+                <Plus className="w-4 h-4 mr-2" />
+              )}
               {bookmark ? 'Aktualisieren' : 'Erstellen'}
             </Button>
           </div>
