@@ -1558,18 +1558,15 @@ function App() {
     setFilteredBookmarks(filtered);
   }, [bookmarks, activeCategory, activeSubcategory]);
 
-  const handleCreateSamples = async () => {
+  const handleCreateTestData = async () => {
     try {
-      setIsLoading(true);
-      const result = await favoritesService.createSamples();
-      toast.success(result.message);
+      const result = await favoritesService.createTestData();
+      toast.success(`Testdaten erfolgreich erstellt: ${result.created_count} Favoriten mit ${result.duplicates} Duplikaten und ${result.dead_links} toten Links.`);
       await loadBookmarks();
       await loadCategories();
       await loadStatistics();
     } catch (error) {
-      toast.error('Erstellen fehlgeschlagen: ' + error.message);
-    } finally {
-      setIsLoading(false);
+      toast.error('Testdaten-Erstellung fehlgeschlagen: ' + error.message);
     }
   };
 
