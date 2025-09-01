@@ -65,6 +65,22 @@ class FavoritesService {
     }
   }
 
+  async importBookmarks(file) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await axios.post(`${this.baseURL}/bookmarks/import`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to import bookmarks');
+    }
+  }
+
   async getStatistics() {
     try {
       const response = await axios.get(`${this.baseURL}/statistics`);
