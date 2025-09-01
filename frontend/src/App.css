@@ -132,10 +132,11 @@ body {
   line-height: 1.2;
 }
 
+/* Header Actions - 25% größer */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   flex: 2;
   justify-content: center;
 }
@@ -149,9 +150,9 @@ body {
 }
 
 .action-btn {
-  height: 32px;
-  padding: 0 12px;
-  font-size: 12px;
+  height: 40px; /* von 32px auf 40px (25% größer) */
+  padding: 0 15px; /* von 0 12px auf 15px */
+  font-size: 15px; /* von 12px auf 15px (25% größer) */
   font-weight: 500;
   border-radius: 6px;
   transition: var(--transition-colors);
