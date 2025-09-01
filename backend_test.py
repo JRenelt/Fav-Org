@@ -325,37 +325,64 @@ def main():
     tester = FavLinkBackendTester()
     
     # Test sequence
-    print("\n📋 Phase 1: Basic API Connectivity")
+    print("\n📋 Phase 1: Basic API Connectivity & Statistics")
     tester.test_get_all_bookmarks()
     tester.test_get_categories()
+    tester.test_get_statistics()
     
-    print("\n📋 Phase 2: Import Functionality")
+    print("\n📋 Phase 2: Sample Data Creation")
+    tester.test_create_sample_bookmarks()
+    
+    print("\n📋 Phase 3: Import Functionality")
     html_success, html_response = tester.test_import_html_bookmarks()
     json_success, json_response = tester.test_import_json_bookmarks()
     
-    print("\n📋 Phase 3: Data Retrieval")
+    print("\n📋 Phase 4: CRUD Operations")
+    # Create
+    create_success, create_response = tester.test_create_single_bookmark()
+    bookmark_id = None
+    if create_success and 'id' in create_response:
+        bookmark_id = create_response['id']
+        
+        # Update
+        update_data = {
+            "title": "Updated Test Bookmark",
+            "category": "Updated Category",
+            "subcategory": "Updated Subcategory"
+        }
+        tester.test_update_bookmark(bookmark_id, update_data)
+        
+        # Move (we'll move this bookmark to a different category)
+        tester.test_move_bookmarks([bookmark_id], "Development", "Testing")
+    
+    # Read operations
     tester.test_get_all_bookmarks()
     tester.test_get_categories()
     tester.test_get_bookmarks_by_category("Development")
     tester.test_get_bookmarks_by_category("Social Media")
     
-    print("\n📋 Phase 4: Search Functionality")
+    print("\n📋 Phase 5: Search Functionality")
     tester.test_search_bookmarks("GitHub")
     tester.test_search_bookmarks("Twitter")
     
-    print("\n📋 Phase 5: Single Bookmark Operations")
-    create_success, create_response = tester.test_create_single_bookmark()
+    print("\n📋 Phase 6: Export Functionality")
+    tester.test_export_xml()  # Export all as XML
+    tester.test_export_csv()  # Export all as CSV
+    tester.test_export_xml("Development")  # Export Development category as XML
+    tester.test_export_csv("Social Media")  # Export Social Media category as CSV
     
-    # If bookmark was created successfully, try to delete it
-    if create_success and 'id' in create_response:
-        bookmark_id = create_response['id']
-        tester.test_delete_single_bookmark(bookmark_id)
-    
-    print("\n📋 Phase 6: Advanced Features")
+    print("\n📋 Phase 7: Link Validation & Duplicate Detection")
     tester.test_validate_links()
     tester.test_remove_duplicates()
     
-    print("\n📋 Phase 7: Cleanup (Optional)")
+    print("\n📋 Phase 8: Scripts Download")
+    tester.test_download_collector_zip()
+    
+    print("\n📋 Phase 9: Cleanup Operations")
+    # Delete the test bookmark if it was created
+    if bookmark_id:
+        tester.test_delete_single_bookmark(bookmark_id)
+    
     # Uncomment the line below if you want to test delete all functionality
     # tester.test_delete_all_bookmarks()
     
