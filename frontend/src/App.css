@@ -440,7 +440,7 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-primary);
-  margin-left: 280px;
+  margin-left: 280px; /* Angepasst an neue Sidebar-Breite */
   height: calc(100vh - 80px - 60px);
   overflow: hidden;
 }
