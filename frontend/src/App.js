@@ -1174,67 +1174,118 @@ const SettingsDialog = ({ isOpen, onClose, onExport }) => {
 };
 
 const HelpDialog = ({ isOpen, onClose }) => {
+  const [activeHelpTab, setActiveHelpTab] = useState('basics');
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="help-dialog">
         <DialogHeader>
           <DialogTitle>
             <HelpCircle className="w-5 h-5 mr-2" />
-            Hilfe & Anleitung - Favoriten-Manager
+            Hilfe & Anleitung - Favorites Manager
           </DialogTitle>
         </DialogHeader>
         
-        <div className="help-content">
-          <div className="help-section">
-            <h4>Favoriten verwalten</h4>
-            <ul>
-              <li><strong>Neu anlegen:</strong> Plus-Button zum Erstellen neuer Favoriten</li>
-              <li><strong>Bearbeiten:</strong> Stift-Symbol bei jedem Favorit</li>
-              <li><strong>Löschen:</strong> Papierkorb-Symbol bei jedem Favorit</li>
-              <li><strong>Verschieben:</strong> Favoriten über Kategorien-Dropdown verschieben</li>
-            </ul>
-          </div>
+        <Tabs value={activeHelpTab} onValueChange={setActiveHelpTab} className="help-tabs">
+          <TabsList className="help-tab-list">
+            <TabsTrigger value="basics">Grundlagen</TabsTrigger>
+            <TabsTrigger value="buttons">Buttons</TabsTrigger>
+            <TabsTrigger value="status">Status</TabsTrigger>
+            <TabsTrigger value="import">Import</TabsTrigger>
+          </TabsList>
           
-          <div className="help-section">
-            <h4>Button-Funktionen</h4>
-            <ul>
-              <li><strong>Scripts:</strong> Download des Sammelprogramms für alle Betriebssysteme</li>
-              <li><strong>Export:</strong> Favoriten als XML oder CSV exportieren</li>
-              <li><strong>Prüfen:</strong> Alle Links auf Erreichbarkeit testen</li>
-              <li><strong>Duplikate:</strong> Doppelte Einträge finden und entfernen</li>
-              <li><strong>X (Handlungen):</strong> Alle Favoriten löschen (mit Sicherheitsabfrage)</li>
-            </ul>
-          </div>
+          <TabsContent value="basics" className="help-tab-content">
+            <div className="help-content">
+              <div className="help-section">
+                <h4>Favoriten verwalten</h4>
+                <ul>
+                  <li><strong>Neu anlegen:</strong> "Neu"-Button in der oberen Navigation</li>
+                  <li><strong>Bearbeiten:</strong> Stift-Symbol bei jedem Favorit</li>
+                  <li><strong>Löschen:</strong> Papierkorb-Symbol bei jedem Favorit</li>
+                  <li><strong>Verschieben:</strong> Favoriten über Kategorien-Dropdown verschieben</li>
+                </ul>
+              </div>
+              
+              <div className="help-section">
+                <h4>Navigation</h4>
+                <ul>
+                  <li><strong>Kategorien:</strong> Linke Sidebar zeigt alle Kategorien</li>
+                  <li><strong>Suche:</strong> Durchsuchen Sie Titel, URLs und Kategorien</li>
+                  <li><strong>Filter:</strong> Status-Filter für aktive/tote/ungeprüfte Links</li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
           
-          <div className="help-section">
-            <h4>Status-Bedeutungen</h4>
-            <ul>
-              <li><strong>Aktiv (Grün):</strong> Link wurde geprüft und ist erreichbar</li>
-              <li><strong>Tot (Rot):</strong> Link ist nicht erreichbar oder gibt Fehler zurück</li>
-              <li><strong>Ungeprüft (Weiß):</strong> Link wurde noch nicht auf Erreichbarkeit geprüft</li>
-            </ul>
-          </div>
+          <TabsContent value="buttons" className="help-tab-content">
+            <div className="help-content">
+              <div className="help-section">
+                <h4>Obere Navigation</h4>
+                <ul>
+                  <li><strong>Neu:</strong> Erstellt einen neuen Favoriten</li>
+                  <li><strong>Datei wählen:</strong> Importiert Browser-Favoriten aus HTML/JSON</li>
+                  <li><strong>Prüfen:</strong> Testet alle Links auf Erreichbarkeit</li>
+                  <li><strong>Duplikate:</strong> Findet und entfernt doppelte Einträge</li>
+                </ul>
+              </div>
+              
+              <div className="help-section">
+                <h4>Rechte Navigation</h4>
+                <ul>
+                  <li><strong>Hilfe (?):</strong> Öffnet diese Hilfe</li>
+                  <li><strong>Einstellungen (⚙):</strong> System-Einstellungen und Export</li>
+                  <li><strong>X (rot):</strong> Löscht ALLE Favoriten (mit Sicherheitsabfrage)</li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
           
-          <div className="help-section">
-            <h4>Browser-Favoriten importieren</h4>
-            <ul>
-              <li><strong>Chrome:</strong> Einstellungen → Lesezeichen → Exportieren</li>
-              <li><strong>Firefox:</strong> Lesezeichen → Alle Lesezeichen → Exportieren</li>
-              <li><strong>Edge:</strong> Favoriten → Exportieren</li>
-              <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
-            </ul>
-          </div>
+          <TabsContent value="status" className="help-tab-content">
+            <div className="help-content">
+              <div className="help-section">
+                <h4>Status-Bedeutungen</h4>
+                <ul>
+                  <li><strong>Aktiv (Grün):</strong> Link wurde geprüft und ist erreichbar</li>
+                  <li><strong>Tot (Rot):</strong> Link ist nicht erreichbar oder gibt Fehler zurück</li>
+                  <li><strong>Ungeprüft (Weiß):</strong> Link wurde noch nicht auf Erreichbarkeit geprüft</li>
+                </ul>
+              </div>
+              
+              <div className="help-section">
+                <h4>Nach der Link-Prüfung</h4>
+                <ul>
+                  <li><strong>Automatische Aktualisierung:</strong> Der "Prüfen"-Button zeigt dann "Tote Links entfernen [Anzahl]"</li>
+                  <li><strong>Bereinigung:</strong> Klicken Sie erneut, um alle toten Links zu entfernen</li>
+                  <li><strong>Statistiken:</strong> Sidebar zeigt aktuelle Zahlen zu Link-Status</li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
           
-          <div className="help-section">
-            <h4>Sammelprogramm</h4>
-            <p>Über den Scripts-Button können Sie das Sammelprogramm herunterladen, das automatisch alle Browser-Favoriten von Ihrem System sammelt und für den Import vorbereitet.</p>
-            <ul>
-              <li><strong>Windows:</strong> Doppelklick auf collect_bookmarks.bat</li>
-              <li><strong>Linux/macOS:</strong> Terminal: ./collect_bookmarks.sh</li>
-              <li><strong>Manuell:</strong> python3 collect_bookmarks.py</li>
-            </ul>
-          </div>
-        </div>
+          <TabsContent value="import" className="help-tab-content">
+            <div className="help-content">
+              <div className="help-section">
+                <h4>Browser-Favoriten exportieren</h4>
+                <ul>
+                  <li><strong>Chrome:</strong> Einstellungen → Lesezeichen → Exportieren</li>
+                  <li><strong>Firefox:</strong> Lesezeichen → Alle Lesezeichen → Exportieren</li>
+                  <li><strong>Edge:</strong> Favoriten → Exportieren</li>
+                  <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
+                </ul>
+              </div>
+              
+              <div className="help-section">
+                <h4>Export aus Favorites Manager</h4>
+                <ul>
+                  <li><strong>System-Einstellungen:</strong> Öffnen Sie die Einstellungen (⚙-Symbol)</li>
+                  <li><strong>Import/Export Tab:</strong> Wechseln Sie zum Import/Export-Bereich</li>
+                  <li><strong>XML Export:</strong> Strukturierte Daten mit Metainformationen</li>
+                  <li><strong>CSV Export:</strong> Tabellenformat, Excel-kompatibel</li>
+                </ul>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
