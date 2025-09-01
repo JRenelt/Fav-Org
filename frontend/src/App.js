@@ -572,50 +572,64 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
 };
 
 const StatisticsPanel = ({ statistics }) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  
   if (!statistics) return null;
 
   return (
     <div className="statistics-panel">
-      <h3 className="stats-title">
-        <BarChart3 className="w-4 h-4 mr-2" />
-        Statistiken
-      </h3>
-      
-      <div className="stats-grid">
-        <div className="stat-item">
-          <span className="stat-label">Gesamt:</span>
-          <span className="stat-value">{statistics.total_bookmarks}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Aktiv:</span>
-          <span className="stat-value active">{statistics.active_links}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Tot:</span>
-          <span className="stat-value dead">{statistics.dead_links}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Timeout:</span>
-          <span className="stat-value timeout">{statistics.timeout_links}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Ungeprüft:</span>
-          <span className="stat-value ungeprüft">{statistics.unchecked_links}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Kategorien:</span>
-          <span className="stat-value">{statistics.total_categories}</span>
-        </div>
+      <div 
+        className="stats-header"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <h3 className="stats-title">
+          <BarChart3 className="w-4 h-4 mr-2" />
+          Statistiken
+        </h3>
+        <button className="toggle-btn">
+          {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+        </button>
       </div>
       
-      <Button
-        size="sm"
-        onClick={() => window.location.reload()}
-        className="refresh-btn"
-      >
-        <RefreshCw className="w-4 h-4 mr-2" />
-        Aktualisieren
-      </Button>
+      {isExpanded && (
+        <>
+          <div className="stats-grid">
+            <div className="stat-item">
+              <span className="stat-label">Gesamt:</span>
+              <span className="stat-value">{statistics.total_bookmarks}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Aktiv:</span>
+              <span className="stat-value active">{statistics.active_links}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Tot:</span>
+              <span className="stat-value dead">{statistics.dead_links}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Timeout:</span>
+              <span className="stat-value timeout">{statistics.timeout_links}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Ungeprüft:</span>
+              <span className="stat-value ungeprüft">{statistics.unchecked_links}</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-label">Kategorien:</span>
+              <span className="stat-value">{statistics.total_categories}</span>
+            </div>
+          </div>
+          
+          <Button
+            size="sm"
+            onClick={() => window.location.reload()}
+            className="refresh-btn"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Aktualisieren
+          </Button>
+        </>
+      )}
     </div>
   );
 };
