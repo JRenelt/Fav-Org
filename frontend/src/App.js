@@ -1468,7 +1468,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
   );
 };
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onFileSelected }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onFileSelected }) => {
   return (
     <main className="main-content">
       <div className="main-header">
