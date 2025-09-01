@@ -371,6 +371,37 @@ class DuplicateDetector:
                 unique_bookmarks[normalized_url] = bookmark
         
         return list(unique_bookmarks.values())
+    
+    def normalize_url(self, url: str) -> str:
+        """Normalisiert URL für Duplikat-Vergleich (public method)"""
+        return self._normalize_url(url)
+    
+    async def find_and_mark_duplicates(self):
+        """Duplikate finden und mit 'duplicate' Status markieren"""
+        bookmarks = await db.bookmarks.find({}).to_list(10000)
+        
+        # Gruppiere Bookmarks nach normalisierter URL
+        url_groups = {}
+        for bookmark in bookmarks:
+            normalized_url = self.normalize_url(bookmark['url'])
+            if normalized_url not in url_groups:
+                url_groups[normalized_url] = []
+            url_groups[normalized_url].append(bookmark)
+        
+        # Finde Gruppen mit mehr als einem Bookmark (Duplikate)
+        duplicate_groups = []
+        for url, bookmark_group in url_groups.items():
+            if len(bookmark_group) > 1:
+                duplicate_groups.append(bookmark_group)
+                
+                # Markiere alle außer dem ersten als Duplikat
+                for bookmark in bookmark_group[1:]:  # Überspringe den ersten
+                    await db.bookmarks.update_one(
+                        {"id": bookmark['id']},
+                        {"$set": {"status_type": "duplicate"}}
+                    )
+        
+        return duplicate_groups
 
 class ExportManager:
     """Klasse für Export-Funktionen"""
