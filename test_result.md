@@ -212,6 +212,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Statistiken-Endpunkt erfolgreich getestet: GET /api/statistics liefert umfassende Daten (33 Bookmarks, 36 Kategorien, 10 Dead Links). Datetime-Vergleichsfehler behoben durch korrekte Timezone-Behandlung"
+      - working: true
+        agent: "testing"
+        comment: "✅ Statistiken-Endpunkt erneut getestet: GET /api/statistics funktioniert perfekt und zeigt korrekte Anzahlen nach Dead Links Removal. Dynamische Updates der Bookmark-Anzahl (55→46→24), Dead Links (0→9→0→1) und Kategorie-Counts funktionieren einwandfrei."
 
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
