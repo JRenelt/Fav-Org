@@ -916,7 +916,8 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
     setIsExporting(true);
     try {
       await onCreateTestData();
-      toast.success('Testdaten erfolgreich erstellt!');
+      // Dialog schließen und neu laden
+      onClose(); 
     } catch (error) {
       toast.error(`Testdaten-Erstellung fehlgeschlagen: ${error.message}`);
     } finally {
