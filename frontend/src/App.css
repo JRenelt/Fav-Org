@@ -440,42 +440,21 @@ body {
 
 .main-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-end;
+  align-items: center;
   padding: 20px 24px 16px;
   border-bottom: 1px solid var(--border-primary);
   background: var(--bg-secondary);
 }
 
-.upload-section, .cleanup-section, .add-section {
+.status-filter-section {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.section-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.section-subtitle {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-.section-note {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin: 0;
+  align-items: center;
 }
 
 .status-filter {
   width: 120px;
   height: 32px;
-  margin-top: 8px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
