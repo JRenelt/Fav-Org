@@ -1477,6 +1477,7 @@ function App() {
         onDeleteAllClick={handleDeleteAll}
         deadLinksCount={statistics?.dead_links || 0}
         hasValidated={hasValidated}
+        totalBookmarks={statistics?.total_bookmarks || 0}
       />
 
       <div className="app-content">
