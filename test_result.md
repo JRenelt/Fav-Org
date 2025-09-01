@@ -152,6 +152,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Link-Validierung erfolgreich getestet: POST /api/bookmarks/validate prüfte 33 Links und erkannte 10 Dead Links korrekt. Async-Validierung mit aiohttp funktioniert einwandfrei"
+      - working: true
+        agent: "testing"
+        comment: "✅ Link-Validierung erneut getestet: POST /api/bookmarks/validate funktioniert weiterhin perfekt. Validierte 55 Links und fand 9 Dead Links korrekt. Integration mit Dead Links Removal Workflow erfolgreich."
 
   - task: "Dead Links Removal"
     implemented: true
