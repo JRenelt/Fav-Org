@@ -1659,6 +1659,7 @@ function App() {
           bookmarks={filteredBookmarks}
           onDeleteBookmark={handleDeleteBookmark}
           onEditBookmark={handleEditBookmark}
+          onFileSelected={handleFileSelected}
         />
       </div>
 
