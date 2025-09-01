@@ -1395,22 +1395,7 @@ function App() {
   const favoritesService = new FavoritesService();
   const uiStateManager = new UIStateManager();
 
-  // Initial Load und Focus
-  useEffect(() => {
-    loadBookmarks();
-    loadCategories();
-    loadStatistics();
-    
-    // Suchfeld beim Seitenstart fokussieren
-    const timer = setTimeout(() => {
-      const searchInput = document.querySelector('input[placeholder="Favoriten durchsuchen..."]');
-      if (searchInput) {
-        searchInput.focus();
-      }
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [loadBookmarks, loadCategories, loadStatistics]);
+  // Load functions definiert vor useEffect
   const loadBookmarks = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -1441,6 +1426,23 @@ function App() {
       console.error('Fehler beim Laden der Statistiken:', error);
     }
   }, []);
+
+  // Initial Load und Focus
+  useEffect(() => {
+    loadBookmarks();
+    loadCategories();
+    loadStatistics();
+    
+    // Suchfeld beim Seitenstart fokussieren
+    const timer = setTimeout(() => {
+      const searchInput = document.querySelector('input[placeholder="Favoriten durchsuchen..."]');
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [loadBookmarks, loadCategories, loadStatistics]);
 
   // Favoriten filtern
   useEffect(() => {
