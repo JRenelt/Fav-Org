@@ -7,6 +7,7 @@
   --primary-blue: #4A5568;
   --primary-cyan: #22D3EE;
   --primary-white: #FFFFFF;
+  --content-bg: #3A4A5C; /* Dunkler als Kopfzeile */
   --gray-50: #F8FAFC;
   --gray-100: #F1F5F9;
   --gray-200: #E2E8F0;
@@ -21,6 +22,11 @@
   --red-600: #DC2626;
   --green-500: #10B981;
   --orange-500: #F59E0B;
+  
+  /* Invertierte Textfarben für dunklen Hintergrund */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
   
   /* Typography */
   --font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
