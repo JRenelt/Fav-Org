@@ -261,12 +261,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Export Functionality (XML/CSV)"
-    - "Link Validation"
-    - "Duplicate Detection"
-    - "Scripts Download (ZIP)"
     - "Bookmark Dialog (Create/Edit)"
     - "Export Dialog (XML/CSV separate buttons)"
+    - "Header Layout Fix"
+    - "Status Color System"
+    - "Scripts Download Button"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -276,3 +275,5 @@ agent_communication:
     message: "Initialer Zustand analysiert. Backend ist größtenteils implementiert, Frontend benötigt noch wichtige CRUD-Dialoge und UI-Korrekturen. Beginne mit der Implementierung der fehlenden Frontend-Komponenten."
   - agent: "main" 
     message: "Frontend-Implementierung abgeschlossen: BookmarkDialog mit Validierung, ExportDialog mit separaten Buttons, Header-Layout korrigiert, Scripts Download Button gefixt. Bereit für Backend-Tests."
+  - agent: "testing"
+    message: "✅ BACKEND TESTING ABGESCHLOSSEN: Alle kritischen Backend-Features erfolgreich getestet und funktionsfähig. CRUD Operations (100%), Export-Funktionalität XML/CSV (100%), Link-Validierung (100%), Duplikat-Erkennung (100%), Scripts ZIP-Download (100%), Statistiken-Endpunkt (100%). Ein kleiner Datetime-Vergleichsfehler wurde behoben. Backend ist produktionsreif. Fokus kann nun auf Frontend-Testing gelegt werden."
