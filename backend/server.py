@@ -174,19 +174,29 @@ class BookmarkParser:
         
         def extract_firefox_bookmarks(node, category="Nicht zugeordnet", subcategory=None):
             if isinstance(node, dict):
+                # Debug logging
+                logging.info(f"Processing node: {node.get('title', 'no title')}, has children: {'children' in node}, has uri: {'uri' in node}")
+                
                 if 'children' in node:
                     # Folder
                     folder_name = node.get('title', node.get('name', category))
-                    if folder_name and folder_name not in ['Bookmarks Toolbar', 'Bookmarks Menu', 'Other Bookmarks']:
-                        for child in node['children']:
-                            extract_firefox_bookmarks(child, folder_name, subcategory)
-                    else:
+                    logging.info(f"Processing folder: {folder_name}")
+                    
+                    # Skip standard Firefox folder names, use parent category instead
+                    if folder_name in ['Bookmarks Toolbar', 'Bookmarks Menu', 'Other Bookmarks', 'Bookmarks']:
                         for child in node['children']:
                             extract_firefox_bookmarks(child, category, subcategory)
+                    else:
+                        for child in node['children']:
+                            extract_firefox_bookmarks(child, folder_name, subcategory)
+                            
                 elif 'uri' in node or 'url' in node:
                     # Firefox Bookmark
                     url = node.get('uri', node.get('url', ''))
                     title = node.get('title', node.get('name', url))
+                    
+                    logging.info(f"Found bookmark: {title} -> {url}")
+                    
                     if url and url.startswith(('http://', 'https://')):
                         bookmarks.append({
                             'title': title,
@@ -194,11 +204,14 @@ class BookmarkParser:
                             'category': category,
                             'subcategory': subcategory
                         })
+                        logging.info(f"Added bookmark: {title}")
+                        
             elif isinstance(node, list):
                 for item in node:
                     extract_firefox_bookmarks(item, category, subcategory)
         
         extract_firefox_bookmarks(data)
+        logging.info(f"Firefox JSON parser found {len(bookmarks)} bookmarks")
         return bookmarks
     
     def _parse_chrome_json(self, data: dict) -> List[Dict[str, Any]]:
