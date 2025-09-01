@@ -755,6 +755,17 @@ async def remove_duplicates():
     """Duplikate finden und entfernen"""
     return await bookmark_manager.find_and_remove_duplicates()
 
+@api_router.delete("/bookmarks/dead-links")
+async def remove_dead_links():
+    """Alle toten Links entfernen"""
+    result = await db.bookmarks.delete_many({"is_dead_link": True})
+    await bookmark_manager.category_manager.update_bookmark_counts()
+    
+    return {
+        "removed_count": result.deleted_count,
+        "message": f"Removed {result.deleted_count} dead links"
+    }
+
 @api_router.delete("/bookmarks/all")
 async def delete_all_bookmarks():
     """Alle Bookmarks löschen"""
