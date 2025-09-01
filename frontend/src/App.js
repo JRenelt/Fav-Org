@@ -802,31 +802,45 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
     const handleStatusClick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      onToggleStatus(bookmark.id, !bookmark.is_dead_link);
+      
+      // Toggle-Logik: Tot ↔ Localhost
+      if (bookmark.status_type === 'dead') {
+        onToggleStatus(bookmark.id, 'localhost');
+      } else if (bookmark.status_type === 'localhost') {
+        onToggleStatus(bookmark.id, 'dead');
+      }
+      // Andere Status (active, duplicate) sind nicht clickable
     };
 
-    if (bookmark.is_dead_link) {
-      return (
-        <Badge 
-          className="status-badge dead clickable" 
-          onClick={handleStatusClick}
-          title="Klicken um als aktiv zu markieren"
-        >
-          Tot
-        </Badge>
-      );
-    } else if (bookmark.last_checked) {  
-      return (
-        <Badge 
-          className="status-badge active clickable" 
-          onClick={handleStatusClick}
-          title="Klicken um als tot zu markieren"
-        >
-          Aktiv
-        </Badge>
-      );
-    } else {
-      return <Badge className="status-badge unchecked">Ungeprüft</Badge>;
+    const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
+
+    switch (statusType) {
+      case 'active':
+        return <span className="status-badge status-active">Aktiv</span>;
+      case 'dead':
+        return (
+          <span 
+            className="status-badge status-dead clickable" 
+            onClick={handleStatusClick}
+            title="Klicken um als Localhost zu markieren"
+          >
+            Tot
+          </span>
+        );
+      case 'localhost':
+        return (
+          <span 
+            className="status-badge status-localhost clickable" 
+            onClick={handleStatusClick}
+            title="Klicken um als tot zu markieren"
+          >
+            Localhost
+          </span>
+        );
+      case 'duplicate':
+        return <span className="status-badge status-duplicate">Duplikat</span>;
+      default:
+        return <span className="status-badge status-unchecked">Ungeprüft</span>;
     }
   };
 
