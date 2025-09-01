@@ -1752,12 +1752,17 @@ function App() {
 
     try {
       setIsLoading(true);
+      console.log('Importing file:', file.name, file.type, file.size);
+      
       const result = await favoritesService.importBookmarks(file);
-      toast.success(`Import erfolgreich: ${result.imported_count} Favoriten importiert`);
+      toast.success(`Import erfolgreich: ${result.imported_count || result.created_count || 'Mehrere'} Favoriten importiert`);
+      
+      // Daten neu laden
       await loadBookmarks();
       await loadCategories();
       await loadStatistics();
     } catch (error) {
+      console.error('Import error:', error);
       toast.error('Import fehlgeschlagen: ' + error.message);
     } finally {
       setIsLoading(false);
