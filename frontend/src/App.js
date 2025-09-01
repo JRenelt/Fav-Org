@@ -1473,6 +1473,7 @@ function App() {
         onRemoveDuplicatesClick={handleRemoveDuplicates}
         onDeleteAllClick={handleDeleteAll}
         deadLinksCount={statistics?.dead_links || 0}
+        hasValidated={hasValidated}
       />
 
       <div className="app-content">
