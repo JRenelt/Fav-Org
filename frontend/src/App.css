@@ -589,7 +589,7 @@ body {
   font-weight: bold;
 }
 
-/* Footer */
+/* Footer - fixiert unten */
 .app-footer {
   background: var(--gray-800);
   color: var(--gray-300);
@@ -597,6 +597,12 @@ body {
   padding: 16px 24px;
   font-size: 14px;
   border-top: 3px solid var(--primary-cyan);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 60px;
 }
 
 /* Responsive Design - angepasst für fixierte Sidebar */
