@@ -1631,7 +1631,7 @@ function App() {
         onSettingsClick={() => setShowSettings(true)}
         onHelpClick={() => setShowHelp(true)}
         onCreateBookmarkClick={handleCreateBookmark}
-        onFileUploadClick={() => document.getElementById('file-upload').click()}
+        onFileUploadClick={handleFileUpload}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
         onDeleteAllClick={handleDeleteAll}
