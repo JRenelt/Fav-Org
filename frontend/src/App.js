@@ -1699,22 +1699,6 @@ function App() {
     setFilteredBookmarks(filtered);
   }, [bookmarks, activeCategory, activeSubcategory]);
 
-  const handleToggleStatus = async (bookmarkId, isActive) => {
-    try {
-      setIsLoading(true);
-      await favoritesService.updateBookmarkStatus(bookmarkId, isActive);
-      toast.success(`Bookmark-Status erfolgreich auf ${isActive ? 'aktiv' : 'tot'} gesetzt.`);
-      // Daten neu laden
-      await loadBookmarks();
-      await loadStatistics();
-    } catch (error) {
-      console.error('Status toggle error:', error);
-      toast.error('Status-Änderung fehlgeschlagen: ' + error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleExport = async (format, category) => {
     try {
       setIsLoading(true);
