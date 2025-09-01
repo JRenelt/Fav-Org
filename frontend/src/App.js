@@ -58,7 +58,19 @@ class FavoritesService {
 
   async createSamples() {
     try {
-      const response = await axios.get(`${this.baseURL}/download/collector`);
+      const response = await axios.post(`${this.baseURL}/bookmarks/create-samples`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to create samples');
+    }
+  }
+
+  async downloadCollector() {
+    try {
+      const response = await axios.get(`${this.baseURL}/download/collector`, {
+        responseType: 'blob'
+      });
+      
       // Trigger download
       const blob = new Blob([response.data], { type: 'application/zip' });
       const url = window.URL.createObjectURL(blob);
