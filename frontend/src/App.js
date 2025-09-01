@@ -850,16 +850,28 @@ const SettingsDialog = ({ isOpen, onClose, onExport }) => {
     notifications: true,
     linkTimeout: '10',
     autoValidate: false,
-    duplicateHandling: 'ignore'
+    duplicateHandling: 'ignore',
+    showFavicons: true,
+    itemsPerPage: '50',
+    autoBackup: false
   });
 
   const [activeTab, setActiveTab] = useState('display');
   const [isExporting, setIsExporting] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
-    // Einstellungen speichern würde hier implementiert werden
-    toast.success('Einstellungen gespeichert.');
-    onClose();
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      // Hier würden die Einstellungen gespeichert werden
+      await new Promise(resolve => setTimeout(resolve, 500)); // Simulation
+      toast.success('Einstellungen erfolgreich gespeichert.');
+      onClose();
+    } catch (error) {
+      toast.error('Fehler beim Speichern der Einstellungen.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleExport = async (format) => {
@@ -874,178 +886,288 @@ const SettingsDialog = ({ isOpen, onClose, onExport }) => {
     }
   };
 
+  const resetSettings = () => {
+    setSettings({
+      theme: 'dark',
+      autoSync: true,
+      notifications: true,
+      linkTimeout: '10',
+      autoValidate: false,
+      duplicateHandling: 'ignore',
+      showFavicons: true,
+      itemsPerPage: '50',
+      autoBackup: false
+    });
+    toast.success('Einstellungen zurückgesetzt.');
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="settings-dialog">
-        <DialogHeader>
-          <DialogTitle>
+      <DialogContent className="settings-dialog-modern">
+        <DialogHeader className="settings-header">
+          <DialogTitle className="settings-title">
             <Settings className="w-5 h-5 mr-2" />
             System-Einstellungen
           </DialogTitle>
         </DialogHeader>
         
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="settings-tabs">
-          <TabsList className="settings-tab-list">
-            <TabsTrigger value="display">Anzeige</TabsTrigger>
-            <TabsTrigger value="validation">Validierung</TabsTrigger>
-            <TabsTrigger value="import-export">Import/Export</TabsTrigger>
-            <TabsTrigger value="categories">Kategorien</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="display" className="settings-tab-content">
-            <div className="setting-group">
-              <h4>Darstellung</h4>
-              <div className="setting-controls">
-                <Label>Theme:</Label>
-                <Select value={settings.theme} onValueChange={(value) => setSettings({...settings, theme: value})}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="dark">Dunkel</SelectItem>
-                    <SelectItem value="light">Hell</SelectItem>
-                    <SelectItem value="auto">Automatisch</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="setting-controls">
-                <Label>Auto-Synchronisation:</Label>
-                <input 
-                  type="checkbox" 
-                  checked={settings.autoSync}
-                  onChange={(e) => setSettings({...settings, autoSync: e.target.checked})}
-                />
-              </div>
-              
-              <div className="setting-controls">
-                <Label>Benachrichtigungen:</Label>
-                <input 
-                  type="checkbox" 
-                  checked={settings.notifications}
-                  onChange={(e) => setSettings({...settings, notifications: e.target.checked})}
-                />
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="validation" className="settings-tab-content">
-            <div className="setting-group">
-              <h4>Link-Validierung</h4>
-              <div className="setting-controls">
-                <Label>Timeout (Sekunden):</Label>
-                <Select value={settings.linkTimeout} onValueChange={(value) => setSettings({...settings, linkTimeout: value})}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
-                    <SelectItem value="15">15</SelectItem>
-                    <SelectItem value="30">30</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="setting-controls">
-                <Label>Auto-Validierung:</Label>
-                <input 
-                  type="checkbox" 
-                  checked={settings.autoValidate}
-                  onChange={(e) => setSettings({...settings, autoValidate: e.target.checked})}
-                />
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="import-export" className="settings-tab-content">
-            <div className="setting-group">
-              <h4>Import-Optionen</h4>
-              <div className="setting-controls">
-                <Label>Duplikate beim Import:</Label>
-                <Select value={settings.duplicateHandling} onValueChange={(value) => setSettings({...settings, duplicateHandling: value})}>
-                  <SelectTrigger className="w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ignore">Ignorieren</SelectItem>
-                    <SelectItem value="replace">Ersetzen</SelectItem>
-                    <SelectItem value="keep-both">Beide behalten</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="setting-group">
-              <h4>Export-Optionen</h4>
-              <p className="setting-description">
-                Exportieren Sie alle Ihre Favoriten in verschiedene Dateiformate.
-              </p>
-              
-              <div className="export-buttons-grid">
-                <Button
-                  onClick={() => handleExport('xml')}
-                  disabled={isExporting}
-                  className="export-format-btn xml-btn"
-                  size="sm"
-                >
-                  {isExporting ? (
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <FileText className="w-4 h-4 mr-2" />
-                  )}
-                  Als XML exportieren
-                </Button>
+        <div className="settings-body">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="settings-tabs-modern">
+            <TabsList className="settings-tab-list-modern">
+              <TabsTrigger value="display" className="settings-tab-trigger">
+                <span className="tab-icon">🎨</span>
+                Darstellung
+              </TabsTrigger>
+              <TabsTrigger value="validation" className="settings-tab-trigger">
+                <span className="tab-icon">🔍</span>
+                Validierung
+              </TabsTrigger>
+              <TabsTrigger value="import-export" className="settings-tab-trigger">
+                <span className="tab-icon">📁</span>
+                Import/Export
+              </TabsTrigger>
+              <TabsTrigger value="advanced" className="settings-tab-trigger">
+                <span className="tab-icon">⚙️</span>
+                Erweitert
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="display" className="settings-tab-content-modern">
+              <div className="settings-section">
+                <h3 className="section-title">Erscheinungsbild</h3>
                 
-                <Button
-                  onClick={() => handleExport('csv')}
-                  disabled={isExporting}
-                  className="export-format-btn csv-btn"
-                  size="sm"
-                >
-                  {isExporting ? (
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <FileSpreadsheet className="w-4 h-4 mr-2" />
-                  )}
-                  Als CSV exportieren
-                </Button>
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Design-Theme</Label>
+                    <span className="setting-description">Wählen Sie das Farbschema der Anwendung</span>
+                  </div>
+                  <Select value={settings.theme} onValueChange={(value) => setSettings({...settings, theme: value})}>
+                    <SelectTrigger className="setting-select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="dark">🌙 Dunkel</SelectItem>
+                      <SelectItem value="light">☀️ Hell</SelectItem>
+                      <SelectItem value="auto">🔄 Automatisch</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Favicons anzeigen</Label>
+                    <span className="setting-description">Website-Icons bei Lesezeichen anzeigen</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={settings.showFavicons}
+                    onChange={(e) => setSettings({...settings, showFavicons: e.target.checked})}
+                    className="setting-checkbox"
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Einträge pro Seite</Label>
+                    <span className="setting-description">Anzahl der Lesezeichen pro Seite</span>
+                  </div>
+                  <Select value={settings.itemsPerPage} onValueChange={(value) => setSettings({...settings, itemsPerPage: value})}>
+                    <SelectTrigger className="setting-select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="25">25</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                      <SelectItem value="100">100</SelectItem>
+                      <SelectItem value="all">Alle</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="validation" className="settings-tab-content-modern">
+              <div className="settings-section">
+                <h3 className="section-title">Link-Validierung</h3>
+                
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Timeout (Sekunden)</Label>
+                    <span className="setting-description">Wartezeit für Link-Überprüfung</span>
+                  </div>
+                  <Select value={settings.linkTimeout} onValueChange={(value) => setSettings({...settings, linkTimeout: value})}>
+                    <SelectTrigger className="setting-select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5">5 Sekunden</SelectItem>
+                      <SelectItem value="10">10 Sekunden</SelectItem>
+                      <SelectItem value="15">15 Sekunden</SelectItem>
+                      <SelectItem value="30">30 Sekunden</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Automatische Validierung</Label>
+                    <span className="setting-description">Links automatisch beim Import prüfen</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={settings.autoValidate}
+                    onChange={(e) => setSettings({...settings, autoValidate: e.target.checked})}
+                    className="setting-checkbox"
+                  />
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="import-export" className="settings-tab-content-modern">
+              <div className="settings-section">
+                <h3 className="section-title">Import-Einstellungen</h3>
+                
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Duplikat-Behandlung</Label>
+                    <span className="setting-description">Verhalten bei doppelten Einträgen</span>
+                  </div>
+                  <Select value={settings.duplicateHandling} onValueChange={(value) => setSettings({...settings, duplicateHandling: value})}>
+                    <SelectTrigger className="setting-select">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ignore">❌ Ignorieren</SelectItem>
+                      <SelectItem value="replace">🔄 Ersetzen</SelectItem>
+                      <SelectItem value="keep-both">📝 Beide behalten</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
-              <div className="export-info-compact">
-                <div className="info-item-compact">
-                  <strong>XML:</strong> Mit Metadaten, ideal für Re-Import
+              <div className="settings-section">
+                <h3 className="section-title">Export-Optionen</h3>
+                <p className="section-description">
+                  Exportieren Sie alle Ihre Favoriten in verschiedene Dateiformate.
+                </p>
+                
+                <div className="export-buttons-modern">
+                  <Button
+                    onClick={() => handleExport('xml')}
+                    disabled={isExporting}
+                    className="export-btn-modern xml-btn-modern"
+                  >
+                    {isExporting ? (
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <FileText className="w-4 h-4 mr-2" />
+                    )}
+                    XML exportieren
+                  </Button>
+                  
+                  <Button
+                    onClick={() => handleExport('csv')}
+                    disabled={isExporting}
+                    className="export-btn-modern csv-btn-modern"
+                  >
+                    {isExporting ? (
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <FileSpreadsheet className="w-4 h-4 mr-2" />
+                    )}
+                    CSV exportieren
+                  </Button>
                 </div>
-                <div className="info-item-compact">
-                  <strong>CSV:</strong> Tabellenformat, Excel-kompatibel
+
+                <div className="export-info-modern">
+                  <div className="info-item-modern">
+                    <FileText className="w-4 h-4 text-green-500" />
+                    <div>
+                      <strong>XML:</strong> Strukturierte Daten mit Metainformationen, ideal für Re-Import
+                    </div>
+                  </div>
+                  <div className="info-item-modern">
+                    <FileSpreadsheet className="w-4 h-4 text-blue-500" />
+                    <div>
+                      <strong>CSV:</strong> Tabellenformat, kompatibel mit Excel und anderen Tabellenkalculationen
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="categories" className="settings-tab-content">
-            <div className="setting-group">
-              <h4>Kategorie-Verwaltung</h4>
-              <p>Verwalten Sie Ihre Bookmark-Kategorien und Unterkategorien.</p>
-              <div className="setting-controls">
-                <Button variant="outline" size="sm">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Neue Kategorie
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Folder className="w-4 h-4 mr-2" />
-                  Kategorien reorganisieren
-                </Button>
+            </TabsContent>
+            
+            <TabsContent value="advanced" className="settings-tab-content-modern">
+              <div className="settings-section">
+                <h3 className="section-title">Erweiterte Einstellungen</h3>
+                
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Automatische Synchronisation</Label>
+                    <span className="setting-description">Änderungen automatisch speichern</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={settings.autoSync}
+                    onChange={(e) => setSettings({...settings, autoSync: e.target.checked})}
+                    className="setting-checkbox"
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Benachrichtigungen</Label>
+                    <span className="setting-description">Desktop-Benachrichtigungen aktivieren</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={settings.notifications}
+                    onChange={(e) => setSettings({...settings, notifications: e.target.checked})}
+                    className="setting-checkbox"
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">Automatisches Backup</Label>
+                    <span className="setting-description">Tägliche Sicherung erstellen</span>
+                  </div>
+                  <input 
+                    type="checkbox" 
+                    checked={settings.autoBackup}
+                    onChange={(e) => setSettings({...settings, autoBackup: e.target.checked})}
+                    className="setting-checkbox"
+                  />
+                </div>
+
+                <div className="settings-danger-zone">
+                  <h4 className="danger-title">Gefahrenbereich</h4>
+                  <p className="danger-description">
+                    Diese Aktionen können nicht rückgängig gemacht werden.
+                  </p>
+                  <Button 
+                    onClick={resetSettings}
+                    variant="outline"
+                    className="danger-btn"
+                  >
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Einstellungen zurücksetzen
+                  </Button>
+                </div>
               </div>
-            </div>
-          </TabsContent>
-        </Tabs>
+            </TabsContent>
+          </Tabs>
+        </div>
         
-        <div className="settings-actions">
+        <div className="settings-footer">
           <Button variant="outline" onClick={onClose}>
             Abbrechen
           </Button>
-          <Button onClick={handleSave}>
+          <Button onClick={handleSave} disabled={isSaving} className="save-btn-modern">
+            {isSaving ? (
+              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <CheckCircle className="w-4 h-4 mr-2" />
+            )}
             Speichern
           </Button>
         </div>
