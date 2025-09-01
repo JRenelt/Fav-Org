@@ -1340,12 +1340,26 @@ function App() {
   const handleValidateLinks = async () => {
     try {
       setIsLoading(true);
-      const result = await favoritesService.validateLinks();
-      toast.success(`${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links.`);
-      await loadBookmarks();
-      await loadStatistics();
+      
+      if (!hasValidated) {
+        // Erste Klick: Validierung durchführen
+        const result = await favoritesService.validateLinks();
+        toast.success(`Validierung abgeschlossen: ${result.dead_links_found} tote Links gefunden von ${result.total_checked} geprüften Links.`);
+        setHasValidated(true);
+        await loadBookmarks();
+        await loadStatistics();
+      } else {
+        // Zweiter Klick: Tote Links entfernen
+        const result = await favoritesService.removeDeadLinks();
+        toast.success(`${result.removed_count} tote Links wurden entfernt.`);
+        setHasValidated(false);
+        await loadBookmarks();
+        await loadCategories();
+        await loadStatistics();
+      }
     } catch (error) {
-      toast.error('Link-Validierung fehlgeschlagen: ' + error.message);
+      toast.error('Aktion fehlgeschlagen: ' + error.message);
+      setHasValidated(false);
     } finally {
       setIsLoading(false);
     }
