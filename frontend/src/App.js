@@ -1062,7 +1062,29 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
             </TabsContent>
             
             <TabsContent value="import-export" className="settings-tab-content-modern">
-              <div className="settings-section">
+              {/* Navigation Menu für Import/Export */}
+              <div className="import-export-nav">
+                <button 
+                  onClick={() => document.getElementById('import-section')?.scrollIntoView({behavior: 'smooth'})}
+                  className="nav-btn"
+                >
+                  📥 Import
+                </button>
+                <button 
+                  onClick={() => document.getElementById('export-section')?.scrollIntoView({behavior: 'smooth'})}
+                  className="nav-btn"
+                >
+                  📤 Export
+                </button>
+                <button 
+                  onClick={() => document.getElementById('testdata-section')?.scrollIntoView({behavior: 'smooth'})}
+                  className="nav-btn"
+                >
+                  🧪 Testdaten
+                </button>
+              </div>
+
+              <div id="import-section" className="settings-section">
                 <h3 className="section-title">Import-Einstellungen</h3>
                 
                 <div className="setting-item">
@@ -1081,9 +1103,21 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div className="import-formats-info">
+                  <h4>Unterstützte Browser-Formate:</h4>
+                  <div className="browser-list">
+                    <span className="browser-item">🦊 Firefox (JSON/HTML)</span>
+                    <span className="browser-item">🌐 Chrome (HTML)</span>
+                    <span className="browser-item">🔷 Edge (HTML)</span>
+                    <span className="browser-item">🍎 Safari (HTML)</span>
+                    <span className="browser-item">📄 CSV-Dateien</span>
+                    <span className="browser-item">📋 XML-Dateien</span>
+                  </div>
+                </div>
               </div>
 
-              <div className="settings-section">
+              <div id="export-section" className="settings-section">
                 <h3 className="section-title">Export-Optionen</h3>
                 <p className="section-description">
                   Exportieren Sie alle Ihre Favoriten in verschiedene Dateiformate.
@@ -1133,7 +1167,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                 </div>
               </div>
 
-              <div className="settings-section">
+              <div id="testdata-section" className="settings-section">
                 <h3 className="section-title">Testdaten</h3>
                 <p className="section-description">
                   Erstellen Sie Testdaten mit 50 Favoriten (inkl. Duplikate und tote Links) für Entwicklung und Tests.
