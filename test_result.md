@@ -300,7 +300,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Dead Links Removal"
     - "System Settings Dialog (Modern Design)"
     - "Header Enhancements"
     - "Search Field Enhancements"
