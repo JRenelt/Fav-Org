@@ -1123,3 +1123,23 @@ body {
 .create-btn:hover {
   background: var(--cyan-500);
 }
+
+/* Help Dialog Tabs */
+.help-tabs {
+  margin-top: 16px;
+}
+
+.help-tab-list {
+  border-bottom: 1px solid var(--border-primary);
+  background: var(--bg-tertiary);
+  border-radius: 6px 6px 0 0;
+}
+
+.help-tab-content {
+  padding: 16px 0;
+}
+
+.help-content {
+  max-height: 400px;
+  overflow-y: auto;
+}
