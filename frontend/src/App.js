@@ -906,7 +906,8 @@ const SettingsDialog = ({ isOpen, onClose, onExport }) => {
   const handleCreateTestData = async () => {
     setIsExporting(true);
     try {
-      const result = await axios.post(`${import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL}/bookmarks/create-test-data`);
+      const backendUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL;
+      const result = await axios.post(`${backendUrl}/bookmarks/create-test-data`);
       toast.success(`Testdaten erfolgreich erstellt: ${result.data.created_count} Favoriten mit ${result.data.duplicates} Duplikaten und ${result.data.dead_links} toten Links.`);
     } catch (error) {
       toast.error(`Testdaten-Erstellung fehlgeschlagen: ${error.response?.data?.detail || error.message}`);
