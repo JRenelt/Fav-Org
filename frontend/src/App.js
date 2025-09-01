@@ -1295,15 +1295,6 @@ const HelpDialog = ({ isOpen, onClose }) => {
 };
 
 const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onFileSelected }) => {
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Import-Funktion würde hier aufgerufen werden
-      console.log('File selected:', file.name);
-    }
-    event.target.value = '';
-  };
-
   return (
     <main className="main-content">
       <div className="main-header">
