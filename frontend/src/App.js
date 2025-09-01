@@ -1273,7 +1273,22 @@ function App() {
   const favoritesService = new FavoritesService();
   const uiStateManager = new UIStateManager();
 
-  // Daten laden
+  // Initial Load und Focus
+  useEffect(() => {
+    loadBookmarks();
+    loadCategories();
+    loadStatistics();
+    
+    // Suchfeld beim Seitenstart fokussieren
+    const timer = setTimeout(() => {
+      const searchInput = document.querySelector('input[placeholder="Favoriten durchsuchen..."]');
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [loadBookmarks, loadCategories, loadStatistics]);
   const loadBookmarks = useCallback(async () => {
     try {
       setIsLoading(true);
