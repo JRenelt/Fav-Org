@@ -134,6 +134,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Export-Funktionalität vollständig getestet: XML Export (10354 Zeichen generiert), CSV Export (35 Zeilen), Category-Filter für beide Formate funktioniert korrekt. POST /api/export mit format='xml'/'csv' und optionalem category Filter arbeitet einwandfrei"
+      - working: true
+        agent: "testing"
+        comment: "✅ Export-Funktionalität erneut getestet: XML/CSV Export funktioniert weiterhin korrekt nach Dead Links Removal. Category-Filter für Development und Social Media Kategorien arbeitet einwandfrei."
 
   - task: "Link Validation"
     implemented: true
