@@ -460,18 +460,6 @@ body {
   color: var(--text-primary);
 }
 
-.upload-btn, .add-btn {
-  margin-top: 8px;
-  height: 32px;
-  background: var(--cyan-400);
-  color: white;
-  border: none;
-}
-
-.upload-btn:hover, .add-btn:hover {
-  background: var(--cyan-500);
-}
-
 .search-section {
   padding: 16px 24px;
   background: var(--bg-secondary);
