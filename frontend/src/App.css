@@ -199,8 +199,8 @@ body {
 }
 
 .delete-all-btn {
-  width: 32px !important;
-  height: 32px !important;
+  width: 40px !important; /* von 32px auf 40px (25% größer) */
+  height: 40px !important; /* von 32px auf 40px (25% größer) */
   border-radius: 50% !important;
   padding: 0 !important;
   display: flex !important;
