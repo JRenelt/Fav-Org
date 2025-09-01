@@ -1755,7 +1755,14 @@ function App() {
       console.log('Importing file:', file.name, file.type, file.size);
       
       const result = await favoritesService.importBookmarks(file);
-      toast.success(`Import erfolgreich: ${result.imported_count || result.created_count || 'Mehrere'} Favoriten importiert`);
+      console.log('Import result:', result);
+      
+      if (result.imported_count === 0) {
+        toast.warning(`Import abgeschlossen, aber keine Favoriten gefunden. ${result.details || ''}`);
+      } else {
+        toast.success(`Import erfolgreich: ${result.imported_count} Favoriten importiert` + 
+                     (result.total_parsed ? ` (${result.total_parsed} geparst, ${result.after_deduplication} nach Duplikat-Bereinigung)` : ''));
+      }
       
       // Daten neu laden
       await loadBookmarks();
