@@ -413,8 +413,8 @@ class StatisticsManager:
         recent_bookmarks = sum(
             1 for b in bookmarks 
             if b.get('date_added') and 
-            (datetime.fromisoformat(b['date_added'].replace('Z', '+00:00')) if isinstance(b['date_added'], str) 
-             else b['date_added']) > seven_days_ago
+            (datetime.fromisoformat(b['date_added'].replace('Z', '+00:00')).replace(tzinfo=timezone.utc) if isinstance(b['date_added'], str) 
+             else (b['date_added'].replace(tzinfo=timezone.utc) if b['date_added'].tzinfo is None else b['date_added'])) > seven_days_ago
         )
         
         return Statistics(
