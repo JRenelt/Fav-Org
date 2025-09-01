@@ -1699,6 +1699,23 @@ function App() {
     setFilteredBookmarks(filtered);
   }, [bookmarks, activeCategory, activeSubcategory]);
 
+  const handleCreateTestData = async () => {
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.createTestData();
+      toast.success(`Testdaten erfolgreich erstellt: ${result.created_count} Favoriten mit ${result.duplicates} Duplikaten und ${result.dead_links} toten Links.`);
+      // Daten neu laden
+      await loadBookmarks();
+      await loadCategories(); 
+      await loadStatistics();
+    } catch (error) {
+      console.error('Testdaten creation error:', error);
+      toast.error('Testdaten-Erstellung fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleExport = async (format, category) => {
     try {
       setIsLoading(true);
