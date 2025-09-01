@@ -1259,7 +1259,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
           <TabsContent value="about" className="help-tab-content">
             <div className="help-content">
               <div className="help-section">
-                <h4>FavLink Manager</h4>
+                <h4>FavOrg</h4>
                 <p><strong>Version:</strong> V1.0.0</p>
                 <p><strong>Entwickelt von:</strong> ID2 - Jörg Renelt</p>
                 <p><strong>Ort:</strong> Hamburg, Deutschland</p>
@@ -1269,7 +1269,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
               <div className="help-section">
                 <h4>Programmbeschreibung</h4>
                 <p>
-                  <strong>FavLink Manager</strong> ist eine moderne SaaS-Anwendung zur intelligenten Verwaltung 
+                  <strong>FavOrg</strong> ist eine moderne SaaS-Anwendung zur intelligenten Verwaltung 
                   von Browser-Favoriten. Die Anwendung ermöglicht es, Lesezeichen aus verschiedenen Browsern zu 
                   importieren, zu organisieren und automatisch zu validieren.
                 </p>
