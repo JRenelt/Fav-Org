@@ -722,6 +722,15 @@ body {
   color: var(--text-primary);
 }
 
+/* Help Dialog - 10% breiter */
+.help-dialog {
+  max-width: 660px; /* 600px + 10% = 660px */
+  max-height: 80vh;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
 .bookmark-form {
   display: flex;
   flex-direction: column;
