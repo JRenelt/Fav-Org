@@ -1634,12 +1634,6 @@ function App() {
         categories={categories}
       />
 
-      <ExportDialog
-        isOpen={showExport}
-        onClose={() => setShowExport(false)}
-        onExport={handleExport}
-      />
-
       <SettingsDialog
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
