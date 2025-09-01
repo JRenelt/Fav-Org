@@ -622,6 +622,7 @@ const StatisticsPanel = ({ statistics }) => {
 
 const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
+  const [showStatistics, setShowStatistics] = useState(true);
 
   const toggleCategory = (categoryName) => {
     const newExpanded = new Set(expandedCategories);
