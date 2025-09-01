@@ -152,15 +152,18 @@ backend:
 
   - task: "Dead Links Removal"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Neuer Endpunkt DELETE /api/bookmarks/dead-links implementiert für intelligenten Prüfen-Button"
+      - working: true
+        agent: "testing"
+        comment: "✅ Dead Links Removal vollständig getestet: DELETE /api/bookmarks/dead-links funktioniert perfekt. Integration Workflow erfolgreich: Validierung (9 Dead Links gefunden) → Entfernung (9 Links entfernt) → Statistik Update (46 verbleibende Bookmarks, 0 Dead Links). Error Handling für leere Dead Links korrekt implementiert (0 entfernt wenn keine vorhanden). Kategorie-Count Update nach Entfernung funktioniert einwandfrei."
 
   - task: "Duplicate Detection"
     implemented: true
