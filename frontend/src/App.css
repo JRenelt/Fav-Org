@@ -49,8 +49,8 @@
 
 body {
   font-family: var(--font-family);
-  background-color: var(--gray-50);
-  color: var(--gray-800);
+  background-color: var(--content-bg);
+  color: var(--text-primary);
   line-height: 1.6;
   font-size: 16px;
   overflow-x: hidden;
@@ -60,7 +60,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+  background: var(--content-bg);
 }
 
 /* Header - Kompakte fixierte Navigation */
