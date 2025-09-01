@@ -1597,6 +1597,34 @@ function App() {
     setSearchQuery('');
   };
 
+  const handleFileUpload = async () => {
+    const fileInput = document.getElementById('file-upload');
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
+  const handleFileSelected = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      setIsLoading(true);
+      const result = await favoritesService.importBookmarks(file);
+      toast.success(`Import erfolgreich: ${result.imported_count} Favoriten importiert`);
+      await loadBookmarks();
+      await loadCategories();
+      await loadStatistics();
+    } catch (error) {
+      toast.error('Import fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+    
+    // Reset file input
+    event.target.value = '';
+  };
+
   return (
     <div className="app">
       <Header
