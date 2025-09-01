@@ -257,25 +257,29 @@ body {
   color: var(--primary-white);
 }
 
-/* Main Content */
+/* Main Content - angepasst für fixierte Sidebar */
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--gray-50);
+  background: var(--content-bg);
+  margin-left: 280px; /* Platz für fixierte Sidebar */
   overflow: hidden;
 }
 
-/* Action Toolbar */
+/* Action Toolbar - fixiert */
 .action-toolbar {
-  background: var(--primary-white);
-  border-bottom: 1px solid var(--gray-200);
+  background: var(--content-bg);
+  border-bottom: 1px solid var(--gray-600);
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 64px;
+  z-index: 50;
 }
 
 .toolbar-section {
@@ -299,9 +303,9 @@ body {
 }
 
 .validate-btn, .duplicate-btn {
-  border: 2px solid var(--gray-300);
-  color: var(--gray-700);
-  background: var(--primary-white);
+  border: 2px solid var(--gray-600);
+  color: var(--text-primary);
+  background: var(--content-bg);
   padding: 10px 18px;
   border-radius: 8px;
   font-weight: 500;
@@ -311,6 +315,7 @@ body {
 .validate-btn:hover, .duplicate-btn:hover {
   border-color: var(--primary-cyan);
   color: var(--primary-cyan);
+  background: rgba(34, 211, 238, 0.1);
 }
 
 .delete-all-btn {
