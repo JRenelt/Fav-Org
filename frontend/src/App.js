@@ -1473,13 +1473,6 @@ function App() {
     setSearchQuery('');
   };
 
-  // Initial Load
-  useEffect(() => {
-    loadBookmarks();
-    loadCategories();
-    loadStatistics();
-  }, [loadBookmarks, loadCategories, loadStatistics]);
-
   return (
     <div className="app">
       <Header
