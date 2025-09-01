@@ -1319,12 +1319,25 @@ const HelpDialog = ({ isOpen, onClose }) => {
                 
                 <p><strong>Hauptfunktionen:</strong></p>
                 <ul>
-                  <li><strong>Import aus allen gängigen Browsern:</strong> Chrome, Firefox, Edge, Safari</li>
+                  <li><strong>Multi-Browser Import:</strong> Chrome, Firefox, Edge, Safari (HTML/JSON)</li>
+                  <li><strong>50 Testdaten:</strong> Umfassende Test-Suite mit Duplikaten und toten Links</li>
                   <li><strong>Intelligente Kategorisierung:</strong> Automatische Organisation in Kategorien und Unterkategorien</li>
-                  <li><strong>Link-Validierung:</strong> Automatische Erkennung von toten Links</li>
+                  <li><strong>Link-Validierung:</strong> Automatische Erkennung von toten Links mit manueller Statuskorrektur</li>
                   <li><strong>Duplikat-Erkennung:</strong> Intelligente URL-Normalisierung und Bereinigung</li>
                   <li><strong>Export-Funktionen:</strong> XML und CSV Export mit Filteroptionen</li>
                   <li><strong>Umfassende Statistiken:</strong> Detaillierte Analyse Ihrer Lesezeichen-Sammlung</li>
+                  <li><strong>Manuelle Status-Kontrolle:</strong> Tote Links können manuell aktiviert werden</li>
+                </ul>
+              </div>
+
+              <div className="help-section">
+                <h4>Neue Features in V1.0.1</h4>
+                <ul>
+                  <li><strong>Erweiteter JSON-Import:</strong> Firefox, Chrome und Safari JSON-Formate unterstützt</li>
+                  <li><strong>Verbesserte Testdaten:</strong> 50 Einträge mit realistischen Szenarien</li>
+                  <li><strong>Manuelle Link-Status-Korrektur:</strong> Localhost und lokale Links können aktiviert werden</li>
+                  <li><strong>Detaillierte Import-Statistiken:</strong> Genaue Angaben über Import-Ergebnisse</li>
+                  <li><strong>Verbesserte Benutzeroberfläche:</strong> Größere Dialoge und bessere Navigation</li>
                 </ul>
               </div>
 
