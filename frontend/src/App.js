@@ -790,10 +790,32 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
   }, [bookmarks, searchQuery, statusFilter]);
 
   const getStatusBadge = (bookmark) => {
+    const handleStatusClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onToggleStatus(bookmark.id, !bookmark.is_dead_link);
+    };
+
     if (bookmark.is_dead_link) {
-      return <Badge className="status-badge dead">Tot</Badge>;
-    } else if (bookmark.last_checked) {
-      return <Badge className="status-badge active">Aktiv</Badge>;
+      return (
+        <Badge 
+          className="status-badge dead clickable" 
+          onClick={handleStatusClick}
+          title="Klicken um als aktiv zu markieren"
+        >
+          Tot
+        </Badge>
+      );
+    } else if (bookmark.last_checked) {  
+      return (
+        <Badge 
+          className="status-badge active clickable" 
+          onClick={handleStatusClick}
+          title="Klicken um als tot zu markieren"
+        >
+          Aktiv
+        </Badge>
+      );
     } else {
       return <Badge className="status-badge unchecked">Ungeprüft</Badge>;
     }
