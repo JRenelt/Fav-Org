@@ -232,7 +232,7 @@ body {
   overflow: hidden;
 }
 
-/* Statistics Panel */
+/* Statistics Panel - Ausblendbar */
 .statistics-panel {
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
@@ -242,13 +242,40 @@ body {
   margin-bottom: 20px;
 }
 
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.stats-header:hover {
+  opacity: 0.8;
+}
+
 .stats-title {
   display: flex;
   align-items: center;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin: 0;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: var(--transition-colors);
+}
+
+.toggle-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .stats-grid {
