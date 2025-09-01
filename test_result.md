@@ -116,54 +116,81 @@ backend:
       - working: true
         agent: "main"
         comment: "Alle Backend-Endpunkte für Create, Read, Update, Delete und Move sind implementiert"
+      - working: true
+        agent: "testing"
+        comment: "✅ CRUD Operations vollständig getestet: CREATE (POST /api/bookmarks), READ (GET /api/bookmarks), UPDATE (PUT /api/bookmarks/{id}), DELETE (DELETE /api/bookmarks/{id}), MOVE (POST /api/bookmarks/move) - alle funktionieren korrekt"
 
   - task: "Export Functionality (XML/CSV)"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"  
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "ExportManager-Klasse und API-Endpunkte implementiert, aber noch nicht getestet"
+      - working: true
+        agent: "testing"
+        comment: "✅ Export-Funktionalität vollständig getestet: XML Export (10354 Zeichen generiert), CSV Export (35 Zeilen), Category-Filter für beide Formate funktioniert korrekt. POST /api/export mit format='xml'/'csv' und optionalem category Filter arbeitet einwandfrei"
 
   - task: "Link Validation"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "LinkValidator-Klasse implementiert mit async Link-Prüfung"
+      - working: true
+        agent: "testing"
+        comment: "✅ Link-Validierung erfolgreich getestet: POST /api/bookmarks/validate prüfte 33 Links und erkannte 10 Dead Links korrekt. Async-Validierung mit aiohttp funktioniert einwandfrei"
 
   - task: "Duplicate Detection"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "DuplicateDetector-Klasse implementiert mit URL-Normalisierung"
+      - working: true
+        agent: "testing"
+        comment: "✅ Duplikat-Erkennung erfolgreich getestet: POST /api/bookmarks/remove-duplicates funktioniert korrekt mit URL-Normalisierung. Keine Duplikate im aktuellen Datensatz gefunden (0 Gruppen, 0 entfernt)"
 
   - task: "Scripts Download (ZIP)"
     implemented: true
-    working: "NA"
+    working: true
     file: "backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Download-Endpunkt implementiert für /scripts/ Ordner als ZIP"
+      - working: true
+        agent: "testing"
+        comment: "✅ Scripts ZIP-Download erfolgreich getestet: GET /api/download/collector generiert korrekte ZIP-Datei (8581 Bytes) mit allen Sammelprogramm-Dateien"
+
+  - task: "Statistics Endpoint"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Statistiken-Endpunkt erfolgreich getestet: GET /api/statistics liefert umfassende Daten (33 Bookmarks, 36 Kategorien, 10 Dead Links). Datetime-Vergleichsfehler behoben durch korrekte Timezone-Behandlung"
 
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
