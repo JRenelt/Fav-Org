@@ -293,7 +293,7 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
           </div>
           <div className="app-info">
             <h1 className="app-title">
-              Favorites Manager 
+              FavOrg 
               <span className="bookmark-count">[{totalBookmarks}]</span>
             </h1>
             <p className="app-subtitle">Verwalten Sie Ihre Lesezeichen</p>
