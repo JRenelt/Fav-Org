@@ -274,7 +274,8 @@ class FavLinkBackendTester:
             "POST",
             "export",
             200,
-            data=export_data
+            data=export_data,
+            expect_json=False
         )
         return success, response
 
@@ -289,7 +290,8 @@ class FavLinkBackendTester:
             "POST",
             "export",
             200,
-            data=export_data
+            data=export_data,
+            expect_json=False
         )
         return success, response
 
@@ -309,7 +311,8 @@ class FavLinkBackendTester:
             "Download Collector ZIP",
             "GET",
             "download/collector",
-            200
+            200,
+            expect_json=False
         )
         return success, response
 
