@@ -1120,10 +1120,10 @@ body {
   overflow-y: auto;
 }
 
-/* Modern Settings Dialog */
+/* Modern Settings Dialog - 10% breiter, aber 5% kleiner = netto +5% */
 .settings-dialog-modern {
-  max-width: 800px;
-  max-height: 90vh;
+  max-width: 630px; /* 600px + 10% - 5% = 630px */
+  max-height: 85vh; /* etwas kleiner für bessere Erreichbarkeit des X */
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
