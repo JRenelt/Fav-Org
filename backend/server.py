@@ -716,24 +716,74 @@ class BookmarkManager:
     async def import_bookmarks(self, content: str, file_type: str) -> Dict[str, Any]:
         """Importiert Bookmarks aus verschiedenen Formaten"""
         
+        logging.info(f"Importing bookmarks: file_type={file_type}, content_length={len(content)}")
+        
         if file_type.lower() == 'html':
             bookmark_data = self.parser.parse_html_bookmarks(content)
         elif file_type.lower() == 'json':
             bookmark_data = self.parser.parse_json_bookmarks(content)
+        elif file_type.lower() in ['csv', 'xml']:
+            # CSV/XML Support placeholder
+            bookmark_data = []
         else:
             raise HTTPException(status_code=400, detail="Unsupported file type")
         
-        bookmarks = [Bookmark(**data) for data in bookmark_data]
-        bookmarks = self.duplicate_detector.remove_duplicates(bookmarks)
+        logging.info(f"Parsed {len(bookmark_data)} bookmarks from {file_type} file")
         
-        for bookmark in bookmarks:
-            await self.db.bookmarks.insert_one(bookmark.dict())
+        if not bookmark_data:
+            return {
+                "imported_count": 0,
+                "message": f"No valid bookmarks found in {file_type} file",
+                "details": f"File contained {len(content)} characters but no bookmarks were extracted"
+            }
+        
+        # Convert to Bookmark objects
+        valid_bookmarks = []
+        for data in bookmark_data:
+            try:
+                # Ensure required fields
+                if not data.get('title') or not data.get('url'):
+                    continue
+                    
+                bookmark = Bookmark(
+                    id=str(uuid.uuid4()),
+                    title=data['title'],
+                    url=data['url'],
+                    category=data.get('category', 'Imported'),
+                    subcategory=data.get('subcategory', ''),
+                    created_at=datetime.utcnow(),
+                    is_dead_link=False
+                )
+                valid_bookmarks.append(bookmark)
+            except Exception as e:
+                logging.warning(f"Failed to create bookmark from data {data}: {e}")
+                continue
+        
+        logging.info(f"Created {len(valid_bookmarks)} valid bookmark objects")
+        
+        # Remove duplicates
+        unique_bookmarks = self.duplicate_detector.remove_duplicates(valid_bookmarks)
+        logging.info(f"After duplicate removal: {len(unique_bookmarks)} bookmarks")
+        
+        # Insert into database
+        inserted_count = 0
+        for bookmark in unique_bookmarks:
+            try:
+                await self.db.bookmarks.insert_one(bookmark.dict())
+                inserted_count += 1
+            except Exception as e:
+                logging.error(f"Failed to insert bookmark {bookmark.title}: {e}")
+        
+        logging.info(f"Successfully inserted {inserted_count} bookmarks into database")
         
         await self.category_manager.update_bookmark_counts()
         
         return {
-            "imported_count": len(bookmarks),
-            "message": f"Successfully imported {len(bookmarks)} bookmarks"
+            "imported_count": inserted_count,
+            "total_parsed": len(bookmark_data),
+            "valid_bookmarks": len(valid_bookmarks),
+            "after_deduplication": len(unique_bookmarks),
+            "message": f"Successfully imported {inserted_count} bookmarks from {file_type} file"
         }
     
     async def get_all_bookmarks(self) -> List[Bookmark]:
