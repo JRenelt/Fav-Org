@@ -738,7 +738,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   );
 };
 
-const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, searchQuery, statusFilter }) => {
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, searchQuery, statusFilter }) => {
   const [filteredBookmarks, setFilteredBookmarks] = useState([]);
 
   useEffect(() => {
@@ -782,6 +782,11 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, searchQuery
     } else {
       return <Badge className="status-badge unchecked">Ungeprüft</Badge>;
     }
+  };
+
+  const handleStatusToggle = (bookmark) => {
+    const newStatus = !bookmark.is_dead_link;
+    onToggleStatus(bookmark.id, newStatus);
   };
 
   if (filteredBookmarks.length === 0) {
