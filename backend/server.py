@@ -144,36 +144,134 @@ class BookmarkParser:
         return bookmarks
     
     def parse_json_bookmarks(self, content: str) -> List[Dict[str, Any]]:
-        """Parse JSON-Bookmarks"""
+        """Parse JSON-Bookmarks von verschiedenen Browsern"""
         bookmarks = []
         
         try:
             data = json.loads(content)
             
-            def extract_bookmarks(node, category="Nicht zugeordnet", subcategory=None):
-                if isinstance(node, dict):
-                    if 'children' in node:
-                        # Folder
-                        folder_name = node.get('name', category)
-                        for child in node['children']:
-                            extract_bookmarks(child, folder_name, subcategory)
-                    elif 'url' in node:
-                        # Bookmark
-                        bookmarks.append({
-                            'title': node.get('name', ''),
-                            'url': node['url'],
-                            'category': category,
-                            'subcategory': subcategory
-                        })
-                elif isinstance(node, list):
-                    for item in node:
-                        extract_bookmarks(item, category, subcategory)
-            
-            extract_bookmarks(data)
-            
+            # Firefox JSON Format erkennen
+            if 'children' in data and 'root' in str(data).lower():
+                bookmarks = self._parse_firefox_json(data)
+            # Chrome JSON Format erkennen  
+            elif 'roots' in data:
+                bookmarks = self._parse_chrome_json(data)
+            # Safari JSON Format
+            elif isinstance(data, list) and all('Title' in item for item in data if isinstance(item, dict)):
+                bookmarks = self._parse_safari_json(data)
+            # Standard/Generic JSON Format
+            else:
+                bookmarks = self._parse_generic_json(data)
+                
         except Exception as e:
             logging.error(f"Error parsing JSON bookmarks: {e}")
             
+        return bookmarks
+    
+    def _parse_firefox_json(self, data: dict) -> List[Dict[str, Any]]:
+        """Parse Firefox JSON Format"""
+        bookmarks = []
+        
+        def extract_firefox_bookmarks(node, category="Nicht zugeordnet", subcategory=None):
+            if isinstance(node, dict):
+                if 'children' in node:
+                    # Folder
+                    folder_name = node.get('title', node.get('name', category))
+                    if folder_name and folder_name not in ['Bookmarks Toolbar', 'Bookmarks Menu', 'Other Bookmarks']:
+                        for child in node['children']:
+                            extract_firefox_bookmarks(child, folder_name, subcategory)
+                    else:
+                        for child in node['children']:
+                            extract_firefox_bookmarks(child, category, subcategory)
+                elif 'uri' in node or 'url' in node:
+                    # Firefox Bookmark
+                    url = node.get('uri', node.get('url', ''))
+                    title = node.get('title', node.get('name', url))
+                    if url and url.startswith(('http://', 'https://')):
+                        bookmarks.append({
+                            'title': title,
+                            'url': url,
+                            'category': category,
+                            'subcategory': subcategory
+                        })
+            elif isinstance(node, list):
+                for item in node:
+                    extract_firefox_bookmarks(item, category, subcategory)
+        
+        extract_firefox_bookmarks(data)
+        return bookmarks
+    
+    def _parse_chrome_json(self, data: dict) -> List[Dict[str, Any]]:
+        """Parse Chrome JSON Format"""
+        bookmarks = []
+        
+        def extract_chrome_bookmarks(node, category="Nicht zugeordnet", subcategory=None):
+            if isinstance(node, dict):
+                if 'children' in node:
+                    # Chrome Folder
+                    folder_name = node.get('name', category)
+                    for child in node['children']:
+                        extract_chrome_bookmarks(child, folder_name, subcategory)
+                elif 'url' in node and node.get('type') == 'url':
+                    # Chrome Bookmark
+                    bookmarks.append({
+                        'title': node.get('name', ''),
+                        'url': node['url'],
+                        'category': category,
+                        'subcategory': subcategory
+                    })
+            elif isinstance(node, list):
+                for item in node:
+                    extract_chrome_bookmarks(item, category, subcategory)
+        
+        # Chrome hat 'roots' mit verschiedenen Bereichen
+        if 'roots' in data:
+            for root_name, root_data in data['roots'].items():
+                if root_name in ['bookmark_bar', 'other', 'synced']:
+                    extract_chrome_bookmarks(root_data, 'Chrome Bookmarks')
+        
+        return bookmarks
+    
+    def _parse_safari_json(self, data: list) -> List[Dict[str, Any]]:
+        """Parse Safari JSON Format"""
+        bookmarks = []
+        
+        for item in data:
+            if isinstance(item, dict):
+                if 'Title' in item and 'URLString' in item:
+                    bookmarks.append({
+                        'title': item['Title'],
+                        'url': item['URLString'],
+                        'category': 'Safari Bookmarks',
+                        'subcategory': None
+                    })
+        
+        return bookmarks
+    
+    def _parse_generic_json(self, data) -> List[Dict[str, Any]]:
+        """Parse Generic JSON Format (fallback)"""
+        bookmarks = []
+        
+        def extract_bookmarks(node, category="Nicht zugeordnet", subcategory=None):
+            if isinstance(node, dict):
+                if 'children' in node:
+                    # Folder
+                    folder_name = node.get('name', node.get('title', category))
+                    for child in node['children']:
+                        extract_bookmarks(child, folder_name, subcategory)
+                elif 'url' in node:
+                    # Bookmark
+                    bookmarks.append({
+                        'title': node.get('name', node.get('title', '')),
+                        'url': node['url'],
+                        'category': category,
+                        'subcategory': subcategory
+                    })
+            elif isinstance(node, list):
+                for item in node:
+                    extract_bookmarks(item, category, subcategory)
+        
+        extract_bookmarks(data)
         return bookmarks
 
 class LinkValidator:
