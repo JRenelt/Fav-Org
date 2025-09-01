@@ -266,7 +266,7 @@ class UIStateManager {
 
 // React Komponenten
 
-const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUploadClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, deadLinksCount }) => {
+const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUploadClick, onValidateClick, onRemoveDuplicatesClick, onDeleteAllClick, deadLinksCount, hasValidated }) => {
   return (
     <header className="header-fixed">
       <div className="header-content">
@@ -305,7 +305,7 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
             size="sm"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
-            {deadLinksCount > 0 ? `Tote Links entfernen [${deadLinksCount}]` : 'Prüfen'}
+            {hasValidated && deadLinksCount > 0 ? `Prüfen [${deadLinksCount}]` : 'Prüfen'}
           </Button>
           
           <Button 
