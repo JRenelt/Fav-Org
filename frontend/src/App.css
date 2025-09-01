@@ -439,25 +439,7 @@ body {
 }
 
 .main-header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid var(--border-primary);
-  background: var(--bg-secondary);
-}
-
-.status-filter-section {
-  display: flex;
-  align-items: center;
-}
-
-.status-filter {
-  width: 120px;
-  height: 32px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
-  color: var(--text-primary);
+  display: none; /* Verstecken da nur noch das versteckte file input enthält */
 }
 
 .search-section {
@@ -467,10 +449,31 @@ body {
 }
 
 .search-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: none;
+}
+
+.search-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
+  flex: 1;
   max-width: 600px;
+}
+
+.status-filter-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.status-filter {
+  width: 140px;
+  height: 38px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
 }
 
 .search-icon {
