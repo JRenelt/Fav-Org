@@ -506,6 +506,114 @@ class BookmarkManager:
             "created_count": created_count,
             "message": f"Successfully created {created_count} sample bookmarks with subcategories"
         }
+
+    async def create_comprehensive_test_data(self):
+        """50 umfassende Testdaten mit Duplikaten und toten Links erstellen"""
+        test_bookmarks = [
+            # Normale funktionale Links (25 Stück)
+            {"title": "GitHub", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "GitLab", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "Stack Overflow", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
+            {"title": "MDN Web Docs", "url": "https://developer.mozilla.org", "category": "Development", "subcategory": "Documentation"},
+            {"title": "CodePen", "url": "https://codepen.io", "category": "Development", "subcategory": "Code Sharing"},
+            {"title": "Docker Hub", "url": "https://hub.docker.com", "category": "Development", "subcategory": "Container"},
+            {"title": "Visual Studio Code", "url": "https://code.visualstudio.com", "category": "Development"},
+            {"title": "React Documentation", "url": "https://reactjs.org", "category": "Development", "subcategory": "Documentation"},
+            {"title": "Node.js", "url": "https://nodejs.org", "category": "Development"},
+            {"title": "Python.org", "url": "https://python.org", "category": "Development"},
+            
+            {"title": "BBC News", "url": "https://www.bbc.com/news", "category": "News", "subcategory": "World News"},
+            {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "The Verge", "url": "https://www.theverge.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "Ars Technica", "url": "https://arstechnica.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "Hacker News", "url": "https://news.ycombinator.com", "category": "News", "subcategory": "Tech News"},
+            
+            {"title": "LinkedIn", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional"},
+            {"title": "Twitter", "url": "https://twitter.com", "category": "Social Media"},
+            {"title": "Mastodon", "url": "https://mastodon.social", "category": "Social Media", "subcategory": "Decentralized"},
+            
+            {"title": "Google Drive", "url": "https://drive.google.com", "category": "Tools", "subcategory": "Cloud Storage"},
+            {"title": "Dropbox", "url": "https://www.dropbox.com", "category": "Tools", "subcategory": "Cloud Storage"},
+            {"title": "Notion", "url": "https://www.notion.so", "category": "Tools", "subcategory": "Productivity"},
+            {"title": "Figma", "url": "https://www.figma.com", "category": "Tools", "subcategory": "Design"},
+            {"title": "Slack", "url": "https://slack.com", "category": "Tools", "subcategory": "Communication"},
+            
+            {"title": "YouTube", "url": "https://www.youtube.com", "category": "Entertainment", "subcategory": "Video"},
+            {"title": "Spotify", "url": "https://www.spotify.com", "category": "Entertainment", "subcategory": "Music"},
+            
+            # Duplikate (10 Stück - gleiche URLs mit leicht anderen Titeln)
+            {"title": "GitHub - Code Repository", "url": "https://github.com", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "GitLab Repository", "url": "https://gitlab.com", "category": "Development", "subcategory": "Code Hosting"},
+            {"title": "StackOverflow Q&A", "url": "https://stackoverflow.com", "category": "Development", "subcategory": "Q&A"},
+            {"title": "Mozilla Developer Network", "url": "https://developer.mozilla.org", "category": "Development", "subcategory": "Documentation"},
+            {"title": "CodePen Online Editor", "url": "https://codepen.io", "category": "Development", "subcategory": "Code Sharing"},
+            {"title": "BBC World News", "url": "https://www.bbc.com/news", "category": "News", "subcategory": "World News"},
+            {"title": "TechCrunch Tech News", "url": "https://techcrunch.com", "category": "News", "subcategory": "Tech News"},
+            {"title": "LinkedIn Professional Network", "url": "https://www.linkedin.com", "category": "Social Media", "subcategory": "Professional"},
+            {"title": "YouTube Video Platform", "url": "https://www.youtube.com", "category": "Entertainment", "subcategory": "Video"},
+            {"title": "Spotify Music Streaming", "url": "https://www.spotify.com", "category": "Entertainment", "subcategory": "Music"},
+            
+            # Tote Links (15 Stück - nicht erreichbare URLs)
+            {"title": "Dead Link Example 1", "url": "https://nonexistentdomain12345.com", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 2", "url": "https://brokenlink98765.org", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 3", "url": "https://deadurl54321.net", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 4", "url": "https://invalidsite11111.com", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 5", "url": "https://notfound22222.org", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 6", "url": "https://broken33333.net", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 7", "url": "https://dead44444.com", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 8", "url": "https://invalid55555.org", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 9", "url": "https://missing66666.net", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 10", "url": "https://gone77777.com", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 11", "url": "https://vanished88888.org", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 12", "url": "https://removed99999.net", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 13", "url": "https://nonexistent00000.com", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 14", "url": "https://brokensite12321.org", "category": "Testing", "is_dead": True},
+            {"title": "Dead Link Example 15", "url": "https://deadpage54345.net", "category": "Testing", "is_dead": True}
+        ]
+        
+        created_count = 0
+        duplicates_count = 0
+        dead_links_count = 0
+        
+        for bookmark_data in test_bookmarks:
+            bookmark_dict = {
+                "id": str(uuid.uuid4()),
+                "title": bookmark_data["title"],
+                "url": bookmark_data["url"],
+                "category": bookmark_data["category"],
+                "subcategory": bookmark_data.get("subcategory", ""),
+                "created_at": datetime.utcnow(),
+                "is_dead_link": bookmark_data.get("is_dead", False)
+            }
+            
+            # Check if this is a duplicate
+            existing = await db.bookmarks.find_one({"url": bookmark_data["url"]})
+            if existing:
+                duplicates_count += 1
+            
+            # Track dead links
+            if bookmark_data.get("is_dead", False):
+                dead_links_count += 1
+            
+            # Insert the bookmark
+            await db.bookmarks.insert_one(bookmark_dict)
+            created_count += 1
+        
+        # Update categories
+        await self.category_manager.update_bookmark_counts()
+        
+        return {
+            "message": f"Created {created_count} comprehensive test bookmarks",
+            "created_count": created_count,
+            "duplicates": duplicates_count,
+            "dead_links": dead_links_count,
+            "details": {
+                "normal_links": 25,
+                "duplicate_links": 10, 
+                "dead_links": 15,
+                "total": 50
+            }
+        }
     
     async def import_bookmarks(self, content: str, file_type: str) -> Dict[str, Any]:
         """Importiert Bookmarks aus verschiedenen Formaten"""
