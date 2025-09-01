@@ -1607,6 +1607,7 @@ function App() {
       <SettingsDialog
         isOpen={showSettings}
         onClose={() => setShowSettings(false)}
+        onExport={handleExport}
       />
 
       <HelpDialog
