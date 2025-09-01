@@ -617,28 +617,52 @@ body {
   gap: 8px;
 }
 
-/* Status-Badges mit korrekten Farben */
+/* Status Badges - Mit Toggle-Funktionalität */
 .status-badge {
-  font-size: 0.75rem;
   padding: 4px 8px;
   border-radius: 4px;
+  font-size: 0.75rem;
   font-weight: 500;
-  border: none;
+  text-transform: uppercase;
 }
 
-.status-badge.active {
-  background: var(--status-active);
-  color: white;
+.status-badge.clickable {
+  cursor: pointer;
+  transition: var(--transition-colors);
+  user-select: none;
 }
 
-.status-badge.dead {
-  background: var(--status-dead);
-  color: white;
+.status-badge.clickable:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
 }
 
-.status-badge.unchecked {
-  background: var(--status-unchecked);
-  color: #000000;
+.status-active {
+  background: var(--green-100);
+  color: var(--green-800);
+  border: 1px solid var(--green-200);
+}
+
+.status-active.clickable:hover {
+  background: var(--green-200);
+  border-color: var(--green-300);
+}
+
+.status-dead {
+  background: var(--red-100);
+  color: var(--red-800);
+  border: 1px solid var(--red-200);
+}
+
+.status-dead.clickable:hover {
+  background: var(--red-200);
+  border-color: var(--red-300);
+}
+
+.status-unchecked {
+  background: var(--gray-100);
+  color: var(--gray-800);
+  border: 1px solid var(--gray-200);
 }
 
 .edit-btn, .delete-btn {
