@@ -596,7 +596,7 @@ body {
   border-top: 3px solid var(--primary-cyan);
 }
 
-/* Responsive Design */
+/* Responsive Design - angepasst für fixierte Sidebar */
 @media (max-width: 1024px) {
   .bookmark-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -612,6 +612,10 @@ body {
 @media (max-width: 768px) {
   .sidebar {
     width: 240px;
+  }
+  
+  .main-content {
+    margin-left: 240px;
   }
   
   .header-content {
@@ -645,6 +649,10 @@ body {
 @media (max-width: 640px) {
   .sidebar {
     width: 200px;
+  }
+  
+  .main-content {
+    margin-left: 200px;
   }
   
   .search-section {
