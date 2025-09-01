@@ -961,19 +961,36 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, searchQuery
   );
 };
 
-const SettingsDialog = ({ isOpen, onClose }) => {
+// Settings Dialog Component
+const SettingsDialog = ({ isOpen, onClose, onExport }) => {
   const [settings, setSettings] = useState({
-    itemsPerPage: '50',
+    theme: 'dark',
+    autoSync: true,
+    notifications: true,
     linkTimeout: '10',
-    duplicateHandling: 'ignore',
     autoValidate: false,
-    showFavicons: true
+    duplicateHandling: 'ignore'
   });
 
+  const [activeTab, setActiveTab] = useState('display');
+  const [isExporting, setIsExporting] = useState(false);
+
   const handleSave = () => {
-    // Hier würden die Einstellungen gespeichert werden
-    toast.success('Einstellungen gespeichert');
+    // Einstellungen speichern würde hier implementiert werden
+    toast.success('Einstellungen gespeichert.');
     onClose();
+  };
+
+  const handleExport = async (format) => {
+    setIsExporting(true);
+    try {
+      await onExport(format, null);
+      toast.success(`${format.toUpperCase()}-Export erfolgreich heruntergeladen.`);
+    } catch (error) {
+      toast.error(`Export fehlgeschlagen: ${error.message}`);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   return (
@@ -986,38 +1003,46 @@ const SettingsDialog = ({ isOpen, onClose }) => {
           </DialogTitle>
         </DialogHeader>
         
-        <Tabs defaultValue="general" className="settings-tabs">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="settings-tabs">
           <TabsList className="settings-tab-list">
-            <TabsTrigger value="general">Allgemein</TabsTrigger>
+            <TabsTrigger value="display">Anzeige</TabsTrigger>
             <TabsTrigger value="validation">Validierung</TabsTrigger>
-            <TabsTrigger value="import">Import/Export</TabsTrigger>
+            <TabsTrigger value="import-export">Import/Export</TabsTrigger>
             <TabsTrigger value="categories">Kategorien</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="general" className="settings-tab-content">
+          <TabsContent value="display" className="settings-tab-content">
             <div className="setting-group">
-              <h4>Anzeige-Einstellungen</h4>
+              <h4>Darstellung</h4>
               <div className="setting-controls">
-                <Label>Bookmarks pro Seite:</Label>
-                <Select value={settings.itemsPerPage} onValueChange={(value) => setSettings({...settings, itemsPerPage: value})}>
+                <Label>Theme:</Label>
+                <Select value={settings.theme} onValueChange={(value) => setSettings({...settings, theme: value})}>
                   <SelectTrigger className="w-32">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="25">25</SelectItem>
-                    <SelectItem value="50">50</SelectItem>
-                    <SelectItem value="100">100</SelectItem>
-                    <SelectItem value="all">Alle</SelectItem>
+                    <SelectItem value="dark">Dunkel</SelectItem>
+                    <SelectItem value="light">Hell</SelectItem>
+                    <SelectItem value="auto">Automatisch</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
               <div className="setting-controls">
-                <Label>Favicons anzeigen:</Label>
+                <Label>Auto-Synchronisation:</Label>
                 <input 
                   type="checkbox" 
-                  checked={settings.showFavicons}
-                  onChange={(e) => setSettings({...settings, showFavicons: e.target.checked})}
+                  checked={settings.autoSync}
+                  onChange={(e) => setSettings({...settings, autoSync: e.target.checked})}
+                />
+              </div>
+              
+              <div className="setting-controls">
+                <Label>Benachrichtigungen:</Label>
+                <input 
+                  type="checkbox" 
+                  checked={settings.notifications}
+                  onChange={(e) => setSettings({...settings, notifications: e.target.checked})}
                 />
               </div>
             </div>
@@ -1052,9 +1077,9 @@ const SettingsDialog = ({ isOpen, onClose }) => {
             </div>
           </TabsContent>
           
-          <TabsContent value="import" className="settings-tab-content">
+          <TabsContent value="import-export" className="settings-tab-content">
             <div className="setting-group">
-              <h4>Import/Export-Optionen</h4>
+              <h4>Import-Optionen</h4>
               <div className="setting-controls">
                 <Label>Duplikate beim Import:</Label>
                 <Select value={settings.duplicateHandling} onValueChange={(value) => setSettings({...settings, duplicateHandling: value})}>
@@ -1067,6 +1092,52 @@ const SettingsDialog = ({ isOpen, onClose }) => {
                     <SelectItem value="keep-both">Beide behalten</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+            </div>
+
+            <div className="setting-group">
+              <h4>Export-Optionen</h4>
+              <p className="setting-description">
+                Exportieren Sie alle Ihre Favoriten in verschiedene Dateiformate.
+              </p>
+              
+              <div className="export-buttons-grid">
+                <Button
+                  onClick={() => handleExport('xml')}
+                  disabled={isExporting}
+                  className="export-format-btn xml-btn"
+                  size="sm"
+                >
+                  {isExporting ? (
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <FileText className="w-4 h-4 mr-2" />
+                  )}
+                  Als XML exportieren
+                </Button>
+                
+                <Button
+                  onClick={() => handleExport('csv')}
+                  disabled={isExporting}
+                  className="export-format-btn csv-btn"
+                  size="sm"
+                >
+                  {isExporting ? (
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <FileSpreadsheet className="w-4 h-4 mr-2" />
+                  )}
+                  Als CSV exportieren
+                </Button>
+              </div>
+
+              <div className="export-info-compact">
+                <div className="info-item-compact">
+                  <strong>XML:</strong> Mit Metadaten, ideal für Re-Import
+                </div>
+                <div className="info-item-compact">
+                  <strong>CSV:</strong> Tabellenformat, Excel-kompatibel
+                </div>
               </div>
             </div>
           </TabsContent>
