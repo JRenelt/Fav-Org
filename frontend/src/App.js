@@ -66,6 +66,15 @@ class FavoritesService {
     }
   }
 
+  async createTestData() {
+    try {
+      const response = await axios.post(`${this.baseURL}/bookmarks/create-test-data`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to create test data');
+    }
+  }
+
   async importBookmarks(file) {
     try {
       const formData = new FormData();
