@@ -305,7 +305,7 @@ body {
 
 /* Sidebar - BookmarkPro Style */
 .sidebar {
-  width: 280px;
+  width: 280px; /* Breiter: von 250px auf 280px */
   background: var(--bg-primary);
   border-right: 1px solid var(--border-primary);
   height: calc(100vh - 80px - 60px);
