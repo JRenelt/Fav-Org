@@ -285,92 +285,105 @@ const Header = ({ onSettingsClick, onHelpClick, onStatisticsClick, onExportClick
       <div className="header-content">
         <div className="logo-section">
           <div className="logo-icon">
-            <LinkIcon className="w-8 h-8" />
+            <LinkIcon className="w-6 h-6" />
           </div>
           <div className="app-info">
-            <h1 className="app-title">Favoriten-Manager</h1>
-            <p className="app-subtitle">Verwalten Sie alle Ihre Browser-Favoriten zentral</p>
+            <h1 className="app-title">Favorites Manager</h1>
+            <p className="app-subtitle">Verwalten Sie Ihre Lesezeichen</p>
           </div>
         </div>
-        
+
         <div className="header-actions">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onStatisticsClick}
+          <Button 
+            onClick={onStatisticsClick} 
             className="action-btn script-btn"
+            size="sm"
           >
-            <BarChart3 className="w-4 h-4 mr-2" />
+            <Download className="w-4 h-4 mr-2" />
             Scripts
           </Button>
           
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onExportClick}
+          <Button 
+            onClick={onExportClick} 
             className="action-btn export-btn"
+            size="sm"
           >
-            <Download className="w-4 h-4 mr-2" />
+            <Archive className="w-4 h-4 mr-2" />
             Export
           </Button>
           
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onValidateClick}
+          <Button 
+            onClick={onValidateClick} 
             className="action-btn check-btn"
+            size="sm"
           >
-            <FileCheck className="w-4 h-4 mr-2" />
+            <CheckCircle className="w-4 h-4 mr-2" />
             Prüfen
           </Button>
           
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onRemoveDuplicatesClick}
+          <Button 
+            onClick={onRemoveDuplicatesClick} 
             className="action-btn duplicate-btn"
+            size="sm"
           >
             <Copy className="w-4 h-4 mr-2" />
             Duplikate
           </Button>
-          
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onDeleteAllClick}
-            className="action-btn cleanup-btn delete-all-btn"
-          >
-            <X className="w-4 h-4" />
-          </Button>
         </div>
-        
+
         <div className="header-right">
           <Button
-            variant="ghost"
-            size="sm"
             onClick={onStatisticsClick}
-            className="header-btn stats-btn"
+            className="header-btn"
+            size="sm"
+            title="Statistiken"
           >
-            <BarChart3 className="w-5 h-5" />
+            <BarChart3 className="w-4 h-4" />
           </Button>
           
           <Button
-            variant="ghost"
-            size="sm"
             onClick={onHelpClick}
-            className="header-btn help-btn"
+            className="header-btn"
+            size="sm"
+            title="Hilfe"
           >
-            <HelpCircle className="w-5 h-5" />
+            <HelpCircle className="w-4 h-4" />
           </Button>
           
           <Button
-            variant="ghost"
-            size="sm"
             onClick={onSettingsClick}
-            className="header-btn settings-btn"
+            className="header-btn"
+            size="sm" 
+            title="Einstellungen"
           >
-            <Settings className="w-5 h-5" />
+            <Settings className="w-4 h-4" />
           </Button>
+          
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button 
+                className="action-btn delete-all-btn cleanup-btn"
+                size="sm"
+                title="Alle Favoriten löschen"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Alle Favoriten löschen?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Favoriten werden dauerhaft gelöscht.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Abbrechen</AlertDialogCancel>
+                <AlertDialogAction onClick={onDeleteAllClick}>
+                  Löschen
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </header>
