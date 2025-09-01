@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "FavLink Manager - SaaS-Anwendung zum dynamischen Generieren einer Website aus Browser-Favoriten mit CRUD-Operationen, Export-Funktionen, Link-Validierung und Duplikat-Erkennung. Deutsche Benutzeroberfläche mit BookmarkPro-Design."
+user_problem_statement: "FavLink Manager - SaaS-Anwendung zum dynamischen Generieren einer Website aus Browser-Favoriten mit CRUD-Operationen, Export-Funktionen, Link-Validierung und Duplikat-Erkennung. Deutsche Benutzeroberfläche mit BookmarkPro-Design. Neueste Updates: Escape-Taste für Suchfeld, intelligenter Prüfen-Button, Anzahl im Header, Suchfeld-Focus, komplett überarbeitete System-Einstellungen."
 
 backend:
   - task: "Bookmark CRUD Operations"
@@ -149,6 +149,18 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Link-Validierung erfolgreich getestet: POST /api/bookmarks/validate prüfte 33 Links und erkannte 10 Dead Links korrekt. Async-Validierung mit aiohttp funktioniert einwandfrei"
+
+  - task: "Dead Links Removal"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Neuer Endpunkt DELETE /api/bookmarks/dead-links implementiert für intelligenten Prüfen-Button"
 
   - task: "Duplicate Detection"
     implemented: true
@@ -203,9 +215,9 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "BookmarkDialog vollständig implementiert mit Formvalidierung, Fehlerbehandlung und dynamischen Kategorien"
+        comment: "BookmarkDialog vollständig implementiert mit Formvalidierung, Fehlerbehandlung und dynamischen Kategorien, erweitert mit verbesserter UX"
 
-  - task: "Export Dialog (XML/CSV separate buttons)"
+  - task: "System Settings Dialog (Modern Design)"
     implemented: true
     working: "NA"
     file: "frontend/src/App.js"
@@ -215,9 +227,21 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "ExportDialog mit separaten XML/CSV Buttons und verbesserter UI implementiert"
+        comment: "System-Einstellungen komplett überarbeitet: Moderne Tab-Navigation mit Icons, Export-Integration, erweiterte Optionen, Gefahrenbereich, Loading-States"
 
-  - task: "Header Layout Fix"
+  - task: "Header Enhancements"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Header erweitert: Bookmark-Anzahl [33] neben Titel, intelligenter Prüfen-Button, Scripts Button entfernt, Layout optimiert"
+
+  - task: "Search Field Enhancements"
     implemented: true
     working: "NA"
     file: "frontend/src/App.js"
@@ -227,7 +251,19 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Header-Layout korrigiert: 'Favorites Manager' links, Statistiken/Hilfe/Einstellungen rechts"
+        comment: "Suchfeld-Verbesserungen: Auto-Focus beim Seitenstart, Escape-Taste löscht Suche, Status-Filter rechts neben Suchfeld positioniert"
+
+  - task: "Intelligent Validation Button"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Intelligenter Prüfen-Button: 'Prüfen' → 'Prüfen [Anzahl]' → tote Links entfernen → zurück zu 'Prüfen'. Mit hasValidated State-Management"
 
   - task: "Status Color System"
     implemented: true
@@ -239,35 +275,23 @@ frontend:
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "CSS-Variablen für Status-Farben definiert und Dialog-Styles erweitert"
-
-  - task: "Scripts Download Button"
-    implemented: true
-    working: "NA"
-    file: "frontend/src/App.js"
-    stuck_count: 0
-    priority: "medium"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Download-Button korrigiert: trennt downloadCollector() von createSamples()"
+        comment: "CSS-Variablen für Status-Farben definiert: Aktiv (Grün), Tot (Rot), Ungeprüft (Weiß). Moderne Settings-Dialog CSS hinzugefügt"
 
 metadata:
   created_by: "main_agent"
-  version: "1.0"
-  test_sequence: 0
+  version: "2.0"
+  test_sequence: 1
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Bookmark Dialog (Create/Edit)"
-    - "Export Dialog (XML/CSV separate buttons)"
-    - "Header Layout Fix"
-    - "Status Color System"
-    - "Scripts Download Button"
+    - "Dead Links Removal"
+    - "System Settings Dialog (Modern Design)"
+    - "Header Enhancements"
+    - "Search Field Enhancements"
+    - "Intelligent Validation Button"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
@@ -277,3 +301,5 @@ agent_communication:
     message: "Frontend-Implementierung abgeschlossen: BookmarkDialog mit Validierung, ExportDialog mit separaten Buttons, Header-Layout korrigiert, Scripts Download Button gefixt. Bereit für Backend-Tests."
   - agent: "testing"
     message: "✅ BACKEND TESTING ABGESCHLOSSEN: Alle kritischen Backend-Features erfolgreich getestet und funktionsfähig. CRUD Operations (100%), Export-Funktionalität XML/CSV (100%), Link-Validierung (100%), Duplikat-Erkennung (100%), Scripts ZIP-Download (100%), Statistiken-Endpunkt (100%). Ein kleiner Datetime-Vergleichsfehler wurde behoben. Backend ist produktionsreif. Fokus kann nun auf Frontend-Testing gelegt werden."
+  - agent: "main"
+    message: "MAJOR UI UPDATE: Komplett überarbeitete System-Einstellungen mit modernem Design, Header-Enhancements mit Bookmark-Anzahl, intelligenter Prüfen-Button, Escape-Taste für Suchfeld, Auto-Focus und neuer Dead-Links-Removal Endpunkt. Bereit für umfassende Tests aller neuen Features."
