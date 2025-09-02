@@ -375,6 +375,17 @@ body {
   background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--accent-primary) 100%);
 }
 
+.remove-dead-btn {
+  background: #dc2626 !important;
+  color: white !important;
+  border: 1px solid #b91c1c !important;
+}
+
+.remove-dead-btn:hover {
+  background: #b91c1c !important;
+  box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3) !important;
+}
+
 .stat-value.dead {
   color: var(--status-dead);
 }
