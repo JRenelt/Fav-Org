@@ -983,7 +983,61 @@ async def create_test_data():
 @api_router.get("/statistics", response_model=Statistics)
 async def get_statistics():
     """Erweiterte Statistiken mit Unterkategorien abrufen"""
-    return await bookmark_manager.statistics_manager.generate_statistics()
+    # Get all bookmarks
+    bookmarks = await db.bookmarks.find().to_list(1000)
+    categories = await db.categories.find().to_list(1000)
+    
+    # Count by status_type
+    total_bookmarks = len(bookmarks)
+    active_links = len([b for b in bookmarks if b.get('status_type') == 'active'])
+    dead_links = len([b for b in bookmarks if b.get('status_type') == 'dead'])
+    localhost_links = len([b for b in bookmarks if b.get('status_type') == 'localhost'])
+    duplicate_links = len([b for b in bookmarks if b.get('status_type') == 'duplicate'])
+    timeout_links = len([b for b in bookmarks if b.get('is_timeout_link', False)])
+    unchecked_links = len([b for b in bookmarks if not b.get('last_checked')])
+    
+    # Categories distribution
+    categories_distribution = {}
+    subcategories_distribution = {}
+    top_categories = []
+    
+    for bookmark in bookmarks:
+        category = bookmark.get('category', 'Uncategorized')
+        subcategory = bookmark.get('subcategory')
+        
+        # Count categories
+        categories_distribution[category] = categories_distribution.get(category, 0) + 1
+        
+        # Count subcategories
+        if subcategory:
+            if category not in subcategories_distribution:
+                subcategories_distribution[category] = {}
+            subcategories_distribution[category][subcategory] = subcategories_distribution[category].get(subcategory, 0) + 1
+    
+    # Generate top categories
+    for cat, count in sorted(categories_distribution.items(), key=lambda x: x[1], reverse=True)[:6]:
+        top_categories.append({
+            "name": cat,
+            "count": count,
+            "percentage": round((count / total_bookmarks) * 100) if total_bookmarks > 0 else 0,
+            "subcategories": subcategories_distribution.get(cat, {})
+        })
+    
+    return {
+        "total_bookmarks": total_bookmarks,
+        "total_categories": len(categories),
+        "active_links": active_links,
+        "dead_links": dead_links,
+        "localhost_links": localhost_links,
+        "duplicate_links": duplicate_links,
+        "timeout_links": timeout_links,
+        "unchecked_links": unchecked_links,
+        "categories_distribution": categories_distribution,
+        "subcategories_distribution": subcategories_distribution,
+        "top_categories": top_categories,
+        "recent_bookmarks": 0,
+        "last_updated": datetime.now(timezone.utc).isoformat()
+    }
 
 @api_router.get("/download/collector")
 async def download_collector():
