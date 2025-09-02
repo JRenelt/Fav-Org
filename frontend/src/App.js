@@ -942,9 +942,25 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
 
   return (
     <div className="sidebar">
+      <div className="sidebar-resizer"></div>
       <div className="sidebar-content">
-        <h3 className="sidebar-title">Kategorien</h3>
-        <p className="sidebar-subtitle">Basierend auf Browser-Ordnern</p>
+        <div className="sidebar-header">
+          <h3 className="sidebar-title">Kategorien</h3>
+          <div className="sidebar-info">
+            <button
+              className="info-link"
+              onClick={() => setShowBrowserInfo(!showBrowserInfo)}
+              title="Information über Kategorien"
+            >
+              <AlertTriangle className="w-4 h-4" />
+            </button>
+            {showBrowserInfo && (
+              <div className="info-tooltip">
+                Basierend auf Browser-Ordnern
+              </div>
+            )}
+          </div>
+        </div>
         
         <div className="category-list">
           <div
