@@ -344,7 +344,7 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
             size="sm"
           >
             <CheckCircle className="w-4 h-4 mr-2" />
-            {hasValidated && deadLinksCount > 0 ? `Prüfen [${deadLinksCount}]` : 'Prüfen'}
+            {deadLinksCount > 0 ? `Prüfen [${deadLinksCount}]` : 'Prüfen'}
           </Button>
           
           <Button 
