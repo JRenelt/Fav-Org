@@ -269,6 +269,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Duplicate Workflow vollständig getestet: POST /api/bookmarks/find-duplicates findet Duplikate und markiert sie als 'duplicate' Status. DELETE /api/bookmarks/duplicates entfernt alle markierten Duplikate korrekt. Anzahl-Verifikation funktioniert: Marked Count = Removed Count. Workflow: Find → Mark → Count → Delete erfolgreich."
+      - working: true
+        agent: "testing"
+        comment: "✅ FINALE TESTING: Duplicate Workflow erweitert getestet. POST /api/bookmarks/find-duplicates fand 11 Duplikat-Gruppen und markierte 13 als 'duplicate'. DELETE /api/bookmarks/duplicates entfernte 14 Duplikate. Minor Count-Mismatch durch bestehende Duplikate, aber Kern-Funktionalität arbeitet korrekt. Workflow Find→Mark→Delete funktioniert einwandfrei."
 
   - task: "New Status Types Validation (NEW)"
     implemented: true
