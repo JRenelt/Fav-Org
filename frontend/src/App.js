@@ -610,39 +610,58 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
         <div className="statistics-content">
           <div className="stats-overview">
             <div className="stat-card stat-card-primary">
-              <span className="stat-label">Gesamt</span>
-              <span className="stat-value stat-large">{statistics.total_bookmarks}</span>
+              <span className="stat-label">📊 Gesamt Favoriten</span>
+              <span className="stat-value">{statistics.total_bookmarks}</span>
             </div>
             <div className="stat-card stat-card-categories">
-              <span className="stat-label">Kategorien</span>
-              <span className="stat-value stat-large">{statistics.total_categories}</span>
+              <span className="stat-label">📁 Kategorien</span>
+              <span className="stat-value">{statistics.total_categories}</span>
             </div>
           </div>
           
+          <h3 className="stats-section-title">Status-Verteilung</h3>
           <div className="stats-grid-dialog">
-            <div className="stat-item-dialog">
-              <span className="stat-label">✅ Aktiv:</span>
-              <span className="stat-value active">{statistics.active_links}</span>
+            <div className="stat-item-dialog stat-active">
+              <div className="stat-icon">✅</div>
+              <div className="stat-info">
+                <span className="stat-label">Aktiv</span>
+                <span className="stat-value">{statistics.active_links}</span>
+              </div>
             </div>
-            <div className="stat-item-dialog">
-              <span className="stat-label">❌ Tot:</span>
-              <span className="stat-value dead">{statistics.dead_links}</span>
+            <div className="stat-item-dialog stat-dead">
+              <div className="stat-icon">❌</div>
+              <div className="stat-info">
+                <span className="stat-label">Tot</span>
+                <span className="stat-value">{statistics.dead_links}</span>
+              </div>
             </div>
-            <div className="stat-item-dialog">
-              <span className="stat-label">🏠 Localhost:</span>
-              <span className="stat-value localhost">{statistics.localhost_links || 0}</span>
+            <div className="stat-item-dialog stat-localhost">
+              <div className="stat-icon">🏠</div>
+              <div className="stat-info">
+                <span className="stat-label">Localhost</span>
+                <span className="stat-value">{statistics.localhost_links || 0}</span>
+              </div>
             </div>
-            <div className="stat-item-dialog">
-              <span className="stat-label">🔄 Duplikate:</span>
-              <span className="stat-value duplicate">{statistics.duplicate_links || 0}</span>
+            <div className="stat-item-dialog stat-duplicate">
+              <div className="stat-icon">🔄</div>
+              <div className="stat-info">
+                <span className="stat-label">Duplikate</span>
+                <span className="stat-value">{statistics.duplicate_links || 0}</span>
+              </div>
             </div>
-            <div className="stat-item-dialog">
-              <span className="stat-label">⏱️ Timeout:</span>
-              <span className="stat-value timeout">{statistics.timeout_links}</span>
+            <div className="stat-item-dialog stat-timeout">
+              <div className="stat-icon">⏱️</div>
+              <div className="stat-info">
+                <span className="stat-label">Timeout</span>
+                <span className="stat-value">{statistics.timeout_links}</span>
+              </div>
             </div>
-            <div className="stat-item-dialog">
-              <span className="stat-label">❓ Ungeprüft:</span>
-              <span className="stat-value ungeprüft">{statistics.unchecked_links}</span>
+            <div className="stat-item-dialog stat-unchecked">
+              <div className="stat-icon">❓</div>
+              <div className="stat-info">
+                <span className="stat-label">Ungeprüft</span>
+                <span className="stat-value">{statistics.unchecked_links}</span>
+              </div>
             </div>
           </div>
           
