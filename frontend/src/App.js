@@ -183,7 +183,7 @@ class FavoritesService {
 
   async moveBookmarks(bookmarkIds, targetCategory, targetSubcategory = null) {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/move`, {
+      const response = await axios.post(`${this.baseURL}/api/bookmarks/move`, {
         bookmark_ids: bookmarkIds,
         target_category: targetCategory,
         target_subcategory: targetSubcategory
@@ -196,7 +196,7 @@ class FavoritesService {
 
   async validateLinks() {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/validate`);
+      const response = await axios.post(`${this.baseURL}/api/bookmarks/validate`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to validate links');
@@ -205,7 +205,7 @@ class FavoritesService {
 
   async removeDeadLinks() {
     try {
-      const response = await axios.delete(`${this.baseURL}/bookmarks/dead-links`);
+      const response = await axios.delete(`${this.baseURL}/api/bookmarks/dead-links`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to remove dead links');
@@ -214,7 +214,7 @@ class FavoritesService {
 
   async removeDuplicates() {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/remove-duplicates`);
+      const response = await axios.post(`${this.baseURL}/api/bookmarks/remove-duplicates`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to remove duplicates');
@@ -223,7 +223,7 @@ class FavoritesService {
 
   async deleteAllBookmarks() {
     try {
-      const response = await axios.delete(`${this.baseURL}/bookmarks/all`);
+      const response = await axios.delete(`${this.baseURL}/api/bookmarks/all`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to delete all bookmarks');
@@ -232,7 +232,7 @@ class FavoritesService {
 
   async searchBookmarks(query) {
     try {
-      const response = await axios.get(`${this.baseURL}/bookmarks/search/${encodeURIComponent(query)}`);
+      const response = await axios.get(`${this.baseURL}/api/bookmarks/search/${encodeURIComponent(query)}`);
       return response.data;
     } catch (error) {
       throw new Error('Search failed');
@@ -241,7 +241,7 @@ class FavoritesService {
 
   async deleteBookmark(bookmarkId) {
     try {
-      const response = await axios.delete(`${this.baseURL}/bookmarks/${bookmarkId}`);
+      const response = await axios.delete(`${this.baseURL}/api/bookmarks/${bookmarkId}`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to delete bookmark');
