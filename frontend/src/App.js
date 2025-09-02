@@ -313,7 +313,7 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
           <div className="app-info">
             <h1 className="app-title">
               FavOrg 
-              <span className="bookmark-count">[{totalBookmarks}]</span>
+              <span className="bookmark-count">[{filteredCount !== null ? filteredCount : totalBookmarks}]</span>
             </h1>
             <p className="app-subtitle">Verwalten Sie Ihre Lesezeichen</p>
           </div>
