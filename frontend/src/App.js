@@ -163,7 +163,7 @@ class FavoritesService {
 
   async getAllCategories() {
     try {
-      const response = await axios.get(`${this.baseURL}/categories`);
+      const response = await axios.get(`${this.baseURL}/api/categories`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch categories');
