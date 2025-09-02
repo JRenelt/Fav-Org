@@ -2040,8 +2040,14 @@ function App() {
           activeSubcategory={activeSubcategory}
           onCategoryChange={handleCategoryChange}
           bookmarkCounts={bookmarkCounts}
-          statistics={statistics}
         />
+        
+        {showStatistics && (
+          <StatisticsPanel 
+            statistics={statistics} 
+            onRefresh={loadStatistics}
+          />
+        )}
 
         <MainContent
           searchQuery={searchQuery}
