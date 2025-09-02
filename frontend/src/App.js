@@ -833,57 +833,65 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
           backgroundColor: 'var(--bg-primary)',
           color: 'var(--text-primary)'
         }}>
-          {/* Haupt-Widgets */}
-          <div className="stats-overview">
-            <div className="stat-card stat-card-primary">
-              <span className="stat-label">📊 Gesamt Favoriten</span>
-              <span className="stat-value">{statistics.total_bookmarks}</span>
+          {/* Alle Statistiken als Widgets in tabellarischer Form */}
+          <div className="stats-table-grid">
+            <div className="stat-widget stat-widget-primary">
+              <div className="stat-icon">📊</div>
+              <div className="stat-info">
+                <span className="stat-label">Gesamt Favoriten</span>
+                <span className="stat-value">{statistics.total_bookmarks}</span>
+              </div>
             </div>
-            <div className="stat-card stat-card-categories">
-              <span className="stat-label">📁 Kategorien</span>
-              <span className="stat-value">{statistics.total_categories}</span>
+            
+            <div className="stat-widget stat-widget-categories">
+              <div className="stat-icon">📁</div>
+              <div className="stat-info">
+                <span className="stat-label">Kategorien</span>
+                <span className="stat-value">{statistics.total_categories}</span>
+              </div>
             </div>
-          </div>
-          
-          {/* Status-Widgets */}
-          <h3 className="stats-section-title" style={{ color: 'var(--text-primary)' }}>📈 Status-Verteilung</h3>
-          <div className="stats-grid-dialog">
-            <div className="stat-item-dialog stat-active">
+            
+            <div className="stat-widget stat-widget-active">
               <div className="stat-icon">✅</div>
               <div className="stat-info">
                 <span className="stat-label">Aktiv</span>
                 <span className="stat-value">{statistics.active_links}</span>
               </div>
             </div>
-            <div className="stat-item-dialog stat-dead">
+            
+            <div className="stat-widget stat-widget-dead">
               <div className="stat-icon">❌</div>
               <div className="stat-info">
                 <span className="stat-label">Tot</span>
                 <span className="stat-value">{statistics.dead_links}</span>
               </div>
             </div>
-            <div className="stat-item-dialog stat-localhost">
+            
+            <div className="stat-widget stat-widget-localhost">
               <div className="stat-icon">🏠</div>
               <div className="stat-info">
                 <span className="stat-label">Localhost</span>
                 <span className="stat-value">{statistics.localhost_links || 0}</span>
               </div>
             </div>
-            <div className="stat-item-dialog stat-duplicate">
+            
+            <div className="stat-widget stat-widget-duplicate">
               <div className="stat-icon">🔄</div>
               <div className="stat-info">
                 <span className="stat-label">Duplikate</span>
                 <span className="stat-value">{statistics.duplicate_links || 0}</span>
               </div>
             </div>
-            <div className="stat-item-dialog stat-timeout">
+            
+            <div className="stat-widget stat-widget-timeout">
               <div className="stat-icon">⏱️</div>
               <div className="stat-info">
                 <span className="stat-label">Timeout</span>
                 <span className="stat-value">{statistics.timeout_links}</span>
               </div>
             </div>
-            <div className="stat-item-dialog stat-unchecked">
+            
+            <div className="stat-widget stat-widget-unchecked">
               <div className="stat-icon">❓</div>
               <div className="stat-info">
                 <span className="stat-label">Ungeprüft</span>
