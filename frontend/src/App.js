@@ -538,7 +538,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             <Label htmlFor="category">Kategorie</Label>
             <Select 
               value={formData.category} 
-              onValueChange={(value) => setFormData({...formData, category: value, subcategory: ''})}
+              onValueChange={(value) => setFormData({...formData, category: value, subcategory: '__none__'})}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Kategorie wählen" />
