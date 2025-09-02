@@ -353,7 +353,7 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
             size="sm"
           >
             <Copy className="w-4 h-4 mr-2" />
-            {hasDuplicatesMarked && duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
+            {duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
           </Button>
           
 
