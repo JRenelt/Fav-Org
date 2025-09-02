@@ -847,7 +847,7 @@ class BookmarkManager:
     
     async def get_all_bookmarks(self) -> List[Bookmark]:
         """Alle Bookmarks abrufen"""
-        bookmarks = await self.db.bookmarks.find().to_list(1000)
+        bookmarks = await self.db.bookmarks.find().to_list(100000)
         return [Bookmark(**bookmark) for bookmark in bookmarks]
     
     async def get_bookmarks_by_category(self, category: str, subcategory: Optional[str] = None) -> List[Bookmark]:
