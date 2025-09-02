@@ -593,7 +593,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-const StatisticsPanel = ({ statistics }) => {
+const StatisticsPanel = ({ statistics, onRefresh }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   
   if (!statistics) return null;
@@ -644,7 +644,7 @@ const StatisticsPanel = ({ statistics }) => {
           
           <Button
             size="sm"
-            onClick={() => window.location.reload()}
+            onClick={onRefresh}
             className="refresh-btn"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
