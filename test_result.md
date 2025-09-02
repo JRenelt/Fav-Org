@@ -119,6 +119,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ CRUD Operations vollständig getestet: CREATE (POST /api/bookmarks), READ (GET /api/bookmarks), UPDATE (PUT /api/bookmarks/{id}), DELETE (DELETE /api/bookmarks/{id}), MOVE (POST /api/bookmarks/move) - alle funktionieren korrekt"
+      - working: true
+        agent: "testing"
+        comment: "✅ CRUD Operations erneut vollständig getestet nach User-Report. Alle Endpunkte funktionieren perfekt: CREATE (200 OK), READ (29 bookmarks), UPDATE (200 OK), DELETE (200 OK), MOVE (200 OK). Keine Probleme festgestellt."
 
   - task: "Export Functionality (XML/CSV)"
     implemented: true
