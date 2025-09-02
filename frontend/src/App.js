@@ -1842,20 +1842,7 @@ function App() {
     }
   };
 
-  const handleRemoveDeadLinks = async () => {
-    try {
-      setIsLoading(true);
-      const result = await favoritesService.removeDeadLinks();
-      toast.success(`${result.removed_count} tote Links wurden entfernt. Localhost-Links wurden verschont.`);
-      await loadBookmarks();
-      await loadCategories();
-      await loadStatistics();
-    } catch (error) {
-      toast.error('Entfernen fehlgeschlagen: ' + error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
 
   const handleDeleteAll = async () => {
     try {
