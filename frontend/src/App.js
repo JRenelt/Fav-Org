@@ -845,7 +845,11 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
           className={`status-badge ${currentStatus.className} status-select`}
         >
           {statusOptions.map(option => (
-            <option key={option.value} value={option.value}>
+            <option 
+              key={option.value} 
+              value={option.value}
+              className={`status-option ${option.className}`}
+            >
               {option.label}
             </option>
           ))}
