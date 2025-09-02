@@ -2004,7 +2004,13 @@ function App() {
         onClose={() => setShowHelp(false)}
       />
 
-      <Toaster position="top-right" />
+      <Toaster 
+        position="top-center" 
+        offset="140px"
+        closeButton={true}
+        duration={4000}
+        visibleToasts={3}
+      />
     </div>
   );
 }
