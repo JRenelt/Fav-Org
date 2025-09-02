@@ -424,7 +424,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     title: '',
     url: '',
     category: 'Uncategorized',
-    subcategory: ''
+    subcategory: '__none__'
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
