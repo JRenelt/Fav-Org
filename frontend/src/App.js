@@ -817,15 +817,22 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="statistics-dialog">
+      <DialogContent className="statistics-dialog" style={{
+        backgroundColor: 'var(--bg-primary)',
+        color: 'var(--text-primary)',
+        border: '1px solid var(--border-primary)'
+      }}>
         <DialogHeader>
-          <DialogTitle className="dialog-title">
+          <DialogTitle className="dialog-title" style={{ color: 'var(--text-primary)' }}>
             <BarChart3 className="w-5 h-5 mr-2" />
             Statistiken
           </DialogTitle>
         </DialogHeader>
         
-        <div className="statistics-content">
+        <div className="statistics-content" style={{
+          backgroundColor: 'var(--bg-primary)',
+          color: 'var(--text-primary)'
+        }}>
           {/* Haupt-Widgets */}
           <div className="stats-overview">
             <div className="stat-card stat-card-primary">
@@ -839,7 +846,7 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
           </div>
           
           {/* Status-Widgets */}
-          <h3 className="stats-section-title">📈 Status-Verteilung</h3>
+          <h3 className="stats-section-title" style={{ color: 'var(--text-primary)' }}>📈 Status-Verteilung</h3>
           <div className="stats-grid-dialog">
             <div className="stat-item-dialog stat-active">
               <div className="stat-icon">✅</div>
@@ -893,7 +900,14 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
               <RefreshCw className="w-4 h-4 mr-2" />
               Aktualisieren
             </Button>
-            <Button variant="outline" onClick={onClose} className="stats-close-btn">
+            <Button variant="outline"  
+            onClick={onClose} 
+            className="stats-close-btn" 
+            style={{
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              borderColor: 'var(--border-primary)'
+            }}>
               Schließen
             </Button>
           </div>
