@@ -2002,7 +2002,7 @@ function App() {
         onFileUploadClick={handleFileUpload}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
-        onRemoveDeadLinksClick={handleRemoveDeadLinks}
+
         onDeleteAllClick={handleDeleteAll}
         deadLinksCount={statistics?.dead_links || 0}
         hasValidated={hasValidated}
