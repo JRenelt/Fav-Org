@@ -182,6 +182,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FINALE TESTING: 'Tote entfernen' Funktionalität mit neuer Logik perfekt getestet. Entfernt nur status_type='dead' Links (1 entfernt), verschont localhost-Links vollständig (4 localhost Links blieben erhalten). Localhost-Schutz bei Dead-Links-Removal funktioniert einwandfrei wie gefordert."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: 'Tote entfernen' Funktionalität erneut vollständig getestet. DELETE /api/bookmarks/dead-links entfernte 19 Dead Links korrekt und verschonte localhost-Links perfekt. Localhost-Schutz funktioniert einwandfrei - localhost-Links werden NICHT als dead gezählt oder entfernt."
 
   - task: "Duplicate Detection"
     implemented: true
