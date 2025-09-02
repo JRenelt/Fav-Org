@@ -840,7 +840,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
     onToggleStatus(bookmark.id, 'active');
   };
 
-  if (filteredBookmarks.length === 0) {
+  if (bookmarks.length === 0) {
     return (
       <div className="empty-state">
         <LinkIcon className="empty-icon" />
