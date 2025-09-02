@@ -296,6 +296,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Neue Status-Typen Validierung erfolgreich: status_type Feld zu Bookmark-Model hinzugefügt. Alle Status-Typen (active, dead, localhost, duplicate) werden korrekt gespeichert und abgerufen. Statistiken berücksichtigen neue Status-Typen. GET /api/bookmarks gibt status_type korrekt zurück. Status-Updates werden in Statistiken reflektiert."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Neue Status-Typen Validierung erneut vollständig getestet. Alle Status-Typen (active, dead, localhost, duplicate, unchecked) werden korrekt gespeichert, abgerufen und in Statistiken berücksichtigt. status_type Feld funktioniert perfekt mit is_dead_link Synchronisation. Datenkonsistenz gewährleistet."
 
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
