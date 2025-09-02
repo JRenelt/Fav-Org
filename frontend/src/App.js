@@ -1677,20 +1677,18 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
         <div className="content-header">
           <div className="view-toggle">
             <button
-              className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+              className={`view-toggle-btn-compact ${viewMode === 'cards' ? 'active' : ''}`}
               onClick={() => onViewModeChange('cards')}
               title="Karten-Ansicht"
             >
-              <Grid className="w-4 h-4 mr-2" />
-              Karten
+              <Grid className="w-4 h-4" />
             </button>
             <button
-              className={`view-toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
+              className={`view-toggle-btn-compact ${viewMode === 'table' ? 'active' : ''}`}
               onClick={() => onViewModeChange('table')}
               title="Tabellen-Ansicht"
             >
-              <Table className="w-4 h-4 mr-2" />
-              Tabelle
+              <Table className="w-4 h-4" />
             </button>
           </div>
         </div>
