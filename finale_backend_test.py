@@ -5,7 +5,7 @@ import io
 from datetime import datetime
 
 class FinaleBackendTester:
-    def __init__(self, base_url="https://bookmark-buddy-1.preview.emergentagent.com"):
+    def __init__(self, base_url="https://webmark-organizer.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.tests_run = 0
