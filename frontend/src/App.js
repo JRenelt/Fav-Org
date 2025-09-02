@@ -1612,6 +1612,8 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
                 <SelectItem value="all">Alle Status</SelectItem>
                 <SelectItem value="active">Nur aktive</SelectItem>
                 <SelectItem value="dead">Nur tote</SelectItem>
+                <SelectItem value="localhost">Nur localhost</SelectItem>
+                <SelectItem value="duplicate">Nur Duplikate</SelectItem>
                 <SelectItem value="unchecked">Nur ungeprüfte</SelectItem>
               </SelectContent>
             </Select>
