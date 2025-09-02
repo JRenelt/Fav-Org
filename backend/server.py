@@ -526,7 +526,7 @@ class StatisticsManager:
     async def generate_statistics(self) -> Statistics:
         """Generiert umfassende Statistiken mit Unterkategorien"""
         
-        bookmarks = await self.db.bookmarks.find().to_list(1000)
+        bookmarks = await self.db.bookmarks.find().to_list(100000)
         categories = await self.db.categories.find().to_list(100000)
         
         total_bookmarks = len(bookmarks)
