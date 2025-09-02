@@ -1682,6 +1682,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showStatistics, setShowStatistics] = useState(true);
   const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
   const [filteredBookmarks, setFilteredBookmarks] = useState([]);
