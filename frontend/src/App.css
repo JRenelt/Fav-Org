@@ -1602,3 +1602,38 @@ body {
   color: var(--text-secondary);
   text-align: center;
 }
+
+/* Light Theme Overrides */
+:root.light-theme {
+  /* Light Theme Farbschema */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-accent: #e2e8f0;
+  
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-accent: #3b82f6;
+  
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  
+  /* Status Badge Colors für Light Theme */
+  --green-100: #dcfce7;
+  --green-200: #bbf7d0;
+  --green-300: #86efac;
+  --green-800: #166534;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-300: #fca5a5;
+  --red-800: #991b1b;
+  --gray-100: #f9fafb;
+  --gray-200: #f3f4f6;
+  --gray-800: #1f2937;
+  
+  /* Schatten für Light Theme */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
