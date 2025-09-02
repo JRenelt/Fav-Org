@@ -799,52 +799,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   );
 };
 
-const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, searchQuery, statusFilter }) => {
-  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
-
-  useEffect(() => {
-    let filtered = bookmarks;
-
-    // Status-Filter anwenden
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(bookmark => {
-        const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
-        
-        switch (statusFilter) {
-          case 'active':
-            return statusType === 'active';
-          case 'dead':
-            return statusType === 'dead';
-          case 'localhost':
-            return statusType === 'localhost';
-          case 'duplicate':
-            return statusType === 'duplicate';
-          case 'unchecked':
-            return !bookmark.last_checked;
-          default:
-            return true;
-        }
-      });
-    }
-
-    // Such-Filter anwenden
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(bookmark =>
-        bookmark.title.toLowerCase().includes(query) ||
-        bookmark.url.toLowerCase().includes(query) ||
-        bookmark.category.toLowerCase().includes(query) ||
-        (bookmark.subcategory && bookmark.subcategory.toLowerCase().includes(query))
-      );
-    }
-
-    // Duplikate nach URL sortieren für besseren Vergleich
-    if (statusFilter === 'duplicate') {
-      filtered = filtered.sort((a, b) => a.url.localeCompare(b.url));
-    }
-
-    setFilteredBookmarks(filtered);
-  }, [bookmarks, searchQuery, statusFilter]);
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus }) => {
 
   const getStatusBadge = (bookmark) => {
     const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
