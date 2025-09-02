@@ -2154,6 +2154,18 @@ function App() {
         <p>&copy; 2025 Jörg Renelt – Version 1.0.1 – Alle Rechte vorbehalten.</p>
       </footer>
 
+      {/* Custom Draggable Toasts */}
+      {toasts.map(toast => (
+        <DraggableToast
+          key={toast.id}
+          id={toast.id.toString()}
+          message={toast.message}
+          type={toast.type}
+          duration={toast.duration}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
+
       <BookmarkDialog
         isOpen={showBookmarkDialog}
         onClose={() => {
