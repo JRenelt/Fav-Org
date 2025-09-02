@@ -1078,13 +1078,14 @@ async def remove_duplicates():
 
 @api_router.delete("/bookmarks/dead-links")
 async def remove_dead_links():
-    """Alle toten Links entfernen"""
-    result = await db.bookmarks.delete_many({"is_dead_link": True})
+    """Alle toten Links entfernen (außer localhost)"""
+    # Nur Links mit status_type="dead" löschen, localhost verschonen
+    result = await db.bookmarks.delete_many({"status_type": "dead"})
     await bookmark_manager.category_manager.update_bookmark_counts()
     
     return {
         "removed_count": result.deleted_count,
-        "message": f"Removed {result.deleted_count} dead links"
+        "message": f"Removed {result.deleted_count} dead links (localhost links preserved)"
     }
 
 @api_router.put("/bookmarks/{bookmark_id}/status")
