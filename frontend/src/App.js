@@ -1995,11 +1995,11 @@ function App() {
       <Header
         onSettingsClick={() => setShowSettings(true)}
         onHelpClick={() => setShowHelp(true)}
+        onStatsToggle={() => setShowStatistics(!showStatistics)}
         onCreateBookmarkClick={handleCreateBookmark}
         onFileUploadClick={handleFileUpload}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
-
         onDeleteAllClick={handleDeleteAll}
         deadLinksCount={statistics?.dead_links || 0}
         hasValidated={hasValidated}
