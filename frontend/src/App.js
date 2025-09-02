@@ -435,7 +435,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
         title: bookmark.title || '',
         url: bookmark.url || '',
         category: bookmark.category || 'Uncategorized',
-        subcategory: bookmark.subcategory || ''
+        subcategory: bookmark.subcategory || '__none__'
       });
     } else {
       setFormData({
