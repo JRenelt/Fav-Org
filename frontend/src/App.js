@@ -156,7 +156,7 @@ class FavoritesService {
 
   async createBookmark(bookmarkData) {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks`, bookmarkData);
+      const response = await axios.post(`${this.baseURL}/api/bookmarks`, bookmarkData);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to create bookmark');
@@ -165,7 +165,7 @@ class FavoritesService {
 
   async updateBookmark(bookmarkId, updateData) {
     try {
-      const response = await axios.put(`${this.baseURL}/bookmarks/${bookmarkId}`, updateData);
+      const response = await axios.put(`${this.baseURL}/api/bookmarks/${bookmarkId}`, updateData);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to update bookmark');
@@ -174,7 +174,7 @@ class FavoritesService {
 
   async updateBookmarkStatus(id, isActive) {
     try {
-      const response = await axios.put(`${this.baseURL}/bookmarks/${id}/status`, { is_active: isActive });
+      const response = await axios.put(`${this.baseURL}/api/bookmarks/${id}/status`, { is_active: isActive });
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to update bookmark status');
