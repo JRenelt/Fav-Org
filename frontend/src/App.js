@@ -1656,26 +1656,41 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
 
 // Hauptkomponente
 function App() {
+  // Core State Management
   const [bookmarks, setBookmarks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [statistics, setStatistics] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // UI State
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeSubcategory, setActiveSubcategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [viewMode, setViewMode] = useState(() => {
+    return localStorage.getItem('favorg-view-mode') || 'cards';
+  });
+
+  // Dialog States
+  const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
-  const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
-  const [bookmarkCounts, setBookmarkCounts] = useState({ total: 0 });
+
+  // Validation and Duplicates
   const [hasValidated, setHasValidated] = useState(false);
   const [duplicateCount, setDuplicateCount] = useState(0);
   const [hasDuplicatesMarked, setHasDuplicatesMarked] = useState(false);
 
-  // Services
+  // Additional UI State
+  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
+  const [bookmarkCounts, setBookmarkCounts] = useState({ total: 0 });
+
+  // Toast Management
+  const [toasts, setToasts] = useState([]);
+  const [toastIdCounter, setToastIdCounter] = useState(0);
+
   const favoritesService = new FavoritesService();
   const uiStateManager = new UIStateManager();
 
