@@ -281,6 +281,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FINALE TESTING: Duplicate Workflow erweitert getestet. POST /api/bookmarks/find-duplicates fand 11 Duplikat-Gruppen und markierte 13 als 'duplicate'. DELETE /api/bookmarks/duplicates entfernte 14 Duplikate. Minor Count-Mismatch durch bestehende Duplikate, aber Kern-Funktionalität arbeitet korrekt. Workflow Find→Mark→Delete funktioniert einwandfrei."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Duplicate Workflow erneut vollständig getestet. POST /api/bookmarks/find-duplicates fand 21 Duplikat-Gruppen und markierte 22 als 'duplicate'. DELETE /api/bookmarks/duplicates entfernte 23 Duplikate erfolgreich. Workflow Find→Mark→Delete funktioniert perfekt. URL-Normalisierung arbeitet korrekt für Duplikat-Erkennung."
 
   - task: "New Status Types Validation (NEW)"
     implemented: true
