@@ -1650,6 +1650,8 @@ function App() {
   const [filteredBookmarks, setFilteredBookmarks] = useState([]);
   const [bookmarkCounts, setBookmarkCounts] = useState({ total: 0 });
   const [hasValidated, setHasValidated] = useState(false);
+  const [duplicateCount, setDuplicateCount] = useState(0);
+  const [hasDuplicatesMarked, setHasDuplicatesMarked] = useState(false);
 
   // Services
   const favoritesService = new FavoritesService();
