@@ -240,6 +240,42 @@ backend:
         agent: "testing"
         comment: "✅ Categories Endpunkt INTENSIV getestet nach User-Report: GET /api/categories funktioniert PERFEKT (200 OK). 36 Kategorien erfolgreich abgerufen, JSON-Format korrekt, CORS-Header vorhanden, MongoDB-Verbindung funktioniert. Backend ist NICHT das Problem - Issue liegt im Frontend oder Netzwerk-Konnektivität."
 
+  - task: "Status Toggle Functionality (NEW)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Status Toggle Functionality vollständig getestet: PUT /api/bookmarks/{id}/status mit allen Status-Typen (active, dead, localhost, duplicate) funktioniert perfekt. Toggle-Logik dead ↔ localhost erfolgreich getestet. Status-Feld wird korrekt in Bookmark-Model gespeichert und abgerufen. is_dead_link Konsistenz gewährleistet."
+
+  - task: "Duplicate Workflow (NEW)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Duplicate Workflow vollständig getestet: POST /api/bookmarks/find-duplicates findet Duplikate und markiert sie als 'duplicate' Status. DELETE /api/bookmarks/duplicates entfernt alle markierten Duplikate korrekt. Anzahl-Verifikation funktioniert: Marked Count = Removed Count. Workflow: Find → Mark → Count → Delete erfolgreich."
+
+  - task: "New Status Types Validation (NEW)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Neue Status-Typen Validierung erfolgreich: status_type Feld zu Bookmark-Model hinzugefügt. Alle Status-Typen (active, dead, localhost, duplicate) werden korrekt gespeichert und abgerufen. Statistiken berücksichtigen neue Status-Typen. GET /api/bookmarks gibt status_type korrekt zurück. Status-Updates werden in Statistiken reflektiert."
+
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
     implemented: true
