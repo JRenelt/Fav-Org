@@ -2030,6 +2030,7 @@ function App() {
         totalBookmarks={statistics?.total_bookmarks || 0}
         duplicateCount={duplicateCount}
         hasDuplicatesMarked={hasDuplicatesMarked}
+        filteredCount={filteredBookmarks.length}
       />
 
       <div className="app-content">
