@@ -1694,7 +1694,7 @@ function App() {
     let filtered = bookmarks;
 
     // Kategorie-Filter
-    if (activeCategory && activeCategory !== 'Alle') {
+    if (activeCategory && activeCategory !== 'Alle' && activeCategory !== 'all') {
       filtered = filtered.filter(bookmark => 
         bookmark.category === activeCategory &&
         (!activeSubcategory || bookmark.subcategory === activeSubcategory)
