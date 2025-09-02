@@ -1691,6 +1691,13 @@ function App() {
       const data = await favoritesService.getAllBookmarks();
       setBookmarks(data || []);
       setBookmarkCounts({ total: (data || []).length });
+      
+      // Duplikate automatisch zählen
+      const duplicates = (data || []).filter(bookmark => bookmark.status_type === 'duplicate');
+      setDuplicateCount(duplicates.length);
+      if (duplicates.length > 0) {
+        setHasDuplicatesMarked(true);
+      }
     } catch (error) {
       console.warn('No bookmarks found or error loading bookmarks:', error);
       setBookmarks([]);
