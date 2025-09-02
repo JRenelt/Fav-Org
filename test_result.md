@@ -239,6 +239,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FINALE TESTING: Statistik-Endpunkt mit neuen Status-Typen perfekt getestet. Korrekte Zählung: 28 total, 23 aktive, 5 dead Links. Dead Links Count basiert korrekt auf status_type='dead'. Localhost-Links (1) werden NICHT als dead gezählt. Statistik-Genauigkeit mit neuen Status-Typen gewährleistet."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Statistik-Endpunkt mit allen neuen Status-Typen vollständig getestet. Korrekte Zählung: 35 total, 27 aktive, 6 dead, 0 localhost, 0 duplicate, 15 unchecked Links. Status-basierte Statistiken arbeiten perfekt und reflektieren alle Änderungen korrekt."
 
   - task: "Categories Endpoint (User Reported Issue)"
     implemented: true
