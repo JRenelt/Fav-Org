@@ -608,6 +608,7 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
         </DialogHeader>
         
         <div className="statistics-content">
+          {/* Haupt-Widgets */}
           <div className="stats-overview">
             <div className="stat-card stat-card-primary">
               <span className="stat-label">📊 Gesamt Favoriten</span>
@@ -619,7 +620,8 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
             </div>
           </div>
           
-          <h3 className="stats-section-title">Status-Verteilung</h3>
+          {/* Status-Widgets */}
+          <h3 className="stats-section-title">📈 Status-Verteilung</h3>
           <div className="stats-grid-dialog">
             <div className="stat-item-dialog stat-active">
               <div className="stat-icon">✅</div>
