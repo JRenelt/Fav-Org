@@ -331,6 +331,15 @@ class LinkValidator:
         link_result = await self.check_link(bookmark.url)
         bookmark.is_dead_link = link_result["is_dead_link"]
         bookmark.last_checked = datetime.now(timezone.utc)
+        
+        # Status-Type entsprechend setzen
+        if link_result["is_dead_link"]:
+            bookmark.status_type = "dead"
+        else:
+            # Nur auf active setzen wenn nicht bereits localhost oder duplicate
+            if not hasattr(bookmark, 'status_type') or bookmark.status_type in ["active", "dead"]:
+                bookmark.status_type = "active"
+        
         return bookmark
 
 class DuplicateDetector:
