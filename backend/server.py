@@ -388,7 +388,7 @@ class DuplicateDetector:
     
     async def find_and_mark_duplicates(self):
         """Duplikate finden und mit 'duplicate' Status markieren"""
-        bookmarks = await db.bookmarks.find({}).to_list(10000)
+        bookmarks = await db.bookmarks.find({}).to_list(100000)
         
         # Gruppiere Bookmarks nach normalisierter URL
         url_groups = {}
