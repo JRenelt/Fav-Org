@@ -811,6 +811,8 @@ const HelpDialog = ({ isOpen, onClose }) => {
     </Dialog>
   );
 };
+
+const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
   if (!statistics) return null;
 
   return (
