@@ -1942,7 +1942,7 @@ function App() {
       </div>
 
       <footer className="app-footer">
-        <p>&copy; ID2 - Jörg Renelt * 2025 Hamburg</p>
+        <p>&copy; 2025 Jörg Renelt – Version 1.0.1 – Alle Rechte vorbehalten.</p>
       </footer>
 
       <BookmarkDialog
