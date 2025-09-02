@@ -158,6 +158,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Link-Validierung erneut getestet: POST /api/bookmarks/validate funktioniert weiterhin perfekt. Validierte 55 Links und fand 9 Dead Links korrekt. Integration mit Dead Links Removal Workflow erfolgreich."
+      - working: true
+        agent: "testing"
+        comment: "✅ FINALE TESTING: Link-Validierung mit Status-Integration perfekt getestet. Validierte 28 Links, fand 5 Dead Links. Korrekte status_type Setzung: Tote Links→status_type='dead', aktive Links→status_type='active'. Status-Konsistenz bei Validierung gewährleistet."
 
   - task: "Dead Links Removal"
     implemented: true
