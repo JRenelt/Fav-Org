@@ -1991,7 +1991,7 @@ function App() {
       <Header
         onSettingsClick={() => setShowSettings(true)}
         onHelpClick={() => setShowHelp(true)}
-        onStatsToggle={() => setShowStatistics(!showStatistics)}
+        onStatsToggle={() => setShowStatistics(true)}
         onCreateBookmarkClick={handleCreateBookmark}
         onFileUploadClick={handleFileUpload}
         onValidateClick={handleValidateLinks}
