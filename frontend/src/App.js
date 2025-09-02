@@ -1951,6 +1951,8 @@ function App() {
         deadLinksCount={statistics?.dead_links || 0}
         hasValidated={hasValidated}
         totalBookmarks={statistics?.total_bookmarks || 0}
+        duplicateCount={duplicateCount}
+        hasDuplicatesMarked={hasDuplicatesMarked}
       />
 
       <div className="app-content">
