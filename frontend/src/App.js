@@ -562,7 +562,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                   <SelectValue placeholder="Unterkategorie wählen (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Keine Unterkategorie</SelectItem>
+                  <SelectItem value="__none__">Keine Unterkategorie</SelectItem>
                   {subcategoriesForCategory.map(subcat => (
                     <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
                   ))}
