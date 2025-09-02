@@ -2037,6 +2037,7 @@ function App() {
           activeSubcategory={activeSubcategory}
           onCategoryChange={handleCategoryChange}
           bookmarkCounts={bookmarkCounts}
+          statistics={statistics}
         />
         
         {showStatistics && (
