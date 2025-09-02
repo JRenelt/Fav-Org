@@ -527,7 +527,7 @@ class StatisticsManager:
         """Generiert umfassende Statistiken mit Unterkategorien"""
         
         bookmarks = await self.db.bookmarks.find().to_list(1000)
-        categories = await self.db.categories.find().to_list(1000)
+        categories = await self.db.categories.find().to_list(100000)
         
         total_bookmarks = len(bookmarks)
         total_categories = len(categories)
