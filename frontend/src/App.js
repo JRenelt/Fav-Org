@@ -822,67 +822,30 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
   const getStatusBadge = (bookmark) => {
     const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
     
-    const handleStatusClick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Rotations-Toggle-Logik: Active → Dead → Localhost → Unchecked → Active
-      let nextStatus;
-      switch (statusType) {
-        case 'active': nextStatus = 'dead'; break;
-        case 'dead': nextStatus = 'localhost'; break;
-        case 'localhost': nextStatus = 'unchecked'; break;
-        case 'unchecked': nextStatus = 'active'; break;
-        default: nextStatus = 'active'; break;
-      }
-      
-      onToggleStatus(bookmark.id, nextStatus);
-    };
+    const statusOptions = [
+      { value: 'active', label: 'Aktiv', className: 'status-active' },
+      { value: 'dead', label: 'Tot', className: 'status-dead' },
+      { value: 'localhost', label: 'Localhost', className: 'status-localhost' },
+      { value: 'unchecked', label: 'Ungeprüft', className: 'status-unchecked' }
+    ];
+    
+    const currentStatus = statusOptions.find(s => s.value === statusType) || statusOptions[0];
 
-    switch (statusType) {
-      case 'active':
-        return (
-          <span 
-            className="status-badge status-active clickable" 
-            onClick={handleStatusClick}
-            title="Klicken um als tot zu markieren"
-          >
-            Aktiv
-          </span>
-        );
-      case 'dead':
-        return (
-          <span 
-            className="status-badge status-dead clickable" 
-            onClick={handleStatusClick}
-            title="Klicken um als localhost zu markieren"
-          >
-            Tot
-          </span>
-        );
-      case 'localhost':
-        return (
-          <span 
-            className="status-badge status-localhost clickable" 
-            onClick={handleStatusClick}
-            title="Klicken um als ungeprüft zu markieren"
-          >
-            Localhost
-          </span>
-        );
-      case 'duplicate':
-        return <span className="status-badge status-duplicate">Duplikat</span>;
-      default:
-        return (
-          <span 
-            className="status-badge status-unchecked clickable" 
-            onClick={handleStatusClick}
-            title="Klicken um als aktiv zu markieren"
-          >
-            Ungeprüft
-          </span>
-        );
-    }
+    return (
+      <div className="status-badge-dropdown" onClick={(e) => e.stopPropagation()}>
+        <select 
+          value={statusType || 'active'} 
+          onChange={(e) => onToggleStatus(bookmark.id, e.target.value)}
+          className={`status-badge ${currentStatus.className} status-select`}
+        >
+          {statusOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
   };
 
   const handleStatusToggle = (bookmark) => {
