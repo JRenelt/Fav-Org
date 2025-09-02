@@ -1719,6 +1719,42 @@ function App() {
     localStorage.setItem('favorg-view-mode', mode);
   }, []);
 
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Escape key to clear search
+      if (event.key === 'Escape') {
+        setSearchQuery('');
+        return;
+      }
+      
+      // Ctrl+F to focus search
+      if (event.ctrlKey && event.key === 'f') {
+        event.preventDefault();
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput) searchInput.focus();
+        return;
+      }
+      
+      // Ctrl+N to create new bookmark
+      if (event.ctrlKey && event.key === 'n') {
+        event.preventDefault();
+        handleCreateBookmark();
+        return;
+      }
+      
+      // F5 to refresh statistics
+      if (event.key === 'F5') {
+        event.preventDefault();
+        loadStatistics();
+        return;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   // Load functions definiert vor useEffect
   const loadBookmarks = useCallback(async () => {
     try {
