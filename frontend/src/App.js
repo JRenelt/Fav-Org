@@ -1810,10 +1810,16 @@ function App() {
     }
   };
 
-  const handleToggleStatus = async (bookmarkId, isActive) => {
+  const handleToggleStatus = async (bookmarkId, statusType) => {
     try {
-      await favoritesService.updateBookmarkStatus(bookmarkId, isActive);
-      toast.success(`Link-Status auf ${isActive ? 'aktiv' : 'tot'} gesetzt.`);
+      await favoritesService.updateBookmarkStatus(bookmarkId, statusType);
+      const statusLabel = {
+        'active': 'Aktiv',
+        'dead': 'Tot', 
+        'localhost': 'Localhost',
+        'duplicate': 'Duplikat'
+      }[statusType] || statusType;
+      toast.success(`Link-Status auf "${statusLabel}" gesetzt.`);
       await loadBookmarks();
       await loadStatistics();
     } catch (error) {
