@@ -172,9 +172,9 @@ class FavoritesService {
     }
   }
 
-  async updateBookmarkStatus(id, isActive) {
+  async updateBookmarkStatus(id, statusType) {
     try {
-      const response = await axios.put(`${this.baseURL}/api/bookmarks/${id}/status`, { is_active: isActive });
+      const response = await axios.put(`${this.baseURL}/api/bookmarks/${id}/status`, { status_type: statusType });
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to update bookmark status');
