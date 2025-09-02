@@ -831,6 +831,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
       { value: 'active', label: 'Aktiv', className: 'status-active' },
       { value: 'dead', label: 'Tot', className: 'status-dead' },
       { value: 'localhost', label: 'Localhost', className: 'status-localhost' },
+      { value: 'duplicate', label: 'Duplikat', className: 'status-duplicate' },
       { value: 'unchecked', label: 'Ungeprüft', className: 'status-unchecked' }
     ];
     
