@@ -355,6 +355,16 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
             <Copy className="w-4 h-4 mr-2" />
             {hasDuplicatesMarked && duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
           </Button>
+          
+          <Button 
+            onClick={onRemoveDeadLinksClick} 
+            className="action-btn remove-dead-btn"
+            size="sm"
+            title="Alle toten Links entfernen (Localhost wird verschont)"
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            Tote entfernen
+          </Button>
         </div>
 
         <div className="header-right">
