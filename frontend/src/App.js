@@ -58,7 +58,7 @@ class FavoritesService {
 
   async createSamples() {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/create-samples`);
+      const response = await axios.post(`${this.baseURL}/api/bookmarks/create-samples`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to create samples');
@@ -67,32 +67,16 @@ class FavoritesService {
 
   async createTestData() {
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/create-test-data`);
+      const response = await axios.post(`${this.baseURL}/api/bookmarks/create-test-data`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to create test data');
     }
   }
 
-  async importBookmarks(file) {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const response = await axios.post(`${this.baseURL}/bookmarks/import`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.detail || 'Failed to import bookmarks');
-    }
-  }
-
   async getStatistics() {
     try {
-      const response = await axios.get(`${this.baseURL}/statistics`);
+      const response = await axios.get(`${this.baseURL}/api/statistics`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch statistics');
@@ -101,7 +85,7 @@ class FavoritesService {
 
   async exportBookmarks(format, category = null) {
     try {
-      const response = await axios.post(`${this.baseURL}/export`, {
+      const response = await axios.post(`${this.baseURL}/api/export`, {
         format: format,
         category: category
       }, {
@@ -130,7 +114,7 @@ class FavoritesService {
     formData.append('file', file);
     
     try {
-      const response = await axios.post(`${this.baseURL}/bookmarks/import`, formData, {
+      const response = await axios.post(`${this.baseURL}/api/bookmarks/import`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       return response.data;
