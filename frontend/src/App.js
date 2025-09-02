@@ -823,32 +823,59 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
   }, [bookmarks, searchQuery, statusFilter]);
 
   const getStatusBadge = (bookmark) => {
+    const [showStatusMenu, setShowStatusMenu] = useState(false);
     const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
     
-    const statusOptions = [
-      { value: 'active', label: 'Aktiv', className: 'status-active' },
-      { value: 'dead', label: 'Tot', className: 'status-dead' },
-      { value: 'localhost', label: 'Localhost', className: 'status-localhost' },
-      { value: 'unchecked', label: 'Ungeprüft', className: 'status-unchecked' }
-    ];
+    const handleStatusClick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setShowStatusMenu(!showStatusMenu);
+    };
     
-    const currentStatus = statusOptions.find(s => s.value === statusType) || statusOptions[3];
+    const handleStatusChange = (newStatus) => {
+      onToggleStatus(bookmark.id, newStatus);
+      setShowStatusMenu(false);
+    };
+
+    const getStatusDisplay = (status) => {
+      switch (status) {
+        case 'active': return { label: 'Aktiv', className: 'status-active' };
+        case 'dead': return { label: 'Tot', className: 'status-dead' };
+        case 'localhost': return { label: 'Localhost', className: 'status-localhost' };
+        case 'duplicate': return { label: 'Duplikat', className: 'status-duplicate' };
+        default: return { label: 'Ungeprüft', className: 'status-unchecked' };
+      }
+    };
+
+    const currentStatus = getStatusDisplay(statusType);
 
     return (
-      <Select value={statusType || 'unchecked'} onValueChange={(newStatus) => onToggleStatus(bookmark.id, newStatus)}>
-        <SelectTrigger className={`status-badge ${currentStatus.className} clickable status-select-trigger`}>
-          <SelectValue placeholder={currentStatus.label} />
-        </SelectTrigger>
-        <SelectContent>
-          {statusOptions.map(option => (
-            <SelectItem key={option.value} value={option.value || 'unchecked'}>
-              <span className={`status-badge-small ${option.className}`}>
-                {option.label}
-              </span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="status-badge-container" style={{ position: 'relative' }}>
+        <span 
+          className={`status-badge ${currentStatus.className} clickable`}
+          onClick={handleStatusClick}
+          title="Klicken um Status zu ändern"
+        >
+          {currentStatus.label}
+        </span>
+        
+        {showStatusMenu && (
+          <div className="status-menu">
+            {['active', 'dead', 'localhost', 'unchecked'].map(status => {
+              const statusInfo = getStatusDisplay(status);
+              return (
+                <button
+                  key={status}
+                  className={`status-menu-item ${statusInfo.className}`}
+                  onClick={() => handleStatusChange(status)}
+                >
+                  {statusInfo.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
     );
   };
 
