@@ -251,6 +251,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Status Toggle Functionality vollständig getestet: PUT /api/bookmarks/{id}/status mit allen Status-Typen (active, dead, localhost, duplicate) funktioniert perfekt. Toggle-Logik dead ↔ localhost erfolgreich getestet. Status-Feld wird korrekt in Bookmark-Model gespeichert und abgerufen. is_dead_link Konsistenz gewährleistet."
+      - working: true
+        agent: "testing"
+        comment: "✅ FINALE TESTING: Status-Management Features vollständig getestet mit allen Status-Typen. Perfekte Synchronisation zwischen status_type und is_dead_link Feldern. Alle Status-Übergänge (active→dead→localhost→duplicate→active) funktionieren korrekt und werden in Statistiken reflektiert."
 
   - task: "Duplicate Workflow (NEW)"
     implemented: true
