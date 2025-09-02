@@ -49,6 +49,7 @@ class Bookmark(BaseModel):
     last_checked: Optional[datetime] = None
     favicon: Optional[str] = None
     description: Optional[str] = None
+    status_type: str = "active"  # active, dead, localhost, duplicate
 
 class Category(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
