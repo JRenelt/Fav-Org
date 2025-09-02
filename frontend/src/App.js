@@ -2057,6 +2057,13 @@ function App() {
         onClose={() => setShowHelp(false)}
       />
 
+      <StatisticsDialog
+        isOpen={showStatistics}
+        onClose={() => setShowStatistics(false)}
+        statistics={statistics}
+        onRefresh={loadStatistics}
+      />
+
       <Toaster 
         position="top-center" 
         offset="140px"
