@@ -678,6 +678,28 @@ body {
   border: 1px solid var(--gray-200);
 }
 
+.status-localhost {
+  background: #f1f5f9; /* Hellgrau/Light Grey */
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.status-localhost.clickable:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.status-duplicate {
+  background: #fed7aa; /* Orange */
+  color: #ea580c;
+  border: 1px solid #fdba74;
+}
+
+.status-duplicate.clickable:hover {
+  background: #fdba74;
+  border-color: #fb923c;
+}
+
 .edit-btn, .delete-btn {
   padding: 6px;
   border-radius: 4px;
