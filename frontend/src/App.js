@@ -1634,8 +1634,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
           onDeleteBookmark={onDeleteBookmark}
           onEditBookmark={onEditBookmark}
           onToggleStatus={onToggleStatus}
-          searchQuery={searchQuery}
-          statusFilter={statusFilter}
         />
       </div>
     </main>
