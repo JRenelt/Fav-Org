@@ -225,6 +225,21 @@ backend:
         agent: "testing"
         comment: "✅ Statistiken-Endpunkt nach User-Report vollständig getestet: GET /api/statistics funktioniert einwandfrei (200 OK). Aktuelle Daten: 29 Bookmarks, 36 Kategorien, 28 aktive Links, 1 Dead Link. Header-Anzeige Daten korrekt verfügbar."
 
+  - task: "Categories Endpoint (User Reported Issue)"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User berichtet 'Failed to fetch categories' Fehler im Frontend. System-Einstellungen funktionieren nicht."
+      - working: true
+        agent: "testing"
+        comment: "✅ Categories Endpunkt INTENSIV getestet nach User-Report: GET /api/categories funktioniert PERFEKT (200 OK). 36 Kategorien erfolgreich abgerufen, JSON-Format korrekt, CORS-Header vorhanden, MongoDB-Verbindung funktioniert. Backend ist NICHT das Problem - Issue liegt im Frontend oder Netzwerk-Konnektivität."
+
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
     implemented: true
