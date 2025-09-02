@@ -829,8 +829,8 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
   };
 
   const handleStatusToggle = (bookmark) => {
-    const newStatus = !bookmark.is_dead_link;
-    onToggleStatus(bookmark.id, newStatus);
+    // Alte Toggle-Logik: Dead -> Active
+    onToggleStatus(bookmark.id, 'active');
   };
 
   if (filteredBookmarks.length === 0) {
