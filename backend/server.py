@@ -1157,6 +1157,8 @@ async def update_bookmark_status(bookmark_id: str, status: dict):
             update_data = {"is_dead_link": False, "status_type": "localhost"}
         elif status_type == "duplicate":
             update_data = {"is_dead_link": False, "status_type": "duplicate"}
+        elif status_type == "unchecked":
+            update_data = {"is_dead_link": False, "status_type": "unchecked", "last_checked": None}
         
         result = await db.bookmarks.update_one(
             {"id": bookmark_id},
