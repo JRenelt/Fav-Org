@@ -476,7 +476,7 @@ class CategoryManager:
     
     async def get_all_categories(self) -> List[Category]:
         """Alle Kategorien mit Hierarchie abrufen"""
-        categories = await self.db.categories.find().to_list(1000)
+        categories = await self.db.categories.find().to_list(100000)
         return [Category(**cat) for cat in categories]
     
     async def create_category(self, name: str, parent_category: Optional[str] = None) -> Category:
