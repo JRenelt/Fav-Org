@@ -122,6 +122,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ CRUD Operations erneut vollständig getestet nach User-Report. Alle Endpunkte funktionieren perfekt: CREATE (200 OK), READ (29 bookmarks), UPDATE (200 OK), DELETE (200 OK), MOVE (200 OK). Keine Probleme festgestellt."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: CRUD Operations vollständig getestet. CREATE (Bookmark erstellt), READ (alle Bookmarks + nach Kategorie), UPDATE (Titel/Kategorie geändert), MOVE (Kategorie gewechselt), DELETE (erfolgreich entfernt). Alle CRUD-Operationen funktionieren perfekt mit 100% Success Rate."
 
   - task: "Export Functionality (XML/CSV)"
     implemented: true
