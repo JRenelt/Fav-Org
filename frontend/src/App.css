@@ -755,6 +755,32 @@ body {
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
 }
 
+/* Status Option Colors */
+.status-option.status-active {
+  background-color: var(--green-100) !important;
+  color: var(--green-800) !important;
+}
+
+.status-option.status-dead {
+  background-color: var(--red-100) !important;
+  color: var(--red-800) !important;
+}
+
+.status-option.status-localhost {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+.status-option.status-duplicate {
+  background-color: #fed7aa !important;
+  color: #ea580c !important;
+}
+
+.status-option.status-unchecked {
+  background-color: var(--gray-100) !important;
+  color: var(--gray-800) !important;
+}
+
 /* Statistik Dialog */
 .statistics-dialog {
   width: 600px !important;
