@@ -856,7 +856,7 @@ class BookmarkManager:
         if subcategory:
             query["subcategory"] = subcategory
             
-        bookmarks = await self.db.bookmarks.find(query).to_list(1000)
+        bookmarks = await self.db.bookmarks.find(query).to_list(100000)
         return [Bookmark(**bookmark) for bookmark in bookmarks]
     
     async def create_bookmark(self, bookmark_data: BookmarkCreate) -> Bookmark:
