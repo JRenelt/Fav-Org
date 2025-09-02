@@ -835,13 +835,13 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
     const currentStatus = statusOptions.find(s => s.value === statusType) || statusOptions[3];
 
     return (
-      <Select value={statusType} onValueChange={(newStatus) => onToggleStatus(bookmark.id, newStatus)}>
+      <Select value={statusType || 'unchecked'} onValueChange={(newStatus) => onToggleStatus(bookmark.id, newStatus)}>
         <SelectTrigger className={`status-badge ${currentStatus.className} clickable status-select-trigger`}>
-          <SelectValue />
+          <SelectValue placeholder={currentStatus.label} />
         </SelectTrigger>
         <SelectContent>
           {statusOptions.map(option => (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem key={option.value} value={option.value || 'unchecked'}>
               <span className={`status-badge-small ${option.className}`}>
                 {option.label}
               </span>
