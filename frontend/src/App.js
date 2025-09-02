@@ -2145,6 +2145,8 @@ function App() {
           onEditBookmark={handleEditBookmark}
           onToggleStatus={handleToggleStatus}
           onFileSelected={handleFileSelected}
+          viewMode={viewMode}
+          onViewModeChange={handleViewModeChange}
         />
       </div>
 
