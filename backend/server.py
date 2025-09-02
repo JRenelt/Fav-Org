@@ -994,7 +994,7 @@ async def get_statistics():
     localhost_links = len([b for b in bookmarks if b.get('status_type') == 'localhost'])
     duplicate_links = len([b for b in bookmarks if b.get('status_type') == 'duplicate'])
     timeout_links = len([b for b in bookmarks if b.get('is_timeout_link', False)])
-    unchecked_links = len([b for b in bookmarks if not b.get('last_checked')])
+    unchecked_links = len([b for b in bookmarks if b.get('status_type') == 'unchecked' or not b.get('last_checked')])
     
     # Categories distribution
     categories_distribution = {}
