@@ -230,6 +230,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Statistiken-Endpunkt nach User-Report vollständig getestet: GET /api/statistics funktioniert einwandfrei (200 OK). Aktuelle Daten: 29 Bookmarks, 36 Kategorien, 28 aktive Links, 1 Dead Link. Header-Anzeige Daten korrekt verfügbar."
+      - working: true
+        agent: "testing"
+        comment: "✅ FINALE TESTING: Statistik-Endpunkt mit neuen Status-Typen perfekt getestet. Korrekte Zählung: 28 total, 23 aktive, 5 dead Links. Dead Links Count basiert korrekt auf status_type='dead'. Localhost-Links (1) werden NICHT als dead gezählt. Statistik-Genauigkeit mit neuen Status-Typen gewährleistet."
 
   - task: "Categories Endpoint (User Reported Issue)"
     implemented: true
