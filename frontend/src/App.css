@@ -138,6 +138,20 @@ body {
   margin-left: 8px;
 }
 
+/* Footer Styles */
+.app-footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-primary);
+  padding: 16px 24px;
+  text-align: left !important; /* Links anordnen */
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.app-footer p {
+  margin: 0;
+  text-align: left !important; /* Sicherstellen dass es links ist */
+}
 .app-subtitle {
   font-size: 0.75rem;
   color: var(--text-secondary);
