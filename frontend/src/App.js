@@ -656,9 +656,8 @@ const StatisticsPanel = ({ statistics }) => {
   );
 };
 
-const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics }) => {
+const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
-  const [showStatistics, setShowStatistics] = useState(true);
 
   const toggleCategory = (categoryName) => {
     const newExpanded = new Set(expandedCategories);
@@ -695,8 +694,6 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
 
   return (
     <div className="sidebar">
-      <StatisticsPanel statistics={statistics} />
-      
       <div className="sidebar-content">
         <h3 className="sidebar-title">Kategorien</h3>
         <p className="sidebar-subtitle">Basierend auf Browser-Ordnern</p>
