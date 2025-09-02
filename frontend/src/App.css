@@ -738,6 +738,87 @@ body {
   color: var(--red-800);
 }
 
+/* Status Select Dropdown */
+.status-select {
+  border: none !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  padding: 2px 4px !important;
+  cursor: pointer !important;
+  border-radius: 12px !important;
+}
+
+.status-select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Statistik Dialog */
+.statistics-dialog {
+  width: 600px !important;
+  max-width: 90vw !important;
+}
+
+.statistics-content {
+  padding: 16px 0;
+}
+
+.stats-grid-dialog {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-item-dialog {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.stat-item-dialog:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-primary);
+}
+
+.stat-item-dialog .stat-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stat-item-dialog .stat-value {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+}
+
+.stat-item-dialog .stat-value.active {
+  color: #22c55e;
+}
+
+.stat-item-dialog .stat-value.dead {
+  color: #ef4444;
+}
+
+.stat-item-dialog .stat-value.timeout {
+  color: #f59e0b;
+}
+
+.stat-item-dialog .stat-value.localhost {
+  color: #6b7280;
+}
+
+.stat-item-dialog .stat-value.duplicate {
+  color: #f97316;
+}
 .status-badge-small.status-localhost {
   background: #f1f5f9;
   color: #475569;
