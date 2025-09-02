@@ -905,6 +905,7 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
 
 const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
+  const [showBrowserInfo, setShowBrowserInfo] = useState(false);
 
   const toggleCategory = (categoryName) => {
     const newExpanded = new Set(expandedCategories);
