@@ -852,9 +852,15 @@ body {
   font-family: 'Verdana', sans-serif !important;
 }
 
+.statistics-dialog .dialog-content {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
 .statistics-content {
   padding: 24px;
-  background: var(--bg-primary);
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
 }
 
 .stats-overview {
