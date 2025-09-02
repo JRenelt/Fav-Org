@@ -773,11 +773,17 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
     // Status-Filter anwenden
     if (statusFilter !== 'all') {
       filtered = filtered.filter(bookmark => {
+        const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
+        
         switch (statusFilter) {
           case 'active':
-            return !bookmark.is_dead_link && bookmark.last_checked;
+            return statusType === 'active';
           case 'dead':
-            return bookmark.is_dead_link;
+            return statusType === 'dead';
+          case 'localhost':
+            return statusType === 'localhost';
+          case 'duplicate':
+            return statusType === 'duplicate';
           case 'unchecked':
             return !bookmark.last_checked;
           default:
