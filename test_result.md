@@ -319,3 +319,5 @@ agent_communication:
     message: "MAJOR UI UPDATE: Komplett überarbeitete System-Einstellungen mit modernem Design, Header-Enhancements mit Bookmark-Anzahl, intelligenter Prüfen-Button, Escape-Taste für Suchfeld, Auto-Focus und neuer Dead-Links-Removal Endpunkt. Bereit für umfassende Tests aller neuen Features."
   - agent: "testing"
     message: "🎯 DEAD LINKS REMOVAL TESTING ABGESCHLOSSEN: Neuer DELETE /api/bookmarks/dead-links Endpunkt vollständig getestet und funktionsfähig (100%). Integration Workflow erfolgreich: Validierung→Dead Links Check→Entfernung→Statistik Update. Alle bestehenden Endpunkte retestet: Link-Validierung (100%), Statistiken (100%), Export XML/CSV (100%), Scripts ZIP-Download (100%). Error Handling für leere Dead Links korrekt. Backend ist vollständig produktionsreif für intelligenten Prüfen-Button Workflow."
+  - agent: "main"
+    message: "User berichtet: System-Einstellungen funktionieren nicht, 'Failed to fetch categories' Fehler. Beginne mit Backend-Test um aktuellen Status zu prüfen und dann Frontend zu debuggen."
