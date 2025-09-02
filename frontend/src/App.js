@@ -814,6 +814,11 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
       );
     }
 
+    // Duplikate nach URL sortieren für besseren Vergleich
+    if (statusFilter === 'duplicate') {
+      filtered = filtered.sort((a, b) => a.url.localeCompare(b.url));
+    }
+
     setFilteredBookmarks(filtered);
   }, [bookmarks, searchQuery, statusFilter]);
 
