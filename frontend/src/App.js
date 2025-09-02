@@ -878,16 +878,6 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
               </CardTitle>
               <div className="bookmark-actions">
                 {getStatusBadge(bookmark)}
-                {bookmark.is_dead_link && (
-                  <Button
-                    onClick={() => handleStatusToggle(bookmark)}
-                    className="status-toggle-btn"
-                    size="sm"
-                    title="Als aktiven Link markieren"
-                  >
-                    <CheckCircle className="w-4 h-4" />
-                  </Button>
-                )}
                 <Button
                   variant="ghost"
                   size="sm"
