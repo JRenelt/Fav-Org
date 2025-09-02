@@ -593,66 +593,70 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-const StatisticsPanel = ({ statistics, onRefresh }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
-  
+const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
   if (!statistics) return null;
 
   return (
-    <div className="statistics-panel">
-      <div 
-        className="stats-header"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <h3 className="stats-title">
-          <BarChart3 className="w-4 h-4 mr-2" />
-          Statistiken
-        </h3>
-        <button className="toggle-btn">
-          {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-        </button>
-      </div>
-      
-      {isExpanded && (
-        <>
-          <div className="stats-grid">
-            <div className="stat-item">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="statistics-dialog">
+        <DialogHeader>
+          <DialogTitle className="dialog-title">
+            <BarChart3 className="w-5 h-5 mr-2" />
+            Statistiken
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="statistics-content">
+          <div className="stats-grid-dialog">
+            <div className="stat-item-dialog">
               <span className="stat-label">Gesamt:</span>
               <span className="stat-value">{statistics.total_bookmarks}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item-dialog">
               <span className="stat-label">Aktiv:</span>
               <span className="stat-value active">{statistics.active_links}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item-dialog">
               <span className="stat-label">Tot:</span>
               <span className="stat-value dead">{statistics.dead_links}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item-dialog">
               <span className="stat-label">Timeout:</span>
               <span className="stat-value timeout">{statistics.timeout_links}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item-dialog">
               <span className="stat-label">Ungeprüft:</span>
               <span className="stat-value ungeprüft">{statistics.unchecked_links}</span>
             </div>
-            <div className="stat-item">
+            <div className="stat-item-dialog">
+              <span className="stat-label">Localhost:</span>
+              <span className="stat-value localhost">{statistics.localhost_links || 0}</span>
+            </div>
+            <div className="stat-item-dialog">
+              <span className="stat-label">Duplikate:</span>
+              <span className="stat-value duplicate">{statistics.duplicate_links || 0}</span>
+            </div>
+            <div className="stat-item-dialog">
               <span className="stat-label">Kategorien:</span>
               <span className="stat-value">{statistics.total_categories}</span>
             </div>
           </div>
           
-          <Button
-            size="sm"
-            onClick={onRefresh}
-            className="refresh-btn"
-          >
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Aktualisieren
-          </Button>
-        </>
-      )}
-    </div>
+          <div className="dialog-actions">
+            <Button
+              onClick={onRefresh}
+              className="refresh-btn"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Aktualisieren
+            </Button>
+            <Button variant="outline" onClick={onClose}>
+              Schließen
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
