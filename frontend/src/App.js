@@ -1819,22 +1819,7 @@ function App() {
     return () => clearTimeout(timer);
   }, [loadBookmarks, loadCategories, loadStatistics]);
 
-  // Favoriten filtern
-  useEffect(() => {
-    let filtered = bookmarks;
 
-    if (activeCategory !== 'all') {
-      filtered = filtered.filter(bookmark => {
-        if (activeSubcategory) {
-          return bookmark.category === activeCategory && bookmark.subcategory === activeSubcategory;
-        } else {
-          return bookmark.category === activeCategory;
-        }
-      });
-    }
-
-    setFilteredBookmarks(filtered);
-  }, [bookmarks, activeCategory, activeSubcategory]);
 
   const handleCreateTestData = async () => {
     try {
