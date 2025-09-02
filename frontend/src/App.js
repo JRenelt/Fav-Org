@@ -1882,8 +1882,12 @@ function App() {
         'duplicate': 'Duplikat'
       }[statusType] || statusType;
       toast.success(`Link-Status auf "${statusLabel}" gesetzt.`);
-      await loadBookmarks();
-      await loadStatistics();
+      
+      // Kleine Verzögerung und dann Daten neu laden
+      setTimeout(async () => {
+        await loadBookmarks();
+        await loadStatistics();
+      }, 500);
     } catch (error) {
       console.error('Status toggle error:', error);
       toast.error('Status-Update fehlgeschlagen: ' + error.message);
