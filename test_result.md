@@ -224,6 +224,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Scripts ZIP-Download erneut getestet: GET /api/download/collector funktioniert weiterhin korrekt und generiert ZIP-Datei mit allen Sammelprogramm-Dateien."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Scripts ZIP-Download vollständig getestet. GET /api/download/collector generiert korrekte ZIP-Datei (8159 Bytes) mit allen Sammelprogramm-Dateien. Download-Funktionalität arbeitet perfekt."
 
   - task: "Statistics Endpoint"
     implemented: true
