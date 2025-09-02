@@ -125,7 +125,7 @@ class FavoritesService {
 
   async getAllBookmarks() {
     try {
-      const response = await axios.get(`${this.baseURL}/bookmarks`);
+      const response = await axios.get(`${this.baseURL}/api/bookmarks`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch bookmarks');
@@ -134,7 +134,7 @@ class FavoritesService {
 
   async getBookmarksByCategory(category, subcategory = null) {
     try {
-      let url = `${this.baseURL}/bookmarks/category/${encodeURIComponent(category)}`;
+      let url = `${this.baseURL}/api/bookmarks/category/${encodeURIComponent(category)}`;
       if (subcategory) {
         url += `?subcategory=${encodeURIComponent(subcategory)}`;
       }
