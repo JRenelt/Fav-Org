@@ -12,6 +12,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 import { Label } from "./components/ui/label";
 import { Textarea } from "./components/ui/textarea";
+import TableView from "./components/TableView";
+import DraggableToast from "./components/DraggableToast";
 import { 
   Settings, 
   HelpCircle, 
@@ -44,7 +46,14 @@ import {
   FileText,
   FileSpreadsheet,
   Archive,
-  Database
+  Database,
+  Table,
+  Grid,
+  BookOpen,
+  Keyboard,
+  Mouse,
+  Monitor,
+  Workflow
 } from "lucide-react";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
