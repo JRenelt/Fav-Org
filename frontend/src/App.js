@@ -2196,6 +2196,7 @@ function App() {
         onRefresh={loadStatistics}
       />
 
+      {/* Sonner Toaster - kept as fallback */}
       <Toaster 
         position="top-center" 
         offset="140px"
