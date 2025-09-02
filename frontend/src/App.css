@@ -931,6 +931,111 @@ body {
   color: var(--text-primary) !important;
 }
 
+/* Tabellarisches Widget-Layout für Statistiken */
+.stats-table-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1200px) {
+  .stats-table-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .stats-table-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-table-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-widget {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border: 1px solid var(--border-primary);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-height: 80px;
+}
+
+.stat-widget:hover {
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  border-color: var(--cyan-400);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-widget .stat-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  border: 1px solid var(--border-secondary);
+  flex-shrink: 0;
+}
+
+.stat-widget .stat-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-widget .stat-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  font-family: var(--font-family);
+}
+
+.stat-widget .stat-value {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-family: var(--font-family);
+}
+
+/* Widget-spezifische Farben */
+.stat-widget-primary:hover { border-color: var(--cyan-400); }
+.stat-widget-primary .stat-value { color: var(--cyan-400); }
+
+.stat-widget-categories:hover { border-color: var(--yellow-500); }
+.stat-widget-categories .stat-value { color: var(--yellow-500); }
+
+.stat-widget-active:hover { border-color: #22c55e; }
+.stat-widget-active .stat-value { color: #22c55e; }
+
+.stat-widget-dead:hover { border-color: #ef4444; }
+.stat-widget-dead .stat-value { color: #ef4444; }
+
+.stat-widget-localhost:hover { border-color: #6b7280; }
+.stat-widget-localhost .stat-value { color: #6b7280; }
+
+.stat-widget-duplicate:hover { border-color: #f97316; }
+.stat-widget-duplicate .stat-value { color: #f97316; }
+
+.stat-widget-timeout:hover { border-color: #f59e0b; }
+.stat-widget-timeout .stat-value { color: #f59e0b; }
+
+.stat-widget-unchecked:hover { border-color: #9ca3af; }
+.stat-widget-unchecked .stat-value { color: #9ca3af; }
+
 .stats-overview {
   display: grid;
   grid-template-columns: 1fr 1fr;
