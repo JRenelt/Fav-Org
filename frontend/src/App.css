@@ -1449,11 +1449,39 @@ body {
   border-color: var(--red-500);
 }
 
-/* View Toggle Styles */
+/* View Toggle Styles - Compact Version */
 .view-toggle {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   margin-bottom: 16px;
+}
+
+.view-toggle-btn-compact {
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-family: var(--font-family);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-toggle-btn-compact:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-secondary);
+}
+
+.view-toggle-btn-compact.active {
+  background: var(--cyan-400);
+  color: white;
+  border-color: var(--cyan-400);
 }
 
 .view-toggle-btn {
