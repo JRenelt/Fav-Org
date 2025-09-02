@@ -2054,33 +2054,23 @@ function App() {
     const file = event.target.files[0];
     if (!file) return;
 
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      console.log('Importing file:', file.name, file.type, file.size);
-      
       const result = await favoritesService.importBookmarks(file);
-      console.log('Import result:', result);
-      
-      if (result.imported_count === 0) {
-        toast.warning(`Import abgeschlossen, aber keine Favoriten gefunden. ${result.details || ''}`);
-      } else {
-        toast.success(`Import erfolgreich: ${result.imported_count} Favoriten importiert` + 
-                     (result.total_parsed ? ` (${result.total_parsed} geparst, ${result.after_deduplication} nach Duplikat-Bereinigung)` : ''));
-      }
-      
-      // Daten neu laden
+      showCustomToast(
+        `Import erfolgreich: ${result.imported_count} Favoriten importiert`,
+        'success'
+      );
       await loadBookmarks();
       await loadCategories();
       await loadStatistics();
     } catch (error) {
-      console.error('Import error:', error);
-      toast.error('Import fehlgeschlagen: ' + error.message);
+      showCustomToast('Import fehlgeschlagen: ' + error.message, 'error');
     } finally {
       setIsLoading(false);
+      // Reset file input
+      event.target.value = '';
     }
-    
-    // Reset file input
-    event.target.value = '';
   };
 
   return (
