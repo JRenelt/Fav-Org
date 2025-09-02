@@ -370,6 +370,15 @@ const Header = ({ onSettingsClick, onHelpClick, onCreateBookmarkClick, onFileUpl
           </Button>
           
           <Button
+            onClick={onStatsToggle}
+            className="header-btn"
+            size="sm"
+            title="Statistiken ein-/ausblenden"
+          >
+            <BarChart3 className="w-4 h-4" />
+          </Button>
+          
+          <Button
             onClick={onSettingsClick}
             className="header-btn"
             size="sm" 
