@@ -2003,12 +2003,7 @@ function App() {
           statistics={statistics}
         />
         
-        {showStatistics && (
-          <StatisticsPanel 
-            statistics={statistics} 
-            onRefresh={loadStatistics}
-          />
-        )}
+
 
         <MainContent
           searchQuery={searchQuery}
