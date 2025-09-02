@@ -1786,13 +1786,29 @@ function App() {
   const handleRemoveDuplicates = async () => {
     try {
       setIsLoading(true);
-      const result = await favoritesService.removeDuplicates();
-      toast.success(`${result.bookmarks_removed} Duplikate entfernt.`);
-      await loadBookmarks();
-      await loadCategories();
-      await loadStatistics();
+      
+      if (!hasDuplicatesMarked) {
+        // Erster Click: Duplikate finden und markieren
+        const result = await favoritesService.findDuplicates();
+        setDuplicateCount(result.marked_count);
+        setHasDuplicatesMarked(true);
+        toast.success(`${result.marked_count} Duplikate gefunden und markiert.`);
+        await loadBookmarks();
+        await loadStatistics();
+      } else {
+        // Zweiter Click: Markierte Duplikate löschen
+        const result = await favoritesService.deleteDuplicates();
+        toast.success(`${result.deleted_count} Duplikate wurden gelöscht.`);
+        setHasDuplicatesMarked(false);
+        setDuplicateCount(0);
+        await loadBookmarks();
+        await loadCategories();
+        await loadStatistics();
+      }
     } catch (error) {
-      toast.error('Duplikat-Entfernung fehlgeschlagen: ' + error.message);
+      toast.error('Duplikat-Aktion fehlgeschlagen: ' + error.message);
+      setHasDuplicatesMarked(false);
+      setDuplicateCount(0);
     } finally {
       setIsLoading(false);
     }
