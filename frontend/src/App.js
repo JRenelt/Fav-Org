@@ -954,6 +954,20 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
     autoBackup: false
   });
 
+  // Settings laden beim Dialog öffnen
+  useEffect(() => {
+    if (isOpen) {
+      try {
+        const savedSettings = localStorage.getItem('favorg-settings');
+        if (savedSettings) {
+          setSettings(JSON.parse(savedSettings));
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    }
+  }, [isOpen]);
+
   const [activeTab, setActiveTab] = useState('display');
   const [isExporting, setIsExporting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
