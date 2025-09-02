@@ -852,7 +852,7 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
 
   return (
     <div className="bookmark-list">
-      {filteredBookmarks.map(bookmark => (
+      {bookmarks.map(bookmark => (
         <Card key={bookmark.id} className={`bookmark-card ${bookmark.is_dead_link ? 'dead-link' : 'active-link'}`}>
           <CardHeader className="bookmark-header">
             <div className="bookmark-title-row">
