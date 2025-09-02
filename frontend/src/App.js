@@ -961,7 +961,21 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // Hier würden die Einstellungen gespeichert werden
+      // Theme anwenden
+      if (settings.theme === 'light') {
+        document.documentElement.classList.add('light-theme');
+        document.documentElement.classList.remove('dark-theme');
+      } else if (settings.theme === 'dark') {
+        document.documentElement.classList.add('dark-theme');
+        document.documentElement.classList.remove('light-theme');
+      } else {
+        // Auto - system preference
+        document.documentElement.classList.remove('light-theme', 'dark-theme');
+      }
+      
+      // Einstellungen in localStorage speichern
+      localStorage.setItem('favorg-settings', JSON.stringify(settings));
+      
       await new Promise(resolve => setTimeout(resolve, 500)); // Simulation
       toast.success('Einstellungen erfolgreich gespeichert.');
       onClose();
