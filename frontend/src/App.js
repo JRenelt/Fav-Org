@@ -1737,6 +1737,53 @@ function App() {
     }
   }, []);
 
+  // Filter-Logik in Hauptkomponente
+  useEffect(() => {
+    let filtered = bookmarks;
+
+    // Kategorie-Filter
+    if (activeCategory && activeCategory !== 'Alle') {
+      filtered = filtered.filter(bookmark => 
+        bookmark.category === activeCategory &&
+        (!activeSubcategory || bookmark.subcategory === activeSubcategory)
+      );
+    }
+
+    // Status-Filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(bookmark => {
+        const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
+        
+        switch (statusFilter) {
+          case 'active': return statusType === 'active';
+          case 'dead': return statusType === 'dead';
+          case 'localhost': return statusType === 'localhost';
+          case 'duplicate': return statusType === 'duplicate';
+          case 'unchecked': return !bookmark.last_checked;
+          default: return true;
+        }
+      });
+    }
+
+    // Such-Filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(bookmark =>
+        bookmark.title.toLowerCase().includes(query) ||
+        bookmark.url.toLowerCase().includes(query) ||
+        bookmark.category.toLowerCase().includes(query) ||
+        (bookmark.subcategory && bookmark.subcategory.toLowerCase().includes(query))
+      );
+    }
+
+    // Duplikate nach URL sortieren
+    if (statusFilter === 'duplicate') {
+      filtered = filtered.sort((a, b) => a.url.localeCompare(b.url));
+    }
+
+    setFilteredBookmarks(filtered);
+  }, [bookmarks, activeCategory, activeSubcategory, statusFilter, searchQuery]);
+
   const loadCategories = useCallback(async () => {
     try {
       const data = await favoritesService.getAllCategories();
