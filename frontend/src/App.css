@@ -425,6 +425,8 @@ body {
 /* Sidebar - BookmarkPro Style */
 .sidebar {
   width: 280px; /* Breiter: von 250px auf 280px */
+  min-width: 200px;
+  max-width: 400px;
   background: var(--bg-primary);
   border-right: 1px solid var(--border-primary);
   height: calc(100vh - 80px - 60px);
@@ -433,6 +435,29 @@ body {
   top: 80px;
   left: 0;
   z-index: 100;
+  resize: horizontal;
+  overflow-x: hidden;
+}
+
+.sidebar-resizer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--border-primary);
+  cursor: ew-resize;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sidebar:hover .sidebar-resizer {
+  opacity: 1;
+}
+
+.sidebar-resizer:hover {
+  background: var(--cyan-400);
+  opacity: 1;
 }
 
 .sidebar-content {
