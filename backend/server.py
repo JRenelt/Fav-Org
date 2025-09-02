@@ -984,8 +984,8 @@ async def create_test_data():
 async def get_statistics():
     """Erweiterte Statistiken mit Unterkategorien abrufen"""
     # Get all bookmarks
-    bookmarks = await db.bookmarks.find().to_list(1000)
-    categories = await db.categories.find().to_list(1000)
+    bookmarks = await db.bookmarks.find().to_list(100000)
+    categories = await db.categories.find().to_list(100000)
     
     # Count by status_type
     total_bookmarks = len(bookmarks)
