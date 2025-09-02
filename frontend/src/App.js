@@ -670,12 +670,12 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
           <div className="dialog-actions">
             <Button
               onClick={onRefresh}
-              className="refresh-btn"
+              className="stats-refresh-btn"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Aktualisieren
             </Button>
-            <Button variant="outline" onClick={onClose}>
+            <Button variant="outline" onClick={onClose} className="stats-close-btn">
               Schließen
             </Button>
           </div>
