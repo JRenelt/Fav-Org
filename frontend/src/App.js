@@ -1931,11 +1931,19 @@ function App() {
 
   const handleSaveBookmark = async (formData) => {
     try {
+      const bookmarkData = {
+        title: formData.title,
+        url: formData.url,
+        category: formData.category,
+        subcategory: (formData.subcategory && formData.subcategory !== "__none__") ? formData.subcategory : null,
+        description: formData.description || null
+      };
+      
       if (editingBookmark) {
-        await favoritesService.updateBookmark(editingBookmark.id, formData);
+        await favoritesService.updateBookmark(editingBookmark.id, bookmarkData);
         toast.success('Favorit aktualisiert.');
       } else {
-        await favoritesService.createBookmark(formData);
+        await favoritesService.createBookmark(bookmarkData);
         toast.success('Favorit erstellt.');
       }
       
