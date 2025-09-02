@@ -1643,12 +1643,42 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
       </div>
 
       <div className="content-area">
-        <BookmarkList
-          bookmarks={bookmarks}
-          onDeleteBookmark={onDeleteBookmark}
-          onEditBookmark={onEditBookmark}
-          onToggleStatus={onToggleStatus}
-        />
+        <div className="content-header">
+          <div className="view-toggle">
+            <button
+              className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+              onClick={() => handleViewModeChange('cards')}
+              title="Karten-Ansicht"
+            >
+              <Grid className="w-4 h-4 mr-2" />
+              Karten
+            </button>
+            <button
+              className={`view-toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
+              onClick={() => handleViewModeChange('table')}
+              title="Tabellen-Ansicht"
+            >
+              <Table className="w-4 h-4 mr-2" />
+              Tabelle
+            </button>
+          </div>
+        </div>
+        
+        {viewMode === 'table' ? (
+          <TableView
+            bookmarks={bookmarks}
+            onDeleteBookmark={onDeleteBookmark}
+            onEditBookmark={onEditBookmark}
+            onToggleStatus={onToggleStatus}
+          />
+        ) : (
+          <BookmarkList
+            bookmarks={bookmarks}
+            onDeleteBookmark={onDeleteBookmark}
+            onEditBookmark={onEditBookmark}
+            onToggleStatus={onToggleStatus}
+          />
+        )}
       </div>
     </main>
   );
