@@ -957,9 +957,27 @@ body {
 
 .stats-grid-dialog {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
   margin-bottom: 28px;
+}
+
+@media (max-width: 1200px) {
+  .stats-grid-dialog {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid-dialog {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid-dialog {
+    grid-template-columns: 1fr;
+  }
 }
 
 .stats-section-title {
