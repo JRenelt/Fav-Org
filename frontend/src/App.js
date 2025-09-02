@@ -1694,6 +1694,31 @@ function App() {
   const favoritesService = new FavoritesService();
   const uiStateManager = new UIStateManager();
 
+  // Custom Toast System
+  const showCustomToast = useCallback((message, type = 'info', duration = 5000) => {
+    const id = toastIdCounter + 1;
+    setToastIdCounter(id);
+    
+    const newToast = {
+      id,
+      message,
+      type,
+      duration
+    };
+    
+    setToasts(prev => [...prev, newToast]);
+  }, [toastIdCounter]);
+
+  const removeToast = useCallback((id) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  }, []);
+
+  // View Mode Management
+  const handleViewModeChange = useCallback((mode) => {
+    setViewMode(mode);
+    localStorage.setItem('favorg-view-mode', mode);
+  }, []);
+
   // Load functions definiert vor useEffect
   const loadBookmarks = useCallback(async () => {
     try {
