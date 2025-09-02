@@ -656,7 +656,7 @@ const StatisticsPanel = ({ statistics, onRefresh }) => {
   );
 };
 
-const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts }) => {
+const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
 
   const toggleCategory = (categoryName) => {
