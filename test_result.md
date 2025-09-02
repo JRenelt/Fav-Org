@@ -263,6 +263,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ FINALE TESTING: Status-Management Features vollständig getestet mit allen Status-Typen. Perfekte Synchronisation zwischen status_type und is_dead_link Feldern. Alle Status-Übergänge (active→dead→localhost→duplicate→active) funktionieren korrekt und werden in Statistiken reflektiert."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Status Toggle Functionality erneut vollständig getestet. Alle Status-Typen (active, dead, localhost, duplicate, unchecked) funktionieren perfekt. Toggle-Logik dead↔localhost arbeitet einwandfrei. Status-Updates werden korrekt in Database gespeichert und in Statistiken reflektiert. 100% funktional."
 
   - task: "Duplicate Workflow (NEW)"
     implemented: true
