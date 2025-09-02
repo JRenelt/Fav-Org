@@ -221,6 +221,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ Statistiken-Endpunkt erneut getestet: GET /api/statistics funktioniert perfekt und zeigt korrekte Anzahlen nach Dead Links Removal. Dynamische Updates der Bookmark-Anzahl (55→46→24), Dead Links (0→9→0→1) und Kategorie-Counts funktionieren einwandfrei."
+      - working: true
+        agent: "testing"
+        comment: "✅ Statistiken-Endpunkt nach User-Report vollständig getestet: GET /api/statistics funktioniert einwandfrei (200 OK). Aktuelle Daten: 29 Bookmarks, 36 Kategorien, 28 aktive Links, 1 Dead Link. Header-Anzeige Daten korrekt verfügbar."
 
 frontend:
   - task: "Bookmark Dialog (Create/Edit)"
