@@ -960,7 +960,7 @@ class BookmarkManager:
                 {"category": search_regex},
                 {"subcategory": search_regex}
             ]
-        }).to_list(1000)
+        }).to_list(100000)
         
         return [Bookmark(**bookmark) for bookmark in bookmarks]
 
