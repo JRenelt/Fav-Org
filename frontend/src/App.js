@@ -1922,32 +1922,26 @@ function App() {
 
   const handleRemoveDuplicates = async () => {
     try {
-      setIsLoading(true);
-      
       if (!hasDuplicatesMarked) {
-        // Erster Click: Duplikate finden und markieren
+        // First click: Find and mark duplicates
         const result = await favoritesService.findDuplicates();
-        setDuplicateCount(result.marked_count);
+        setDuplicateCount(result.marked_count || 0);
         setHasDuplicatesMarked(true);
-        toast.success(`${result.marked_count} Duplikate gefunden und markiert.`);
+        showCustomToast(`${result.duplicate_groups} Duplikat-Gruppen gefunden. ${result.marked_count} als Duplikat markiert.`, 'success');
         await loadBookmarks();
         await loadStatistics();
       } else {
-        // Zweiter Click: Markierte Duplikate löschen
+        // Second click: Delete marked duplicates
         const result = await favoritesService.deleteDuplicates();
-        toast.success(`${result.deleted_count} Duplikate wurden gelöscht.`);
-        setHasDuplicatesMarked(false);
+        showCustomToast(`${result.removed_count} Duplikate wurden entfernt.`, 'success');
         setDuplicateCount(0);
+        setHasDuplicatesMarked(false);
         await loadBookmarks();
         await loadCategories();
         await loadStatistics();
       }
     } catch (error) {
-      toast.error('Duplikat-Aktion fehlgeschlagen: ' + error.message);
-      setHasDuplicatesMarked(false);
-      setDuplicateCount(0);
-    } finally {
-      setIsLoading(false);
+      showCustomToast('Duplikat-Operation fehlgeschlagen: ' + error.message, 'error');
     }
   };
 
