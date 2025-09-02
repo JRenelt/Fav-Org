@@ -1703,7 +1703,6 @@ function App() {
   const [showStatistics, setShowStatistics] = useState(false);
   const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
   const [editingBookmark, setEditingBookmark] = useState(null);
-  const [filteredBookmarks, setFilteredBookmarks] = useState([]);
   const [bookmarkCounts, setBookmarkCounts] = useState({ total: 0 });
   const [hasValidated, setHasValidated] = useState(false);
   const [duplicateCount, setDuplicateCount] = useState(0);
