@@ -812,6 +812,9 @@ body {
   margin-left: 280px; /* Angepasst an neue Sidebar-Breite */
   height: calc(100vh - 80px - 60px);
   overflow: hidden;
+  /* Wird automatisch durch Sidebar-Breite angepasst */
+  width: calc(100vw - var(--sidebar-width, 280px));
+  transition: width 0.2s ease;
 }
 
 .main-header {
