@@ -89,6 +89,9 @@ body {
   z-index: 1000;
   height: 80px;
   box-shadow: var(--shadow-md);
+  
+  /* TEMPORÄRE DEBUG GRENZEN */
+  border: 1px solid blue;
 }
 
 .header-content {
