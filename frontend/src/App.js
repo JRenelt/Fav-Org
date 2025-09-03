@@ -1125,8 +1125,12 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   const organizedCategories = organizeCategories();
 
   return (
-    <div className="sidebar">
-      <div className="sidebar-resizer"></div>
+    <div className="sidebar" style={{ width: `${sidebarWidth}px` }}>
+      <div 
+        className="sidebar-resizer"
+        onMouseDown={handleMouseDown}
+        style={{ cursor: isResizing ? 'ew-resize' : 'ew-resize' }}
+      ></div>
       <div className="sidebar-content">
         <div className="sidebar-header">
           <h3 className="sidebar-title">Kategorien</h3>
