@@ -1434,12 +1434,29 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       
       console.log(`${draggedType} "${draggedCategory.name}" zu ${targetType} "${targetCategory.name}" verschoben`);
       
-      // Simulate category reorder between all categories
+      // Erweiterte Logik für alle Verschiebungs-Szenarien
+      let moveDescription = '';
+      
+      if (draggedCategory.isSubcategory && isTargetSubcategory) {
+        // Unterkategorie zu Unterkategorie
+        moveDescription = `Unterkategorie "${draggedCategory.name}" zwischen Unterkategorien zu "${targetCategory.name}" verschoben`;
+      } else if (draggedCategory.isSubcategory && !isTargetSubcategory) {
+        // Unterkategorie zu Hauptkategorie
+        moveDescription = `Unterkategorie "${draggedCategory.name}" zur Hauptkategorie "${targetCategory.name}" verschoben`;
+      } else if (!draggedCategory.isSubcategory && isTargetSubcategory) {
+        // Hauptkategorie zu Unterkategorie (wird zur Unterkategorie der Parent-Kategorie)
+        moveDescription = `Kategorie "${draggedCategory.name}" zur Unterkategorie unter "${targetCategory.parent_category || 'Unbekannt'}" verschoben`;
+      } else {
+        // Hauptkategorie zu Hauptkategorie
+        moveDescription = `Kategorie "${draggedCategory.name}" zu Kategorie "${targetCategory.name}" verschoben`;
+      }
+      
+      // Simulate category reorder
       if (onCategoryReorder) {
         onCategoryReorder(draggedCategory, targetCategory);
       }
       
-      toast.success(`${draggedType} "${draggedCategory.name}" wurde zu "${targetCategory.name}" verschoben`);
+      toast.success(moveDescription);
     }
     
     setDraggedCategory(null);
