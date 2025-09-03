@@ -193,9 +193,19 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
           </thead>
           <tbody>
             {bookmarks.map(bookmark => (
-              <tr key={bookmark.id} className={`bookmark-row ${bookmark.is_dead_link ? 'dead-link' : 'active-link'}`}>
+              <tr 
+                key={bookmark.id} 
+                className={`bookmark-row table-row draggable ${bookmark.is_dead_link ? 'dead-link' : 'active-link'} ${dragOverBookmark?.id === bookmark.id ? 'drag-over' : ''}`}
+                draggable
+                onDragStart={(e) => handleBookmarkDragStart(e, bookmark)}
+                onDragOver={(e) => handleBookmarkDragOver(e, bookmark)}
+                onDragLeave={handleBookmarkDragLeave}
+                onDrop={(e) => handleBookmarkDrop(e, bookmark)}
+                onDragEnd={handleBookmarkDragEnd}
+              >
                 <td style={{ width: columnWidths.title }}>
                   <div className="cell-content title-cell">
+                    <GripVertical className="drag-handle table-drag" />
                     <span className="bookmark-title-table" title={bookmark.title}>
                       {bookmark.title}
                     </span>
