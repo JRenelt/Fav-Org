@@ -662,7 +662,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
 
 // Help Dialog Component with comprehensive content and new hierarchical submenu system
 const HelpDialog = ({ isOpen, onClose }) => {
-  const [activeSection, setActiveSection] = useState('import-guide');
+  const [activeSection, setActiveSection] = useState('favorites-import');
   
   const menuSections = {
     // Favoriten Importieren und Exportieren als separate Punkte
