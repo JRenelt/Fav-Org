@@ -4,10 +4,11 @@ import { Badge } from './ui/badge';
 import { 
   ExternalLink, 
   Edit, 
-  Trash2 
+  Trash2,
+  GripVertical
 } from 'lucide-react';
 
-const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus }) => {
+const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder }) => {
   const [columnWidths, setColumnWidths] = useState(() => {
     const saved = localStorage.getItem('favorg-column-widths');
     return saved ? JSON.parse(saved) : {
