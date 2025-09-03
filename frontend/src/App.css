@@ -109,26 +109,7 @@ body {
   transition: width 0.2s ease, flex-basis 0.2s ease;
 }
 
-.sidebar-main-title {
-  padding: 16px 20px 12px 20px;
-  border-bottom: 1px solid var(--border-primary);
-  margin-bottom: 16px;
-}
 
-.favorg-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0 0 4px 0;
-  font-family: 'Verdana', sans-serif;
-}
-
-.favorg-subtitle {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin: 0;
-  font-style: italic;
-}
 
 .header-center {
   display: flex;
