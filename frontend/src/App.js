@@ -1761,6 +1761,18 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
 
                 <div className="export-info-modern">
                   <div className="info-item-modern">
+                    <FileText className="w-4 h-4 text-orange-500" />
+                    <div>
+                      <strong>HTML:</strong> Standard Browserformat, kompatibel mit Chrome, Firefox, Edge, Safari
+                    </div>
+                  </div>
+                  <div className="info-item-modern">
+                    <Database className="w-4 h-4 text-purple-500" />
+                    <div>
+                      <strong>JSON:</strong> Chrome Bookmarks Format mit vollständigen Metadaten
+                    </div>
+                  </div>
+                  <div className="info-item-modern">
                     <FileText className="w-4 h-4 text-green-500" />
                     <div>
                       <strong>XML:</strong> Strukturierte Daten mit Metainformationen, ideal für Re-Import
@@ -1769,7 +1781,13 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                   <div className="info-item-modern">
                     <FileSpreadsheet className="w-4 h-4 text-blue-500" />
                     <div>
-                      <strong>CSV:</strong> Tabellenformat, kompatibel mit Excel und anderen Tabellenkalculationen
+                      <strong>CSV:</strong> Tabellenformat, kompatibel mit Excel und anderen Tabellenkalkulationen
+                    </div>
+                  </div>
+                  <div className="info-item-modern">
+                    <Archive className="w-4 h-4 text-cyan-500" />
+                    <div>
+                      <strong>Alle Formate:</strong> Exportiert gleichzeitig HTML, JSON, XML und CSV für maximale Kompatibilität
                     </div>
                   </div>
                 </div>
