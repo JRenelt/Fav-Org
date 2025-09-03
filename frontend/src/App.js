@@ -2697,7 +2697,34 @@ function App() {
   const loadCategories = useCallback(async () => {
     try {
       const data = await favoritesService.getAllCategories();
-      setCategories(data);
+      
+      // Versuche gespeicherte Kategorien-Reihenfolge aus localStorage zu laden
+      const savedCategoryOrder = localStorage.getItem('favorg-category-order');
+      if (savedCategoryOrder) {
+        try {
+          const categoryOrder = JSON.parse(savedCategoryOrder);
+          
+          // Merge Backend-Daten mit lokaler Reihenfolge
+          const mergedCategories = data.map(backendCat => {
+            const savedCat = categoryOrder.find(saved => saved.id === backendCat.id);
+            if (savedCat) {
+              return {
+                ...backendCat,
+                parent_category: savedCat.parent_category
+              };
+            }
+            return backendCat;
+          });
+          
+          setCategories(mergedCategories);
+          console.log('✅ Kategorien mit lokaler Reihenfolge geladen');
+        } catch (parseError) {
+          console.warn('Fehler beim Parsen der gespeicherten Kategorien-Reihenfolge:', parseError);
+          setCategories(data);
+        }
+      } else {
+        setCategories(data);
+      }
     } catch (error) {
       toast.error('Fehler beim Laden der Kategorien: ' + error.message);
     }
