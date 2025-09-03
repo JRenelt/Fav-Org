@@ -522,15 +522,33 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     setNewSubcategory('');
   }, [bookmark, isOpen]);
 
+  // Funktionen für Unterkategorien-Management
+  const addSubcategory = () => {
+    if (newSubcategory.trim() && !formData.subcategories.includes(newSubcategory.trim())) {
+      setFormData({
+        ...formData,
+        subcategories: [...formData.subcategories, newSubcategory.trim()]
+      });
+      setNewSubcategory('');
+    }
+  };
+
+  const removeSubcategory = (subcatToRemove) => {
+    setFormData({
+      ...formData,
+      subcategories: formData.subcategories.filter(subcat => subcat !== subcatToRemove)
+    });
+  };
+
   const validateForm = () => {
     const newErrors = {};
     
     if (!formData.title.trim()) {
-      newErrors.title = 'Titel ist ein Pflichtfeld';
+      newErrors.title = 'Titel ist erforderlich';
     }
     
     if (!formData.url.trim()) {
-      newErrors.url = 'URL ist ein Pflichtfeld';
+      newErrors.url = 'URL ist erforderlich';
     } else {
       try {
         new URL(formData.url);
@@ -552,9 +570,15 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     
     setIsSubmitting(true);
     try {
-      await onSave(formData);
+      await onSave({
+        ...formData,
+        // Erste Unterkategorie als Hauptunterkategorie für Kompatibilität
+        subcategory: formData.subcategories.length > 0 ? formData.subcategories[0] : '__none__'
+      });
+      onClose();
     } catch (error) {
-      toast.error('Fehler beim Speichern: ' + error.message);
+      console.error('Save error:', error);
+      setErrors({ submit: 'Fehler beim Speichern. Bitte versuchen Sie es erneut.' });
     } finally {
       setIsSubmitting(false);
     }
