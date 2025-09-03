@@ -520,12 +520,12 @@ body {
   position: absolute;
   top: -40px;
   right: 0;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: #fef3c7; /* Gelber Hintergrund */
+  border: 1px solid #f59e0b;
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: #92400e; /* Dunkler Text auf gelbem Grund */
   white-space: nowrap;
   z-index: 1000;
   box-shadow: var(--shadow-md);
@@ -536,12 +536,12 @@ body {
   right: auto !important;
   top: auto !important;
   margin-top: 0 !important;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-primary);
+  background: #fef3c7; /* Gelber Hintergrund */
+  border: 1px solid #f59e0b;
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: #92400e; /* Dunkler Text auf gelbem Grund */
   white-space: nowrap;
   z-index: 9999;
   box-shadow: var(--shadow-lg);
@@ -556,7 +556,7 @@ body {
 .tooltip-close {
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: #92400e;
   cursor: pointer;
   font-size: 1.2rem;
   line-height: 1;
@@ -572,8 +572,8 @@ body {
 }
 
 .tooltip-close:hover {
-  background: var(--bg-accent);
-  color: var(--text-primary);
+  background: #fbbf24;
+  color: #78350f;
 }
 
 /* Drag & Drop Styles */
