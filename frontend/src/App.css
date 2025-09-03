@@ -2289,7 +2289,203 @@ body {
   background: var(--border-secondary);
 }
 
-/* Responsive Design */
+/* Unterkategorien-Management Styles */
+.subcategories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.subcategory-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fef3c7; /* Gelber Hintergrund */
+  border: 1px solid #f59e0b;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 0.875rem;
+  color: #92400e;
+}
+
+.remove-subcategory-btn {
+  background: none;
+  border: none;
+  color: #92400e;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.remove-subcategory-btn:hover {
+  background: #fbbf24;
+  color: #78350f;
+}
+
+.add-subcategory-section {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.subcategory-input {
+  flex: 1;
+}
+
+.add-subcategory-btn {
+  flex-shrink: 0;
+  background: var(--cyan-400);
+  color: white;
+  border: none;
+  min-width: 40px;
+}
+
+.add-subcategory-btn:hover:not(:disabled) {
+  background: #0891b2;
+}
+
+.subcategory-help {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Export Dialog Styles */
+.export-dialog {
+  max-width: 700px;
+  max-height: 80vh;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.export-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.export-body {
+  padding: 20px 0;
+}
+
+.export-description {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.export-formats-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.export-format-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--bg-tertiary);
+  position: relative;
+}
+
+.export-format-card:hover {
+  border-color: var(--cyan-400);
+  background: var(--bg-secondary);
+}
+
+.export-format-card.selected {
+  border-color: var(--cyan-400);
+  background: rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 0 1px var(--cyan-400);
+}
+
+.format-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.format-info {
+  flex: 1;
+}
+
+.format-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.format-info p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.format-radio {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.export-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.export-single-btn {
+  background: var(--cyan-400);
+  color: white;
+  border: none;
+  flex: 1;
+}
+
+.export-single-btn:hover:not(:disabled) {
+  background: #0891b2;
+}
+
+.export-all-btn {
+  background: transparent;
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.export-all-btn:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  border-color: var(--cyan-400);
+}
+
+.export-info {
+  padding: 12px;
+  background: #fef3c7; /* Gelber Hintergrund für Info */
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+}
+
+.info-text {
+  font-size: 0.875rem;
+  color: #92400e;
+  margin: 0;
+}
+
+.info-text strong {
+  color: #78350f;
+}
 @media (max-width: 1024px) {
   .sidebar {
     width: 240px;
