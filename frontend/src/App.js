@@ -998,6 +998,12 @@ const HelpDialog = ({ isOpen, onClose }) => {
                   <li><strong>Responsive Design:</strong> Desktop, Tablet und Mobile</li>
                   <li><strong>Dark Theme:</strong> Angepasstes dunkles Design</li>
                 </ul>
+                
+                <div className="version-info">
+                  <p><strong>Version:</strong> 2.1.0</p>
+                  <p><strong>Letzte Aktualisierung:</strong> Dezember 2024</p>
+                  <p><strong>Neue Features:</strong> Multi-Format Export, Drag & Drop, erweiterte Kategorieverwaltung</p>
+                </div>
               </div>
             )}
           </div>
