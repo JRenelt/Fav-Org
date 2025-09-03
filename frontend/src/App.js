@@ -1117,10 +1117,10 @@ const HelpDialog = ({ isOpen, onClose }) => {
                 <h4>Tastatur-Shortcuts</h4>
                 <ul>
                   <li><strong>Escape:</strong> Suchfeld leeren</li>
-                  <li><strong>Ctrl + F:</strong> Fokus auf Suchfeld</li>
-                  <li><strong>Ctrl + N:</strong> Neuen Favorit erstellen</li>
-                  <li><strong>Ctrl + I:</strong> Import-Dialog öffnen</li>
-                  <li><strong>Ctrl + E:</strong> Export-Dialog öffnen</li>
+                  <li><strong>Alt + F:</strong> Fokus auf Suchfeld</li>
+                  <li><strong>Alt + N:</strong> Neuen Favorit erstellen</li>
+                  <li><strong>Alt + I:</strong> Import-Dialog öffnen</li>
+                  <li><strong>Alt + E:</strong> Export-Dialog öffnen</li>
                   <li><strong>F5:</strong> Statistiken aktualisieren</li>
                 </ul>
                 
