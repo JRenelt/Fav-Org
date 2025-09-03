@@ -2426,6 +2426,45 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onEditBookmark={onEditBookmark}
             onToggleStatus={onToggleStatus}
             onBookmarkReorder={onBookmarkReorder}
+            headerButtons={
+              <div className="table-header-actions-compact">
+                <Button
+                  onClick={onHelpClick}
+                  className="table-header-btn"
+                  size="sm"
+                  title="Hilfe"
+                >
+                  <HelpCircle className="w-4 h-4" />
+                </Button>
+                
+                <Button
+                  onClick={onStatsToggle}
+                  className="table-header-btn"
+                  size="sm"
+                  title="Statistiken ein-/ausblenden"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                </Button>
+                
+                <Button
+                  onClick={onSettingsClick}
+                  className="table-header-btn"
+                  size="sm" 
+                  title="System-Einstellungen"
+                >
+                  <Settings className="w-4 h-4" />
+                </Button>
+                
+                <Button 
+                  onClick={onDeleteAllClick}
+                  className="table-header-btn delete-btn"
+                  size="sm"
+                  title="Alle Favoriten löschen"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+            }
           />
         ) : (
           <BookmarkList
