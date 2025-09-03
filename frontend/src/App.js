@@ -2511,18 +2511,32 @@ function App() {
         return;
       }
       
-      // Ctrl+F to focus search
-      if (event.ctrlKey && event.key === 'f') {
+      // Alt+F to focus search
+      if (event.altKey && event.key === 'f') {
         event.preventDefault();
         const searchInput = document.querySelector('.search-input');
         if (searchInput) searchInput.focus();
         return;
       }
       
-      // Ctrl+N to create new bookmark
-      if (event.ctrlKey && event.key === 'n') {
+      // Alt+N to create new bookmark
+      if (event.altKey && event.key === 'n') {
         event.preventDefault();
         handleCreateBookmark();
+        return;
+      }
+      
+      // Alt+I for Import
+      if (event.altKey && event.key === 'i') {
+        event.preventDefault();
+        handleFileUpload();
+        return;
+      }
+      
+      // Alt+E for Export
+      if (event.altKey && event.key === 'e') {
+        event.preventDefault();
+        setShowExportDialog(true);
         return;
       }
       
