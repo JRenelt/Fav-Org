@@ -744,7 +744,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
                 
                 <h5>Optimale Performance</h5>
                 <ul>
-                  <li><strong>Große Sammlungen:</strong> Bei >10.000 Links in Kategorien aufteilen</li>
+                  <li><strong>Große Sammlungen:</strong> Bei über 10.000 Links in Kategorien aufteilen</li>
                   <li><strong>Regelmäßige Backups:</strong> Exportieren Sie Ihre Daten monatlich</li>
                   <li><strong>Browser-Cache:</strong> Leeren Sie bei Problemen den Cache</li>
                   <li><strong>Updates:</strong> FavOrg wird automatisch aktualisiert</li>
