@@ -1609,7 +1609,8 @@ body {
 }
 
 .table-status-select {
-  min-width: 90px;
+  min-width: max-content;
+  width: auto;
   font-size: 0.75rem;
 }
 
