@@ -62,6 +62,43 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+  // Drag & Drop Handlers für Table Bookmarks
+  const handleBookmarkDragStart = (e, bookmark) => {
+    setDraggedBookmark(bookmark);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', bookmark.id);
+  };
+
+  const handleBookmarkDragOver = (e, bookmark) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverBookmark(bookmark);
+  };
+
+  const handleBookmarkDragLeave = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setDragOverBookmark(null);
+    }
+  };
+
+  const handleBookmarkDrop = (e, targetBookmark) => {
+    e.preventDefault();
+    
+    if (draggedBookmark && targetBookmark && draggedBookmark.id !== targetBookmark.id) {
+      if (onBookmarkReorder) {
+        onBookmarkReorder(draggedBookmark, targetBookmark);
+      }
+    }
+    
+    setDraggedBookmark(null);
+    setDragOverBookmark(null);
+  };
+
+  const handleBookmarkDragEnd = () => {
+    setDraggedBookmark(null);
+    setDragOverBookmark(null);
+  };
+
   const getStatusBadge = (bookmark) => {
     const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
     
