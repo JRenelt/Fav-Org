@@ -264,10 +264,11 @@ body {
 /* App Content Layout */
 .app-content {
   display: flex;
-  margin-top: 80px;
-  min-height: calc(100vh - 80px - 60px);
-  max-height: calc(100vh - 80px - 60px);
+  flex: 1;
+  margin-top: 80px; /* Header height */
+  margin-bottom: 60px; /* Footer height */
   overflow: hidden;
+  width: 100%;
 }
 
 /* Statistics Panel - Modern Design */
