@@ -1476,6 +1476,12 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
         style={{ cursor: isResizing ? 'ew-resize' : 'ew-resize' }}
       ></div>
       <div className="sidebar-content">
+        {/* FavOrg Titel oberhalb von Kategorien */}
+        <div className="sidebar-main-title">
+          <h2 className="favorg-title">FavOrg [{statistics?.total_bookmarks || 0}]</h2>
+          <p className="favorg-subtitle">Verwalten Sie Ihre Lesezeichen</p>
+        </div>
+        
         <div className="sidebar-header">
           <h3 className="sidebar-title">Kategorien</h3>
           <div className="sidebar-info">
