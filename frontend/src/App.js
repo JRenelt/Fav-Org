@@ -2395,6 +2395,7 @@ function App() {
           onCategoryChange={handleCategoryChange}
           bookmarkCounts={bookmarkCounts}
           statistics={statistics}
+          onCategoryReorder={handleCategoryReorder}
         />
         
 
