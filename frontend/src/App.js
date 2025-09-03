@@ -2778,13 +2778,13 @@ function App() {
         const result = await favoritesService.findDuplicates();
         setDuplicateCount(result.marked_count || 0);
         setHasDuplicatesMarked(true);
-        showCustomToast(`${result.duplicate_groups} Duplikat-Gruppen gefunden. ${result.marked_count} als Duplikat markiert.`, 'success');
+        showCustomToast(`${result.duplicate_groups} Duplikat-Gruppen gefunden. ${result.marked_count} als Duplikat markiert.`, 'warning');
         await loadBookmarks();
         await loadStatistics();
       } else {
         // Second click: Delete marked duplicates
         const result = await favoritesService.deleteDuplicates();
-        showCustomToast(`${result.removed_count} Duplikate wurden entfernt.`, 'success');
+        showCustomToast(`${result.removed_count} Duplikate wurden entfernt.`, 'warning');
         setDuplicateCount(0);
         setHasDuplicatesMarked(false);
         await loadBookmarks();
