@@ -1870,7 +1870,9 @@ body {
 }
 
 .help-navigation {
-  width: 220px;
+  width: auto;
+  min-width: 220px;
+  max-width: 300px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   border-radius: 8px;
@@ -1893,6 +1895,8 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Verdana', sans-serif;
+  white-space: nowrap;
+  min-width: max-content;
 }
 
 .nav-menu-item:hover {
