@@ -92,32 +92,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   height: 100%;
   padding: 0 20px;
-  max-width: 1400px;
-  margin: 0 auto;
+  position: relative;
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  flex: 0 0 var(--sidebar-width, 280px); /* Gleiche Breite wie Sidebar */
-  width: var(--sidebar-width, 280px);
+  flex: 0 0 auto;
   min-width: 200px;
-  max-width: 500px;
-  padding-left: 20px;
-  transition: width 0.2s ease, flex-basis 0.2s ease;
 }
-
-
 
 .header-center {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Links ausgerichtet statt center */
+  justify-content: center;
   flex: 1;
-  padding-left: 40px; /* Mehr Abstand vom linken Rand */
-  min-width: 0; /* Verhindert Überlauf */
+  gap: 12px;
 }
 
 .header-right {
