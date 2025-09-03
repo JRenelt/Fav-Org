@@ -669,7 +669,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="help-dialog">
         <DialogHeader>
-          <DialogTitle className="help-title">
+          <DialogTitle className="help-title-inline">
             <HelpCircle className="w-5 h-5 mr-2" />
             FavOrg - Hilfe & Anleitung
           </DialogTitle>
