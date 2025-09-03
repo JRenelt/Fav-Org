@@ -2970,6 +2970,7 @@ function App() {
   };
 
   const handleCreateBookmark = () => {
+    clearAllToasts(); // Schließe alle Toasts beim Öffnen des Dialogs
     setEditingBookmark(null);
     setShowBookmarkDialog(true);
   };
