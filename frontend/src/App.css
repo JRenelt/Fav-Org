@@ -73,6 +73,9 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--bg-primary);
+  
+  /* TEMPORÄRE DEBUG GRENZEN */
+  border: 1px solid red;
 }
 
 /* Header - Improved Layout */
