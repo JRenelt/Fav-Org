@@ -811,6 +811,9 @@ body {
   /* Wird automatisch durch Sidebar-Breite angepasst */
   margin-left: 0; /* Kein fester Margin */
   transition: all 0.2s ease;
+  
+  /* TEMPORÄRE DEBUG GRENZEN */
+  border: 1px solid purple;
 }
 
 .main-header {
