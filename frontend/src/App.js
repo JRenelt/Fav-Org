@@ -1467,6 +1467,19 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
     }
   };
 
+  const handleExportAllFormats = async () => {
+    setIsExporting(true);
+    try {
+      const favoritesService = new FavoritesService();
+      await favoritesService.exportForAllBrowsers();
+      toast.success('Alle Formate erfolgreich exportiert! (HTML, JSON, XML, CSV)');
+    } catch (error) {
+      toast.error('Multi-Format Export fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   const handleCreateTestData = async () => {
     setIsExporting(true);
     try {
