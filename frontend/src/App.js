@@ -1170,7 +1170,51 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   );
 };
 
-const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus }) => {
+const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder }) => {
+  const [draggedBookmark, setDraggedBookmark] = useState(null);
+  const [dragOverBookmark, setDragOverBookmark] = useState(null);
+
+  // Drag & Drop Handlers für Bookmarks
+  const handleBookmarkDragStart = (e, bookmark) => {
+    setDraggedBookmark(bookmark);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', bookmark.id);
+  };
+
+  const handleBookmarkDragOver = (e, bookmark) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverBookmark(bookmark);
+  };
+
+  const handleBookmarkDragLeave = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setDragOverBookmark(null);
+    }
+  };
+
+  const handleBookmarkDrop = (e, targetBookmark) => {
+    e.preventDefault();
+    
+    if (draggedBookmark && targetBookmark && draggedBookmark.id !== targetBookmark.id) {
+      console.log('Moving bookmark:', draggedBookmark.title, 'to position of', targetBookmark.title);
+      
+      // Simulate bookmark reorder
+      if (onBookmarkReorder) {
+        onBookmarkReorder(draggedBookmark, targetBookmark);
+      }
+      
+      toast.success(`Favorit "${draggedBookmark.title}" wurde verschoben`);
+    }
+    
+    setDraggedBookmark(null);
+    setDragOverBookmark(null);
+  };
+
+  const handleBookmarkDragEnd = () => {
+    setDraggedBookmark(null);
+    setDragOverBookmark(null);
+  };
 
   const getStatusBadge = (bookmark) => {
     const statusType = bookmark.status_type || (bookmark.is_dead_link ? 'dead' : 'active');
@@ -1224,12 +1268,24 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
   return (
     <div className="bookmark-list">
       {bookmarks.map(bookmark => (
-        <Card key={bookmark.id} className={`bookmark-card ${bookmark.is_dead_link ? 'dead-link' : 'active-link'}`}>
+        <Card 
+          key={bookmark.id} 
+          className={`bookmark-card draggable ${bookmark.is_dead_link ? 'dead-link' : 'active-link'} ${dragOverBookmark?.id === bookmark.id ? 'drag-over' : ''}`}
+          draggable
+          onDragStart={(e) => handleBookmarkDragStart(e, bookmark)}
+          onDragOver={(e) => handleBookmarkDragOver(e, bookmark)}
+          onDragLeave={handleBookmarkDragLeave}
+          onDrop={(e) => handleBookmarkDrop(e, bookmark)}
+          onDragEnd={handleBookmarkDragEnd}
+        >
           <CardHeader className="bookmark-header">
             <div className="bookmark-title-row">
-              <CardTitle className="bookmark-title">
-                {bookmark.title}
-              </CardTitle>
+              <div className="bookmark-title-section">
+                <GripVertical className="drag-handle bookmark-drag" />
+                <CardTitle className="bookmark-title">
+                  {bookmark.title}
+                </CardTitle>
+              </div>
               <div className="bookmark-actions">
                 {getStatusBadge(bookmark)}
                 <Button
