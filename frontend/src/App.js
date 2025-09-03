@@ -2377,12 +2377,12 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             </button>
           </div>
           
-          {/* Header-Buttons für Tabellenansicht über Aktionen-Spalte */}
-          {viewMode === 'table' && (
-            <div className="table-header-actions">
+          {/* Header-Buttons nur für Kartenansicht */}
+          {viewMode === 'cards' && (
+            <div className="card-header-actions">
               <Button
                 onClick={onHelpClick}
-                className="table-header-btn"
+                className="card-header-btn"
                 size="sm"
                 title="Hilfe"
               >
@@ -2391,7 +2391,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               
               <Button
                 onClick={onStatsToggle}
-                className="table-header-btn"
+                className="card-header-btn"
                 size="sm"
                 title="Statistiken ein-/ausblenden"
               >
@@ -2400,7 +2400,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               
               <Button
                 onClick={onSettingsClick}
-                className="table-header-btn"
+                className="card-header-btn"
                 size="sm" 
                 title="System-Einstellungen"
               >
@@ -2409,7 +2409,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               
               <Button 
                 onClick={onDeleteAllClick}
-                className="table-header-btn delete-btn"
+                className="card-header-btn delete-btn"
                 size="sm"
                 title="Alle Favoriten löschen"
               >
