@@ -514,8 +514,13 @@ const ExportDialog = ({ isOpen, onClose, onExport }) => {
   const handleExportAllFormats = async () => {
     setIsExporting(true);
     try {
-      const favoritesService = new FavoritesService();
-      await favoritesService.exportForAllBrowsers();
+      // Exportiere alle Formate einzeln
+      const formats = ['html', 'json', 'xml', 'csv'];
+      for (const format of formats) {
+        await onExport(format, null);
+        // Kleine Pause zwischen den Downloads
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
       toast.success('Alle Formate erfolgreich exportiert! (HTML, JSON, XML, CSV)');
     } catch (error) {
       toast.error('Multi-Format Export fehlgeschlagen: ' + error.message);
