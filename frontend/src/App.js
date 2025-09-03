@@ -1340,9 +1340,11 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Sidebar Width im LocalStorage speichern
+  // Sidebar Width im LocalStorage speichern und CSS-Variable setzen
   useEffect(() => {
     localStorage.setItem('favorg-sidebar-width', sidebarWidth.toString());
+    // CSS-Variable für main-content setzen
+    document.documentElement.style.setProperty('--sidebar-width', `${sidebarWidth}px`);
   }, [sidebarWidth]);
 
   // Resize Handler für Sidebar
