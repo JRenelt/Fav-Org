@@ -2875,7 +2875,7 @@ function App() {
         onStatsToggle={() => setShowStatistics(true)}
         onCreateBookmarkClick={handleCreateBookmark}
         onFileUploadClick={handleFileUpload}
-        onExportClick={() => setShowSettings(true)}
+        onExportClick={() => setShowExportDialog(true)}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
         onDeleteAllClick={handleDeleteAll}
