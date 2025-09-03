@@ -2414,6 +2414,7 @@ function App() {
           onFileSelected={handleFileSelected}
           viewMode={viewMode}
           onViewModeChange={handleViewModeChange}
+          onBookmarkReorder={handleBookmarkReorder}
         />
       </div>
 
