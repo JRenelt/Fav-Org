@@ -1875,6 +1875,7 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onDeleteBookmark={onDeleteBookmark}
             onEditBookmark={onEditBookmark}
             onToggleStatus={onToggleStatus}
+            onBookmarkReorder={onBookmarkReorder}
           />
         ) : (
           <BookmarkList
