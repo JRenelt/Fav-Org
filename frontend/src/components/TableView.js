@@ -22,6 +22,8 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
 
   const [isResizing, setIsResizing] = useState(false);
   const [resizingColumn, setResizingColumn] = useState(null);
+  const [draggedBookmark, setDraggedBookmark] = useState(null);
+  const [dragOverBookmark, setDragOverBookmark] = useState(null);
   const tableRef = useRef(null);
   const startX = useRef(0);
   const startWidth = useRef(0);
