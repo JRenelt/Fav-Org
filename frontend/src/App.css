@@ -1705,13 +1705,17 @@ body {
   color: var(--text-primary);
 }
 
-/* Help Dialog - 10% breiter */
+/* Help Dialog - 30% breiter und dynamische Breite */
 .help-dialog {
-  max-width: 660px; /* 600px + 10% = 660px */
+  max-width: 780px; /* 600px + 30% = 780px */
   max-height: 80vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
+  
+  /* Dynamische Breite basierend auf Inhalt */
+  width: max-content;
+  min-width: 780px;
 }
 
 .bookmark-form {
