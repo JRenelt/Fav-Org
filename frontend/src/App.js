@@ -649,20 +649,31 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-// Help Dialog Component with comprehensive content and submenu system
+// Help Dialog Component with comprehensive content and new hierarchical submenu system
 const HelpDialog = ({ isOpen, onClose }) => {
-  const [activeSection, setActiveSection] = useState('import-basics');
+  const [activeSection, setActiveSection] = useState('import-guide');
   
   const menuSections = {
-    'import-basics': 'Favoriten Importieren',
-    'import-browsers': 'Unterstützte Browser', 
+    // Fav-Importieren
     'import-guide': 'Schritt-für-Schritt Anleitung',
-    'import-formats': 'Unterstützte Dateiformate',
-    'installation': 'Installationshilfe',
-    'features-overview': 'Features Übersicht',
-    'validation': 'Link-Validierung',
+    'import-formats': 'Unterstützte Dateiformate', 
+    'export-functions': 'Fav-Exportieren',
+    
+    // Funktionen
+    'link-validation': 'Link Validierung',
+    'duplicate-management': 'Duplikat-Management',
+    'category-management': 'Kategorien verwalten',
+    
+    // Shortcuts
     'shortcuts': 'Shortcuts',
-    'tips': 'Tipps & Tricks'
+    
+    // Tipps und Tricks
+    'supported-browsers': 'Unterstützte Browser',
+    'installation-help': 'Installationshilfe',
+    'tips-tricks': 'Tipps & Tricks',
+    
+    // Features Übersicht
+    'features-overview': 'Features Übersicht'
   };
 
   return (
