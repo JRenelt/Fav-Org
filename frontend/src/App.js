@@ -101,22 +101,67 @@ class FavoritesService {
       }, {
         responseType: 'blob'
       });
+
+      const blob = new Blob([response.data], { 
+        type: this.getContentType(format)
+      });
       
-      // Trigger download
-      const blob = new Blob([response.data]);
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.style.display = 'none';
       a.href = url;
-      a.download = `bookmarks_${format}_${new Date().toISOString().split('T')[0]}.${format}`;
+      a.download = this.getFileName(format);
       document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
       
       return { message: `${format.toUpperCase()} Export erfolgreich` };
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Export failed');
     }
+  }
+
+  // Export für alle Browserformate
+  async exportForAllBrowsers() {
+    try {
+      const formats = [
+        { format: 'html', name: 'HTML (Chrome, Firefox, Edge)', extension: 'html' },
+        { format: 'json', name: 'JSON (Chrome Bookmarks)', extension: 'json' },
+        { format: 'xml', name: 'XML (Universal)', extension: 'xml' },
+        { format: 'csv', name: 'CSV (Excel/Tabelle)', extension: 'csv' }
+      ];
+
+      for (const formatInfo of formats) {
+        await this.exportBookmarks(formatInfo.format);
+        // Kleine Verzögerung zwischen den Downloads
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      return { message: 'Alle Browserformate erfolgreich exportiert' };
+    } catch (error) {
+      throw new Error('Multi-Format Export fehlgeschlagen: ' + error.message);
+    }
+  }
+
+  getContentType(format) {
+    const contentTypes = {
+      'html': 'text/html',
+      'json': 'application/json',
+      'xml': 'application/xml',
+      'csv': 'text/csv'
+    };
+    return contentTypes[format] || 'application/octet-stream';
+  }
+
+  getFileName(format) {
+    const date = new Date().toISOString().split('T')[0];
+    const fileNames = {
+      'html': `favoriten_${date}.html`,
+      'json': `favoriten_${date}.json`, 
+      'xml': `favoriten_${date}.xml`,
+      'csv': `favoriten_${date}.csv`
+    };
+    return fileNames[format] || `favoriten_${date}.${format}`;
   }
 
   async importBookmarks(file) {
