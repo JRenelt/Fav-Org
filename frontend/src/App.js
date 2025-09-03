@@ -392,6 +392,15 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
             <Upload className="w-4 h-4 mr-2" />
             Datei wählen
           </Button>
+
+          <Button 
+            onClick={onExportClick} 
+            className="action-btn export-btn"
+            size="sm"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Fav-Export
+          </Button>
           
           <Button 
             onClick={onValidateClick} 
