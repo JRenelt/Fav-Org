@@ -2236,6 +2236,66 @@ function App() {
     }
   };
 
+  // Drag & Drop Handler für Kategorien
+  const handleCategoryReorder = async (draggedCategory, targetCategory) => {
+    try {
+      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
+      // Für jetzt simulieren wir die Neuordnung lokal
+      console.log(`Kategorie "${draggedCategory.name}" zu "${targetCategory.name}" verschoben`);
+      
+      // Optional: Lokale Neuordnung der Kategorien
+      const newCategories = [...categories];
+      const draggedIndex = newCategories.findIndex(cat => cat.id === draggedCategory.id);
+      const targetIndex = newCategories.findIndex(cat => cat.id === targetCategory.id);
+      
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        // Element entfernen und an neuer Position einfügen
+        const [draggedItem] = newCategories.splice(draggedIndex, 1);
+        newCategories.splice(targetIndex, 0, draggedItem);
+        setCategories(newCategories);
+        
+        // Speichere Sortierung im localStorage
+        const categoryOrder = newCategories.map(cat => cat.id);
+        localStorage.setItem('favorg-category-order', JSON.stringify(categoryOrder));
+      }
+      
+      toast.success(`Kategorie "${draggedCategory.name}" wurde neu sortiert`);
+    } catch (error) {
+      console.error('Category reorder error:', error);
+      toast.error('Kategorien-Sortierung fehlgeschlagen: ' + error.message);
+    }
+  };
+
+  // Drag & Drop Handler für Bookmarks
+  const handleBookmarkReorder = async (draggedBookmark, targetBookmark) => {
+    try {
+      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
+      // Für jetzt simulieren wir die Neuordnung lokal
+      console.log(`Bookmark "${draggedBookmark.title}" zu "${targetBookmark.title}" verschoben`);
+      
+      // Optional: Lokale Neuordnung der Bookmarks
+      const newBookmarks = [...bookmarks];
+      const draggedIndex = newBookmarks.findIndex(bm => bm.id === draggedBookmark.id);
+      const targetIndex = newBookmarks.findIndex(bm => bm.id === targetBookmark.id);
+      
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        // Element entfernen und an neuer Position einfügen
+        const [draggedItem] = newBookmarks.splice(draggedIndex, 1);
+        newBookmarks.splice(targetIndex, 0, draggedItem);
+        setBookmarks(newBookmarks);
+        
+        // Speichere Sortierung im localStorage
+        const bookmarkOrder = newBookmarks.map(bm => bm.id);
+        localStorage.setItem('favorg-bookmark-order', JSON.stringify(bookmarkOrder));
+      }
+      
+      toast.success(`Favorit "${draggedBookmark.title}" wurde neu sortiert`);
+    } catch (error) {
+      console.error('Bookmark reorder error:', error);
+      toast.error('Favoriten-Sortierung fehlgeschlagen: ' + error.message);
+    }
+  };
+
   const handleEditBookmark = (bookmark) => {
     setEditingBookmark(bookmark);
     setShowBookmarkDialog(true);
