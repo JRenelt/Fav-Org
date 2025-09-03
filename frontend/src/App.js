@@ -702,7 +702,19 @@ const HelpDialog = ({ isOpen, onClose }) => {
           {/* Navigation Menu mit hierarchischer Struktur */}
           <div className="help-navigation">
             <div className="nav-section">
-              <h4 className="nav-section-title">📥 Fav-Importieren</h4>
+              <h4 className="nav-section-title">📥 Import/Export</h4>
+              <button
+                className={`nav-menu-item ${activeSection === 'favorites-import' ? 'active' : ''}`}
+                onClick={() => setActiveSection('favorites-import')}
+              >
+                Favoriten Importieren
+              </button>
+              <button
+                className={`nav-menu-item ${activeSection === 'favorites-export' ? 'active' : ''}`}
+                onClick={() => setActiveSection('favorites-export')}
+              >
+                Favoriten Exportieren
+              </button>
               <button
                 className={`nav-menu-item ${activeSection === 'import-guide' ? 'active' : ''}`}
                 onClick={() => setActiveSection('import-guide')}
@@ -714,12 +726,6 @@ const HelpDialog = ({ isOpen, onClose }) => {
                 onClick={() => setActiveSection('import-formats')}
               >
                 Unterstützte Dateiformate
-              </button>
-              <button
-                className={`nav-menu-item ${activeSection === 'export-functions' ? 'active' : ''}`}
-                onClick={() => setActiveSection('export-functions')}
-              >
-                Fav-Exportieren
               </button>
             </div>
 
