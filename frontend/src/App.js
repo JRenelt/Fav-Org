@@ -2961,6 +2961,10 @@ function App() {
           viewMode={viewMode}
           onViewModeChange={handleViewModeChange}
           onBookmarkReorder={handleBookmarkReorder}
+          onHelpClick={() => setShowHelp(true)}
+          onStatsToggle={() => setShowStatistics(true)}
+          onSettingsClick={() => setShowSettings(true)}
+          onDeleteAllClick={handleDeleteAll}
         />
       </div>
 
