@@ -485,8 +485,10 @@ test_plan:
     - "Category Tooltip Smart Positioning"
     - "System Settings Dialog (Modern Design)"
     - "Header Enhancements"
+    - "Sidebar Resizing Functionality (NEW)"
+    - "Drag & Drop Extended Functionality (NEW)"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
