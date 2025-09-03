@@ -858,21 +858,6 @@ const HelpDialog = ({ isOpen, onClose }) => {
               </div>
             )}
 
-            {activeSection === 'export-functions' && (
-              <div className="help-section">
-                <h4>Fav-Exportieren</h4>
-                <p>Exportieren Sie Ihre Favoriten in verschiedene Formate:</p>
-                <ul>
-                  <li><strong>HTML Export:</strong> Für Import in alle Browser (Chrome, Firefox, Edge, Safari)</li>
-                  <li><strong>JSON Export:</strong> Chrome-kompatibles Format mit Metadaten</li>
-                  <li><strong>XML Export:</strong> Strukturierte Daten für Re-Import in FavOrg</li>
-                  <li><strong>CSV Export:</strong> Tabellenformat für Excel/Tabellenkalkulation</li>
-                  <li><strong>Alle Formate:</strong> Simultaner Export aller Formate</li>
-                </ul>
-                <p>Zugriff über Einstellungen → Export-Optionen</p>
-              </div>
-            )}
-
             {activeSection === 'link-validation' && (
               <div className="help-section">
                 <h4>Link-Validierung</h4>
