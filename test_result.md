@@ -151,16 +151,19 @@ backend:
         comment: "✅ ERWEITERTE EXPORT-FUNKTIONALITÄT GETESTET: XML/CSV Export funktionieren perfekt (96.7% Success Rate). XML Export mit korrekten Headers (application/xml, attachment filename), CSV Export mit korrekten Headers (text/csv, attachment filename). Alle Bookmark-Daten korrekt in beiden Formaten. Category-Filter funktioniert einwandfrei. KRITISCH: HTML und JSON Export-Formate NICHT IMPLEMENTIERT - Backend wirft 'Unsupported export format' Fehler für format=html/json."
 
   - task: "Extended Export Functionality (HTML/JSON)"
-    implemented: false
-    working: false
+    implemented: true
+    working: true
     file: "backend/server.py"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
       - working: false
         agent: "testing"
         comment: "❌ NEUE EXPORT-FORMATE NICHT IMPLEMENTIERT: HTML Export (format=html) und JSON Export (format=json) sind nicht implementiert. Backend-Code in server.py Zeile 1084 wirft HTTPException 'Unsupported export format' für alle Formate außer XML/CSV. Frontend erwartet HTML-Format für Browser-Kompatibilität und JSON-Format für Chrome Bookmarks. Multi-Format Export 'Alle Formate exportieren' funktioniert nur zu 50% (XML/CSV ja, HTML/JSON nein)."
+      - working: true
+        agent: "testing"
+        comment: "✅ NEUE HTML/JSON EXPORT-FORMATE VOLLSTÄNDIG IMPLEMENTIERT UND GETESTET: Umfassende Tests aller 4 Export-Formate durchgeführt (10/10 Tests bestanden, 100% Success Rate). ✅ HTML Export: Browser-kompatibles Netscape Bookmark Format mit korrekten Headers (text/html, attachment filename .html), valide HTML-Struktur, alle 22 Bookmarks korrekt eingebettet ✅ JSON Export: Chrome-kompatibles JSON Format mit korrekten Headers (application/json, attachment filename .json), Chrome-Struktur mit roots/bookmark_bar, alle 22 Bookmarks in Chrome-Format ✅ XML Export: Weiterhin funktional mit korrekten Headers (application/xml) ✅ CSV Export: Weiterhin funktional mit korrekten Headers (text/csv) ✅ Category-Filter: Funktioniert für alle 4 Formate (Development-Kategorie: 9 Bookmarks) ✅ Error Handling: HTTP 400 für unsupported formats mit beschreibender Fehlermeldung. ALLE 4 EXPORT-FORMATE SIND VOLLSTÄNDIG FUNKTIONAL UND BROWSER-KOMPATIBEL!"
 
   - task: "Link Validation"
     implemented: true
