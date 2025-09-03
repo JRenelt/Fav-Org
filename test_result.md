@@ -438,10 +438,11 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Statistics Dialog Vertical Layout"
+    - "Help Dialog Enhanced Layout" 
+    - "Category Tooltip Smart Positioning"
     - "System Settings Dialog (Modern Design)"
     - "Header Enhancements"
-    - "Search Field Enhancements"
-    - "Intelligent Validation Button"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
@@ -471,3 +472,5 @@ agent_communication:
     message: "NEUE FEATURES IMPLEMENTATION: Beginne mit den finalen User-Anforderungen: 1) Spaltenbreite anpassen mit lokaler Speicherung, 2) Draggable Toast-Positions, 3) Umfassende Hilfe-Inhalte, 4) Statistik Dark Theme Fix, 5) Komplette Umstellung auf Verdana Font. Alle Änderungen werden lokal gespeichert für bessere UX."
   - agent: "testing"
     message: "🎯 COMPREHENSIVE BACKEND TESTING NACH FRONTEND UPDATES ABGESCHLOSSEN: Vollständige Tests aller Backend-Endpunkte und neuen Status-Management Features durchgeführt (39/39 Tests bestanden, 100% Success Rate). ✅ API Endpoints: Alle CRUD-Operationen, Import, Export, Statistiken, Kategorien, Duplikat-Erkennung und Link-Validierung funktionieren perfekt ✅ Status Management: Neue Status-Typen (active, dead, localhost, duplicate, unchecked) vollständig funktional mit korrekter status_type Integration ✅ Data Integrity: MongoDB-Operationen und Datenkonsistenz gewährleistet ✅ Performance: Antwortzeiten und Error-Handling korrekt ✅ Integration Points: Frontend-Backend Integration Points arbeiten einwandfrei ✅ Localhost Protection: Dead-Links-Removal verschont localhost-Links korrekt ✅ Duplicate Workflow: Find→Mark→Delete Workflow funktioniert (21 Gruppen gefunden, 22 markiert, 23 entfernt) ✅ Link Validation: Status-Integration bei Validierung arbeitet perfekt (35 Links geprüft, 6 Dead Links korrekt erkannt und status_type gesetzt). ALLE BACKEND-FEATURES SIND VOLLSTÄNDIG FUNKTIONAL UND PRODUKTIONSREIF!"
+  - agent: "main"
+    message: "AKTUELLE IMPLEMENTATION ABGESCHLOSSEN: 1) Statistik-Dialog auf vertikales Layout umgestellt (📊 Gesamt Favoriten [41] Format), 2) Hilfe-Dialog um 30% verbreitert mit Untermenü-System (Import→Browser→Anleitung→Formate etc.), 3) Kategorien-Notizen Positionierung mit Auflösungserkennung implementiert (rechts öffnend, responsiv). Bereit für Backend-Tests der aktualisierten Features."
