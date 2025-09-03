@@ -469,6 +469,112 @@ class ExportManager:
         
         output.seek(0)
         return output.getvalue()
+    
+    def export_to_html(self, bookmarks: List[Bookmark]) -> str:
+        """Exportiert Bookmarks zu HTML (Browser-kompatibel)"""
+        html_template = '''<!DOCTYPE NETSCAPE-Bookmark-file-1>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Bookmarks</TITLE>
+<H1>Bookmarks</H1>
+<DL><p>
+{folders}
+</DL><p>'''
+        
+        # Organisiere Bookmarks nach Kategorien
+        categories = {}
+        for bookmark in bookmarks:
+            category = bookmark.category or "Andere"
+            if category not in categories:
+                categories[category] = []
+            categories[category].append(bookmark)
+        
+        folders_html = ""
+        for category_name, category_bookmarks in categories.items():
+            folders_html += f'    <DT><H3>{category_name}</H3>\n'
+            folders_html += '    <DL><p>\n'
+            
+            for bookmark in category_bookmarks:
+                # Zeitstempel in Unix-Format für Browser-Kompatibilität
+                timestamp = int(bookmark.date_added.timestamp())
+                folders_html += f'        <DT><A HREF="{bookmark.url}" ADD_DATE="{timestamp}">{bookmark.title}</A>\n'
+            
+            folders_html += '    </DL><p>\n'
+        
+        return html_template.format(folders=folders_html)
+    
+    def export_to_json(self, bookmarks: List[Bookmark]) -> str:
+        """Exportiert Bookmarks zu JSON (Chrome-kompatibel)"""
+        # Chrome Bookmarks JSON-Struktur
+        root = {
+            "checksum": "generated_by_favorg",
+            "roots": {
+                "bookmark_bar": {
+                    "children": [],
+                    "date_added": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                    "date_modified": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                    "id": "1",
+                    "name": "Bookmarks bar",
+                    "type": "folder"
+                },
+                "other": {
+                    "children": [],
+                    "date_added": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                    "date_modified": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                    "id": "2",
+                    "name": "Other bookmarks",
+                    "type": "folder"
+                },
+                "synced": {
+                    "children": [],
+                    "date_added": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                    "date_modified": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                    "id": "3",
+                    "name": "Mobile bookmarks",
+                    "type": "folder"
+                }
+            },
+            "version": 1
+        }
+        
+        # Organisiere Bookmarks nach Kategorien für Chrome-Ordner
+        categories = {}
+        for bookmark in bookmarks:
+            category = bookmark.category or "Other bookmarks"
+            if category not in categories:
+                categories[category] = []
+            categories[category].append(bookmark)
+        
+        folder_id = 4  # Start-ID für neue Ordner
+        
+        for category_name, category_bookmarks in categories.items():
+            # Erstelle Ordner für Kategorie
+            folder = {
+                "children": [],
+                "date_added": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                "date_modified": str(int(datetime.now(timezone.utc).timestamp() * 1000000)),
+                "id": str(folder_id),
+                "name": category_name,
+                "type": "folder"
+            }
+            
+            bookmark_id = folder_id + 1000  # Bookmark-IDs beginnen bei 1000+ der Folder-ID
+            
+            for bookmark in category_bookmarks:
+                bookmark_entry = {
+                    "date_added": str(int(bookmark.date_added.timestamp() * 1000000)),
+                    "id": str(bookmark_id),
+                    "name": bookmark.title,
+                    "type": "url",
+                    "url": bookmark.url
+                }
+                folder["children"].append(bookmark_entry)
+                bookmark_id += 1
+            
+            # Füge Ordner zu "bookmark_bar" hinzu (Hauptbereich)
+            root["roots"]["bookmark_bar"]["children"].append(folder)
+            folder_id += 1
+        
+        return json.dumps(root, indent=2, ensure_ascii=False)
 
 class CategoryManager:
     """Klasse für Kategorie-Verwaltung mit Unterkategorien"""
