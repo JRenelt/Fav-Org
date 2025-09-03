@@ -185,8 +185,14 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
                 </div>
               </th>
               <th style={{ width: columnWidths.actions }}>
-                <div className="table-header">
+                <div className="table-header actions-header">
                   <span>Aktionen</span>
+                  {/* Header-Buttons über Aktionen-Spalte */}
+                  {headerButtons && (
+                    <div className="table-header-buttons">
+                      {headerButtons}
+                    </div>
+                  )}
                 </div>
               </th>
             </tr>
