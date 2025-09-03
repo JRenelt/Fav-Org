@@ -598,6 +598,11 @@ body {
 
 .bookmark-drag {
   margin-right: 12px;
+  color: white !important;
+}
+
+.bookmark-drag:hover {
+  color: var(--text-primary) !important;
 }
 
 .subcategory-drag {
