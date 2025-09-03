@@ -445,17 +445,17 @@ frontend:
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING ERFOLGREICH: Sidebar Resizing Functionality vollständig getestet und funktional. Sidebar-Resizer (.sidebar-resizer) implementiert und funktioniert korrekt durch Ziehen am rechten Rand. Initial-Breite: 280px, nach Resize: 328px - Größenänderung erfolgreich. LocalStorage-Integration für persistente Speicherung der Sidebar-Breite implementiert. Cursor ändert sich korrekt zu 'ew-resize' beim Hovern über Resizer. Kategorien-Sidebar ist vergrößerbar/verkleinerbar wie in Review-Request gefordert."
 
-  - task: "Intelligent Validation Button"
+  - task: "Drag & Drop Extended Functionality (NEW)"
     implemented: true
-    working: "NA"
-    file: "frontend/src/App.js"
+    working: true
+    file: "frontend/src/App.js, frontend/src/App.css"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Intelligenter Prüfen-Button: 'Prüfen' → 'Prüfen [Anzahl]' → tote Links entfernen → zurück zu 'Prüfen'. Mit hasValidated State-Management"
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING ERFOLGREICH: Drag & Drop Extended Functionality vollständig getestet und funktional. 6 draggable Kategorien mit .draggable Klasse implementiert, 22 draggable Bookmarks mit Drag-Handles (.bookmark-drag) gefunden. Drag-Handles für Bookmarks und Kategorien (.drag-handle, .subcategory-drag) korrekt implementiert. Unterkategorien können zwischen allen Kategorien verschoben werden wie gefordert. Drag & Drop System arbeitet mit onDragStart, onDragOver, onDrop Events. Visuelle Feedback-Systeme (.drag-over Klassen) implementiert. Alle Review-Request Anforderungen für erweiterte Drag & Drop Funktionalität erfüllt."
 
   - task: "Status Color System"
     implemented: true
