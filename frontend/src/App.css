@@ -2009,6 +2009,22 @@ body {
   color: var(--text-primary);
 }
 
+.version-info {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+}
+
+.version-info p {
+  margin-bottom: 8px;
+}
+
+.version-info p:last-child {
+  margin-bottom: 0;
+}
+
 .bookmark-form {
   display: flex;
   flex-direction: column;
