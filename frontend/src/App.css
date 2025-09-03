@@ -2565,10 +2565,7 @@ body {
 @media (max-width: 1024px) {
   .sidebar {
     width: 240px;
-  }
-  
-  .main-content {
-    margin-left: 240px;
+    flex: 0 0 240px;
   }
   
   .header-content {
@@ -2585,10 +2582,7 @@ body {
 @media (max-width: 768px) {
   .sidebar {
     width: 200px;
-  }
-  
-  .main-content {
-    margin-left: 200px;
+    flex: 0 0 200px;
   }
   
   .main-header {
@@ -2611,10 +2605,6 @@ body {
 @media (max-width: 640px) {
   .sidebar {
     display: none;
-  }
-  
-  .main-content {
-    margin-left: 0;
   }
   
   .content-area {
