@@ -135,7 +135,8 @@ body {
   align-items: center;
   justify-content: flex-start; /* Links ausgerichtet statt center */
   flex: 1;
-  padding-left: 20px; /* Abstand vom linken Rand */
+  padding-left: 40px; /* Mehr Abstand vom linken Rand */
+  min-width: 0; /* Verhindert Überlauf */
 }
 
 .header-right {
