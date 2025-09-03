@@ -2409,6 +2409,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
+  const [showExportDialog, setShowExportDialog] = useState(false); // Neu: Export Dialog
   const [editingBookmark, setEditingBookmark] = useState(null);
 
   // Validation and Duplicates
