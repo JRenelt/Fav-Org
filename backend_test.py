@@ -336,6 +336,105 @@ class FavLinkBackendTester:
         )
         return success, response
 
+    def test_status_management(self):
+        """Test new status management features"""
+        print("\n🔄 Testing Status Management Features...")
+        
+        # First get a bookmark to test with
+        success, bookmarks = self.test_get_all_bookmarks()
+        if not success or not bookmarks:
+            print("❌ No bookmarks available for status testing")
+            return False, "No bookmarks available"
+        
+        bookmark_id = bookmarks[0]['id']
+        print(f"   Using bookmark ID: {bookmark_id}")
+        
+        # Test all status types
+        status_types = ['active', 'dead', 'localhost', 'duplicate', 'unchecked']
+        
+        for status_type in status_types:
+            status_data = {"status_type": status_type}
+            success, response = self.run_test(
+                f"Update Status to {status_type}",
+                "PUT",
+                f"bookmarks/{bookmark_id}/status",
+                200,
+                data=status_data
+            )
+            if not success:
+                return False, f"Failed to set status to {status_type}"
+        
+        return True, "All status types tested successfully"
+
+    def test_duplicate_workflow(self):
+        """Test complete duplicate workflow: Find → Mark → Delete"""
+        print("\n🔄 Testing Duplicate Workflow...")
+        
+        # Step 1: Find and mark duplicates
+        success, find_response = self.run_test(
+            "Find and Mark Duplicates",
+            "POST",
+            "bookmarks/find-duplicates",
+            200
+        )
+        if not success:
+            return False, "Failed to find duplicates"
+        
+        duplicate_groups = find_response.get('duplicate_groups', 0)
+        marked_count = find_response.get('marked_count', 0)
+        print(f"   Found {duplicate_groups} duplicate groups, marked {marked_count} duplicates")
+        
+        # Step 2: Delete marked duplicates
+        success, delete_response = self.run_test(
+            "Delete Marked Duplicates",
+            "DELETE",
+            "bookmarks/duplicates",
+            200
+        )
+        if not success:
+            return False, "Failed to delete duplicates"
+        
+        removed_count = delete_response.get('removed_count', 0)
+        print(f"   Removed {removed_count} duplicate bookmarks")
+        
+        return True, {
+            "duplicate_groups": duplicate_groups,
+            "marked_count": marked_count,
+            "removed_count": removed_count
+        }
+
+    def test_statistics_comprehensive(self):
+        """Test statistics endpoint with comprehensive field validation for new vertical layout"""
+        success, response = self.run_test(
+            "Get Comprehensive Statistics",
+            "GET",
+            "statistics",
+            200
+        )
+        
+        if success:
+            # Validate all required fields for the new vertical layout
+            required_fields = [
+                'total_bookmarks', 'total_categories', 'active_links', 
+                'dead_links', 'localhost_links', 'duplicate_links', 
+                'timeout_links', 'unchecked_links'
+            ]
+            
+            missing_fields = []
+            for field in required_fields:
+                if field not in response:
+                    missing_fields.append(field)
+            
+            if missing_fields:
+                print(f"   ⚠️  Missing fields for vertical layout: {missing_fields}")
+                return False, f"Missing required fields: {missing_fields}"
+            else:
+                print("   ✅ All required statistics fields present for vertical layout")
+                print(f"   📊 Statistics: {response['total_bookmarks']} total, {response['active_links']} active, {response['dead_links']} dead")
+                return True, response
+        
+        return success, response
+
     def test_integration_workflow(self):
         """Test the complete integration workflow: Validate → Check Dead Links → Remove → Update Statistics"""
         print("\n🔄 Starting Integration Workflow Test...")
