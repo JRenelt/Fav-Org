@@ -2898,7 +2898,7 @@ function App() {
         moveDescription = `Kategorien "${draggedCategory.name}" und "${targetCategory.name}" getauscht`;
       }
       
-      // Lokale Kategorien-Liste aktualisieren
+      // Sofort lokale Kategorien-Liste aktualisieren für bessere UX
       const updatedCategories = categories.map(cat => {
         if (cat.id === draggedCategory.id) {
           return {
@@ -2909,10 +2909,10 @@ function App() {
         return cat;
       });
       
-      // Sofort State aktualisieren für bessere UX
+      // State aktualisieren
       setCategories(updatedCategories);
       
-      // Lokale Speicherung für Persistenz
+      // Lokale Speicherung für Persistenz zwischen Sessions
       const categoryOrder = updatedCategories.map(cat => ({
         id: cat.id,
         name: cat.name,
@@ -2920,13 +2920,21 @@ function App() {
       }));
       localStorage.setItem('favorg-category-order', JSON.stringify(categoryOrder));
       
-      // Neue Daten vom Backend laden um Synchronisation zu gewährleisten
+      // ⚠️ WICHTIG: NICHT die Kategorien neu laden, da das Backend die Änderung nicht kennt
+      // Stattdessen aktualisiere nur die Bookmarks um die neue Kategorie-Zuordnung zu reflektieren
       setTimeout(async () => {
-        await loadCategories();
-        await loadBookmarks();
+        await loadBookmarks(); // Nur Bookmarks aktualisieren
+        await loadStatistics(); // Statistiken aktualisieren
+        // loadCategories() NICHT aufrufen - das würde die lokalen Änderungen überschreiben
       }, 100);
       
-      toast.success(moveDescription);
+      showCustomToast(moveDescription, 'success');
+      
+    } catch (error) {
+      console.error('Category reorder error:', error);
+      showCustomToast('Kategorien-Verschiebung fehlgeschlagen: ' + error.message, 'error');
+    }
+  };
       
     } catch (error) {
       console.error('Category reorder error:', error);
