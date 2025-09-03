@@ -1147,10 +1147,10 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
                 className={`category-item main-category draggable ${activeCategory === category.name && !activeSubcategory ? 'active' : ''} ${dragOverCategory?.id === category.id ? 'drag-over' : ''}`}
                 onClick={() => onCategoryChange(category.name, null)}
                 draggable={category.name !== 'Alle'}
-                onDragStart={(e) => handleCategoryDragStart(e, category)}
-                onDragOver={(e) => handleCategoryDragOver(e, category)}
+                onDragStart={(e) => handleCategoryDragStart(e, category, false)}
+                onDragOver={(e) => handleCategoryDragOver(e, category, false)}
                 onDragLeave={handleCategoryDragLeave}
-                onDrop={(e) => handleCategoryDrop(e, category)}
+                onDrop={(e) => handleCategoryDrop(e, category, false)}
                 onDragEnd={handleCategoryDragEnd}
               >
                 <div className="category-info">
