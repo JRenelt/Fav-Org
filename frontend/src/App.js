@@ -493,10 +493,12 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     title: '',
     url: '',
     category: 'Uncategorized',
-    subcategory: '__none__'
+    subcategory: '__none__',
+    subcategories: [] // Neu: Array für mehrere Unterkategorien
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newSubcategory, setNewSubcategory] = useState(''); // Neu: Für neue Unterkategorien
 
   useEffect(() => {
     if (bookmark) {
@@ -504,17 +506,20 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
         title: bookmark.title || '',
         url: bookmark.url || '',
         category: bookmark.category || 'Uncategorized',
-        subcategory: bookmark.subcategory || '__none__'
+        subcategory: bookmark.subcategory || '__none__',
+        subcategories: bookmark.subcategories || []
       });
     } else {
       setFormData({
         title: '',
         url: '',
         category: 'Uncategorized',
-        subcategory: '__none__'
+        subcategory: '__none__',
+        subcategories: []
       });
     }
     setErrors({});
+    setNewSubcategory('');
   }, [bookmark, isOpen]);
 
   const validateForm = () => {
