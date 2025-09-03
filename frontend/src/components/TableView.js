@@ -8,7 +8,7 @@ import {
   GripVertical
 } from 'lucide-react';
 
-const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder }) => {
+const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder, headerButtons }) => {
   const [columnWidths, setColumnWidths] = useState(() => {
     const saved = localStorage.getItem('favorg-column-widths');
     return saved ? JSON.parse(saved) : {
