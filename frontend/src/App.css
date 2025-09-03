@@ -281,6 +281,9 @@ body {
   min-height: calc(100vh - 80px - 60px);
   max-height: calc(100vh - 80px - 60px);
   overflow: hidden;
+  
+  /* TEMPORÄRE DEBUG GRENZEN */
+  border: 1px solid green;
 }
 
 /* Statistics Panel - Modern Design */
