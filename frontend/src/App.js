@@ -778,38 +778,6 @@ const HelpDialog = ({ isOpen, onClose }) => {
           
           {/* Content Area */}
           <div className="help-content-area">
-            {activeSection === 'import-basics' && (
-              <div className="help-section">
-                <h4>Favoriten Importieren</h4>
-                <p>
-                  FavOrg unterstützt den Import aus verschiedenen Browsern und Formaten.
-                  Die Anwendung erkennt automatisch das Format und importiert Ihre Favoriten
-                  mit allen Kategorien und Hierarchien.
-                </p>
-                <ul>
-                  <li><strong>Multi-Browser Unterstützung:</strong> Chrome, Firefox, Edge, Safari</li>
-                  <li><strong>Automatische Erkennung:</strong> Format wird automatisch erkannt</li>
-                  <li><strong>Duplikat-Schutz:</strong> Doppelte Einträge werden vermieden</li>
-                  <li><strong>Kategoriestruktur:</strong> Ordnerhierarchie bleibt erhalten</li>
-                </ul>
-              </div>
-            )}
-            
-            {activeSection === 'import-browsers' && (
-              <div className="help-section">
-                <h4>Unterstützte Browser</h4>
-                <p>FavOrg kann Favoriten aus allen gängigen Browsern importieren:</p>
-                <ul>
-                  <li><strong>Google Chrome:</strong> Bookmarks → Lesezeichen-Manager → Exportieren</li>
-                  <li><strong>Mozilla Firefox:</strong> Lesezeichen → Alle Lesezeichen anzeigen → Exportieren</li>
-                  <li><strong>Microsoft Edge:</strong> Favoriten → Favoriten verwalten → Exportieren</li>
-                  <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
-                  <li><strong>Opera:</strong> Lesezeichen → Lesezeichen exportieren</li>
-                  <li><strong>Vivaldi:</strong> Lesezeichen → Lesezeichen exportieren</li>
-                </ul>
-              </div>
-            )}
-            
             {activeSection === 'import-guide' && (
               <div className="help-section">
                 <h4>Schritt-für-Schritt Anleitung</h4>
@@ -835,73 +803,26 @@ const HelpDialog = ({ isOpen, onClose }) => {
                   <li><strong>CSV:</strong> Tabellenformat mit Titel, URL, Kategorie (.csv)</li>
                   <li><strong>XML:</strong> Strukturiertes Datenformat (.xml)</li>
                 </ul>
-                <p>
-                  Das HTML-Format wird am häufigsten verwendet und von allen Browsern unterstützt.
-                  JSON-Dateien enthalten zusätzliche Metadaten wie Erstellungsdatum.
-                </p>
+                <p>Das HTML-Format wird am häufigsten verwendet und von allen Browsern unterstützt.</p>
               </div>
             )}
-            
-            {activeSection === 'installation' && (
+
+            {activeSection === 'export-functions' && (
               <div className="help-section">
-                <h4>Installationshilfe</h4>
-                <p>
-                  FavOrg ist eine webbasierte Anwendung, die keine lokale Installation erfordert.
-                  Hier finden Sie Informationen zur optimalen Nutzung:
-                </p>
-                
-                <h5>Browser-Empfehlungen</h5>
+                <h4>Fav-Exportieren</h4>
+                <p>Exportieren Sie Ihre Favoriten in verschiedene Formate:</p>
                 <ul>
-                  <li><strong>Chrome/Edge:</strong> Beste Performance und Kompatibilität</li>
-                  <li><strong>Firefox:</strong> Vollständig unterstützt</li>
-                  <li><strong>Safari:</strong> Grundfunktionen verfügbar</li>
-                  <li><strong>Mindestversion:</strong> Aktuelle Browser-Versionen empfohlen</li>
+                  <li><strong>HTML Export:</strong> Für Import in alle Browser (Chrome, Firefox, Edge, Safari)</li>
+                  <li><strong>JSON Export:</strong> Chrome-kompatibles Format mit Metadaten</li>
+                  <li><strong>XML Export:</strong> Strukturierte Daten für Re-Import in FavOrg</li>
+                  <li><strong>CSV Export:</strong> Tabellenformat für Excel/Tabellenkalkulation</li>
+                  <li><strong>Alle Formate:</strong> Simultaner Export aller Formate</li>
                 </ul>
-                
-                <h5>System-Anforderungen</h5>
-                <ul>
-                  <li><strong>RAM:</strong> Minimum 4GB für große Sammlungen</li>
-                  <li><strong>Bildschirmauflösung:</strong> 1280x720 oder höher</li>
-                  <li><strong>Internet:</strong> Stabile Verbindung für Link-Validierung</li>
-                  <li><strong>JavaScript:</strong> Muss aktiviert sein</li>
-                </ul>
-                
-                <h5>Erste Schritte</h5>
-                <ul>
-                  <li><strong>1. Browser-Export:</strong> Exportieren Sie Favoriten aus Ihrem Browser</li>
-                  <li><strong>2. Datei-Upload:</strong> Nutzen Sie "Datei wählen" zum Import</li>
-                  <li><strong>3. Kategorien prüfen:</strong> Kontrollieren Sie die automatische Kategorisierung</li>
-                  <li><strong>4. Links validieren:</strong> Verwenden Sie den "Prüfen" Button</li>
-                  <li><strong>5. Bereinigung:</strong> Entfernen Sie tote Links und Duplikate</li>
-                </ul>
-                
-                <h5>Optimale Performance</h5>
-                <ul>
-                  <li><strong>Große Sammlungen:</strong> Bei über 10.000 Links in Kategorien aufteilen</li>
-                  <li><strong>Regelmäßige Backups:</strong> Exportieren Sie Ihre Daten monatlich</li>
-                  <li><strong>Browser-Cache:</strong> Leeren Sie bei Problemen den Cache</li>
-                  <li><strong>Updates:</strong> FavOrg wird automatisch aktualisiert</li>
-                </ul>
+                <p>Zugriff über Einstellungen → Export-Optionen</p>
               </div>
             )}
-            
-            {activeSection === 'features-overview' && (
-              <div className="help-section">
-                <h4>Features Übersicht</h4>
-                <p>FavOrg bietet umfassende Funktionen für die Favoritenverwaltung:</p>
-                <ul>
-                  <li><strong>Import/Export:</strong> Verschiedene Formate unterstützt</li>
-                  <li><strong>Link-Validierung:</strong> Automatische Überprüfung auf tote Links</li>
-                  <li><strong>Duplikat-Erkennung:</strong> Finden und entfernen doppelter Einträge</li>
-                  <li><strong>Kategorisierung:</strong> Hierarchische Organisation</li>
-                  <li><strong>Suche:</strong> Durchsuchen von Titel, URL und Kategorien</li>
-                  <li><strong>Status-Management:</strong> Verschiedene Link-Status</li>
-                  <li><strong>Statistiken:</strong> Detaillierte Übersicht Ihrer Sammlung</li>
-                </ul>
-              </div>
-            )}
-            
-            {activeSection === 'validation' && (
+
+            {activeSection === 'link-validation' && (
               <div className="help-section">
                 <h4>Link-Validierung</h4>
                 <p>Der "Prüfen" Button überprüft alle Favoriten auf Erreichbarkeit:</p>
@@ -912,10 +833,35 @@ const HelpDialog = ({ isOpen, onClose }) => {
                   <li><strong>Timeout (Gelb):</strong> Link antwortet nicht rechtzeitig</li>
                   <li><strong>Ungeprüft (Weiß):</strong> Noch nicht validiert</li>
                 </ul>
-                <p>
-                  Nach der Validierung können tote Links automatisch entfernt werden.
-                  Localhost-Links werden dabei geschützt und nicht gelöscht.
-                </p>
+                <p>Nach der Validierung können tote Links automatisch entfernt werden.</p>
+              </div>
+            )}
+
+            {activeSection === 'duplicate-management' && (
+              <div className="help-section">
+                <h4>Duplikat-Management</h4>
+                <p>Finden und verwalten Sie doppelte Einträge:</p>
+                <ul>
+                  <li><strong>Automatische Erkennung:</strong> Basiert auf URL-Normalisierung</li>
+                  <li><strong>Markierung:</strong> Duplikate werden orange markiert</li>
+                  <li><strong>Bulk-Löschung:</strong> Alle markierten Duplikate entfernen</li>
+                  <li><strong>Intelligente Auswahl:</strong> Neuester Eintrag wird beibehalten</li>
+                </ul>
+                <p>Zugriff über den "Duplikate" Button im Header</p>
+              </div>
+            )}
+
+            {activeSection === 'category-management' && (
+              <div className="help-section">
+                <h4>Kategorien verwalten</h4>
+                <p>Organisieren Sie Ihre Favoriten mit Kategorien:</p>
+                <ul>
+                  <li><strong>Hierarchische Struktur:</strong> Hauptkategorien und Unterkategorien</li>
+                  <li><strong>Drag & Drop:</strong> Kategorien zwischen allen Ebenen verschieben</li>
+                  <li><strong>Automatische Zählung:</strong> Anzahl der Favoriten pro Kategorie</li>
+                  <li><strong>Sidebar-Größe:</strong> Kategorienbereich ist vergrößerbar</li>
+                  <li><strong>Browser-basiert:</strong> Basierend auf Original-Browser-Ordnern</li>
+                </ul>
               </div>
             )}
             
@@ -935,12 +881,51 @@ const HelpDialog = ({ isOpen, onClose }) => {
                 <ul>
                   <li><strong>Doppelklick:</strong> Favorit in neuem Tab öffnen</li>
                   <li><strong>Status-Badge klicken:</strong> Status ändern</li>
+                  <li><strong>Drag & Drop:</strong> Favoriten und Kategorien verschieben</li>
                   <li><strong>Spaltenränder ziehen:</strong> Spaltenbreite anpassen</li>
                 </ul>
               </div>
             )}
+
+            {activeSection === 'supported-browsers' && (
+              <div className="help-section">
+                <h4>Unterstützte Browser</h4>
+                <p>FavOrg kann Favoriten aus allen gängigen Browsern importieren:</p>
+                <ul>
+                  <li><strong>Google Chrome:</strong> Bookmarks → Lesezeichen-Manager → Exportieren</li>
+                  <li><strong>Mozilla Firefox:</strong> Lesezeichen → Alle Lesezeichen anzeigen → Exportieren</li>
+                  <li><strong>Microsoft Edge:</strong> Favoriten → Favoriten verwalten → Exportieren</li>
+                  <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
+                  <li><strong>Opera:</strong> Lesezeichen → Lesezeichen exportieren</li>
+                  <li><strong>Vivaldi:</strong> Lesezeichen → Lesezeichen exportieren</li>
+                </ul>
+              </div>
+            )}
             
-            {activeSection === 'tips' && (
+            {activeSection === 'installation-help' && (
+              <div className="help-section">
+                <h4>Installationshilfe</h4>
+                <p>FavOrg ist eine webbasierte Anwendung, die keine lokale Installation erfordert.</p>
+                
+                <h5>Browser-Empfehlungen</h5>
+                <ul>
+                  <li><strong>Chrome/Edge:</strong> Beste Performance und Kompatibilität</li>
+                  <li><strong>Firefox:</strong> Vollständig unterstützt</li>
+                  <li><strong>Safari:</strong> Grundfunktionen verfügbar</li>
+                  <li><strong>Mindestversion:</strong> Aktuelle Browser-Versionen empfohlen</li>
+                </ul>
+                
+                <h5>System-Anforderungen</h5>
+                <ul>
+                  <li><strong>RAM:</strong> Minimum 4GB für große Sammlungen</li>
+                  <li><strong>Bildschirmauflösung:</strong> 1280x720 oder höher</li>
+                  <li><strong>Internet:</strong> Stabile Verbindung für Link-Validierung</li>
+                  <li><strong>JavaScript:</strong> Muss aktiviert sein</li>
+                </ul>
+              </div>
+            )}
+
+            {activeSection === 'tips-tricks' && (
               <div className="help-section">
                 <h4>Tipps & Tricks</h4>
                 <ul>
@@ -957,6 +942,25 @@ const HelpDialog = ({ isOpen, onClose }) => {
                   <li><strong>Aussagekräftige Titel:</strong> Verwenden Sie klare Beschreibungen</li>
                   <li><strong>Hierarchien nutzen:</strong> Unterkategorien für bessere Organisation</li>
                   <li><strong>Regelmäßige Wartung:</strong> Monatliche Bereinigung empfohlen</li>
+                </ul>
+              </div>
+            )}
+            
+            {activeSection === 'features-overview' && (
+              <div className="help-section">
+                <h4>Features Übersicht</h4>
+                <p>FavOrg bietet umfassende Funktionen für die Favoritenverwaltung:</p>
+                <ul>
+                  <li><strong>Multi-Format Import/Export:</strong> HTML, JSON, XML, CSV</li>
+                  <li><strong>Link-Validierung:</strong> Automatische Überprüfung auf tote Links</li>
+                  <li><strong>Duplikat-Erkennung:</strong> Intelligente Bereinigung</li>
+                  <li><strong>Drag & Drop:</strong> Favoriten und Kategorien verschieben</li>
+                  <li><strong>Kategorisierung:</strong> Hierarchische Organisation</li>
+                  <li><strong>Suche:</strong> Durchsuchen von Titel, URL und Kategorien</li>
+                  <li><strong>Status-Management:</strong> Verschiedene Link-Status</li>
+                  <li><strong>Statistiken:</strong> Detaillierte Übersicht Ihrer Sammlung</li>
+                  <li><strong>Responsive Design:</strong> Desktop, Tablet und Mobile</li>
+                  <li><strong>Dark Theme:</strong> Angepasstes dunkles Design</li>
                 </ul>
               </div>
             )}
