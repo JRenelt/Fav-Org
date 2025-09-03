@@ -981,6 +981,10 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const [draggedCategory, setDraggedCategory] = useState(null);
   const [dragOverCategory, setDragOverCategory] = useState(null);
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    return parseInt(localStorage.getItem('favorg-sidebar-width') || '280');
+  });
+  const [isResizing, setIsResizing] = useState(false);
 
   // Auflösungserkennung beim Programmstart und bei Änderungen
   useEffect(() => {
@@ -991,6 +995,32 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Sidebar Width im LocalStorage speichern
+  useEffect(() => {
+    localStorage.setItem('favorg-sidebar-width', sidebarWidth.toString());
+  }, [sidebarWidth]);
+
+  // Resize Handler für Sidebar
+  const handleMouseDown = (e) => {
+    setIsResizing(true);
+    const startX = e.clientX;
+    const startWidth = sidebarWidth;
+
+    const handleMouseMove = (e) => {
+      const newWidth = Math.max(200, Math.min(500, startWidth + (e.clientX - startX)));
+      setSidebarWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
 
   const toggleCategory = (categoryName) => {
     const newExpanded = new Set(expandedCategories);
