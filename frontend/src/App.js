@@ -709,6 +709,49 @@ const HelpDialog = ({ isOpen, onClose }) => {
               </div>
             )}
             
+            {activeSection === 'installation' && (
+              <div className="help-section">
+                <h4>Installationshilfe</h4>
+                <p>
+                  FavOrg ist eine webbasierte Anwendung, die keine lokale Installation erfordert.
+                  Hier finden Sie Informationen zur optimalen Nutzung:
+                </p>
+                
+                <h5>Browser-Empfehlungen</h5>
+                <ul>
+                  <li><strong>Chrome/Edge:</strong> Beste Performance und Kompatibilität</li>
+                  <li><strong>Firefox:</strong> Vollständig unterstützt</li>
+                  <li><strong>Safari:</strong> Grundfunktionen verfügbar</li>
+                  <li><strong>Mindestversion:</strong> Aktuelle Browser-Versionen empfohlen</li>
+                </ul>
+                
+                <h5>System-Anforderungen</h5>
+                <ul>
+                  <li><strong>RAM:</strong> Minimum 4GB für große Sammlungen</li>
+                  <li><strong>Bildschirmauflösung:</strong> 1280x720 oder höher</li>
+                  <li><strong>Internet:</strong> Stabile Verbindung für Link-Validierung</li>
+                  <li><strong>JavaScript:</strong> Muss aktiviert sein</li>
+                </ul>
+                
+                <h5>Erste Schritte</h5>
+                <ul>
+                  <li><strong>1. Browser-Export:</strong> Exportieren Sie Favoriten aus Ihrem Browser</li>
+                  <li><strong>2. Datei-Upload:</strong> Nutzen Sie "Datei wählen" zum Import</li>
+                  <li><strong>3. Kategorien prüfen:</strong> Kontrollieren Sie die automatische Kategorisierung</li>
+                  <li><strong>4. Links validieren:</strong> Verwenden Sie den "Prüfen" Button</li>
+                  <li><strong>5. Bereinigung:</strong> Entfernen Sie tote Links und Duplikate</li>
+                </ul>
+                
+                <h5>Optimale Performance</h5>
+                <ul>
+                  <li><strong>Große Sammlungen:</strong> Bei >10.000 Links in Kategorien aufteilen</li>
+                  <li><strong>Regelmäßige Backups:</strong> Exportieren Sie Ihre Daten monatlich</li>
+                  <li><strong>Browser-Cache:</strong> Leeren Sie bei Problemen den Cache</li>
+                  <li><strong>Updates:</strong> FavOrg wird automatisch aktualisiert</li>
+                </ul>
+              </div>
+            )}
+            
             {activeSection === 'features-overview' && (
               <div className="help-section">
                 <h4>Features Übersicht</h4>
