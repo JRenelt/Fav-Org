@@ -98,6 +98,26 @@ body {
   margin: 0 auto;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
 .logo-section {
   display: flex;
   align-items: center;
@@ -163,14 +183,6 @@ body {
   gap: 12px;
   flex: 2;
   justify-content: center;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  justify-content: flex-end;
 }
 
 .made-with-emergent {
