@@ -424,6 +424,8 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
         </div>
 
         <div className="header-right">
+          <span className="made-with-emergent">Made with Emergent</span>
+          
           <Button
             onClick={onHelpClick}
             className="header-btn"
