@@ -788,6 +788,8 @@ body {
   overflow-y: auto;
   min-width: 0;
   height: 100%;
+  width: calc(100% - var(--sidebar-width, 280px));
+  transition: width 0.2s ease;
 }
 
 .main-header {
