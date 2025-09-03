@@ -1025,16 +1025,16 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   };
 
   // Drag & Drop Handlers für Kategorien
-  const handleCategoryDragStart = (e, category) => {
-    setDraggedCategory(category);
+  const handleCategoryDragStart = (e, category, isSubcategory = false) => {
+    setDraggedCategory({...category, isSubcategory});
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', category.id);
   };
 
-  const handleCategoryDragOver = (e, category) => {
+  const handleCategoryDragOver = (e, category, isSubcategory = false) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-    setDragOverCategory(category);
+    setDragOverCategory({...category, isSubcategory});
   };
 
   const handleCategoryDragLeave = (e) => {
@@ -1043,20 +1043,23 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     }
   };
 
-  const handleCategoryDrop = (e, targetCategory) => {
+  const handleCategoryDrop = (e, targetCategory, isTargetSubcategory = false) => {
     e.preventDefault();
     
     if (draggedCategory && targetCategory && draggedCategory.id !== targetCategory.id) {
       // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
       // Für jetzt loggen wir die Aktion
-      console.log('Moving category:', draggedCategory.name, 'to position of', targetCategory.name);
+      const draggedType = draggedCategory.isSubcategory ? 'Unterkategorie' : 'Kategorie';
+      const targetType = isTargetSubcategory ? 'Unterkategorie' : 'Kategorie';
       
-      // Simulate category reorder
+      console.log(`${draggedType} "${draggedCategory.name}" zu ${targetType} "${targetCategory.name}" verschoben`);
+      
+      // Simulate category reorder between all categories
       if (onCategoryReorder) {
         onCategoryReorder(draggedCategory, targetCategory);
       }
       
-      toast.success(`Kategorie "${draggedCategory.name}" wurde verschoben`);
+      toast.success(`${draggedType} "${draggedCategory.name}" wurde zu "${targetCategory.name}" verschoben`);
     }
     
     setDraggedCategory(null);
