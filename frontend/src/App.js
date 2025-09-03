@@ -796,6 +796,39 @@ const HelpDialog = ({ isOpen, onClose }) => {
           
           {/* Content Area */}
           <div className="help-content-area">
+            {activeSection === 'favorites-import' && (
+              <div className="help-section">
+                <h4>Favoriten Importieren</h4>
+                <p>
+                  FavOrg unterstützt den Import aus verschiedenen Browsern und Formaten.
+                  Die Anwendung erkennt automatisch das Format und importiert Ihre Favoriten
+                  mit allen Kategorien und Hierarchien.
+                </p>
+                <ul>
+                  <li><strong>Multi-Browser Unterstützung:</strong> Chrome, Firefox, Edge, Safari</li>
+                  <li><strong>Automatische Erkennung:</strong> Format wird automatisch erkannt</li>
+                  <li><strong>Duplikat-Schutz:</strong> Doppelte Einträge werden vermieden</li>
+                  <li><strong>Kategoriestruktur:</strong> Ordnerhierarchie bleibt erhalten</li>
+                </ul>
+                <p><strong>Schritt-für-Schritt:</strong> Klicken Sie auf "Datei wählen" im Header und wählen Sie Ihre exportierte Browser-Datei aus.</p>
+              </div>
+            )}
+
+            {activeSection === 'favorites-export' && (
+              <div className="help-section">
+                <h4>Favoriten Exportieren</h4>
+                <p>Exportieren Sie Ihre Favoriten in verschiedene Formate für maximale Kompatibilität:</p>
+                <ul>
+                  <li><strong>HTML Export:</strong> Standard-Format für alle Browser (Chrome, Firefox, Edge, Safari)</li>
+                  <li><strong>JSON Export:</strong> Chrome-kompatibles Format mit vollständigen Metadaten</li>
+                  <li><strong>XML Export:</strong> Strukturierte Daten für Re-Import in FavOrg</li>
+                  <li><strong>CSV Export:</strong> Tabellenformat für Excel und Tabellenkalkulation</li>
+                  <li><strong>Alle Formate:</strong> Simultaner Export aller 4 Formate</li>
+                </ul>
+                <p><strong>Zugriff:</strong> Verwenden Sie den "Fav-Export" Button im Header oder über Einstellungen → Export-Optionen</p>
+              </div>
+            )}
+            
             {activeSection === 'import-guide' && (
               <div className="help-section">
                 <h4>Schritt-für-Schritt Anleitung</h4>
