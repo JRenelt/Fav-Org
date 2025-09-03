@@ -3040,12 +3040,12 @@ function App() {
   return (
     <div className="app">
       <Header
-        onSettingsClick={() => setShowSettings(true)}
-        onHelpClick={() => setShowHelp(true)}
-        onStatsToggle={() => setShowStatistics(true)}
+        onSettingsClick={() => { clearAllToasts(); setShowSettings(true); }}
+        onHelpClick={() => { clearAllToasts(); setShowHelp(true); }}
+        onStatsToggle={() => { clearAllToasts(); setShowStatistics(true); }}
         onCreateBookmarkClick={handleCreateBookmark}
         onFileUploadClick={handleFileUpload}
-        onExportClick={() => setShowExportDialog(true)}
+        onExportClick={() => { clearAllToasts(); setShowExportDialog(true); }}
         onValidateClick={handleValidateLinks}
         onRemoveDuplicatesClick={handleRemoveDuplicates}
         onDeleteAllClick={handleDeleteAll}
