@@ -2918,7 +2918,7 @@ function App() {
       </div>
 
       <footer className="app-footer">
-        <p>&copy; 2025 Jörg Renelt – Version 1.0.1 – Alle Rechte vorbehalten.</p>
+        <p>&copy; 2025 Jörg Renelt – Version 2.1.0 – Alle Rechte vorbehalten.</p>
       </footer>
 
       {/* Custom Draggable Toasts */}
