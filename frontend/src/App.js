@@ -2292,7 +2292,7 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
 
 
 
-const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder }) => {
+const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter, onStatusFilterChange, bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onFileSelected, viewMode, onViewModeChange, onBookmarkReorder, onHelpClick, onStatsToggle, onSettingsClick, onDeleteAllClick }) => {
   return (
     <main className="main-content">
       <div className="main-header">
@@ -2369,6 +2369,47 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               <Table className="w-4 h-4" />
             </button>
           </div>
+          
+          {/* Header-Buttons für Tabellenansicht über Aktionen-Spalte */}
+          {viewMode === 'table' && (
+            <div className="table-header-actions">
+              <Button
+                onClick={onHelpClick}
+                className="table-header-btn"
+                size="sm"
+                title="Hilfe"
+              >
+                <HelpCircle className="w-4 h-4" />
+              </Button>
+              
+              <Button
+                onClick={onStatsToggle}
+                className="table-header-btn"
+                size="sm"
+                title="Statistiken ein-/ausblenden"
+              >
+                <BarChart3 className="w-4 h-4" />
+              </Button>
+              
+              <Button
+                onClick={onSettingsClick}
+                className="table-header-btn"
+                size="sm" 
+                title="System-Einstellungen"
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
+              
+              <Button 
+                onClick={onDeleteAllClick}
+                className="table-header-btn delete-btn"
+                size="sm"
+                title="Alle Favoriten löschen"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
         </div>
         
         {viewMode === 'table' ? (
