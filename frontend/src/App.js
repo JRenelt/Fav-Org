@@ -665,10 +665,11 @@ const HelpDialog = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState('import-guide');
   
   const menuSections = {
-    // Fav-Importieren
+    // Favoriten Importieren und Exportieren als separate Punkte
+    'favorites-import': 'Favoriten Importieren',
+    'favorites-export': 'Favoriten Exportieren',
     'import-guide': 'Schritt-für-Schritt Anleitung',
     'import-formats': 'Unterstützte Dateiformate', 
-    'export-functions': 'Fav-Exportieren',
     
     // Funktionen
     'link-validation': 'Link Validierung',
