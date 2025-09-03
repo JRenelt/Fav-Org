@@ -459,9 +459,6 @@ body {
   resize: horizontal;
   overflow-x: hidden;
   height: 100%;
-  
-  /* TEMPORÄRE DEBUG GRENZEN */
-  border: 1px solid orange;
 }
 
 .sidebar-resizer {
