@@ -687,17 +687,93 @@ const HelpDialog = ({ isOpen, onClose }) => {
         </DialogHeader>
         
         <div className="help-body-with-nav">
-          {/* Navigation Menu */}
+          {/* Navigation Menu mit hierarchischer Struktur */}
           <div className="help-navigation">
-            {Object.entries(menuSections).map(([key, title]) => (
+            <div className="nav-section">
+              <h4 className="nav-section-title">📥 Fav-Importieren</h4>
               <button
-                key={key}
-                className={`nav-menu-item ${activeSection === key ? 'active' : ''}`}
-                onClick={() => setActiveSection(key)}
+                className={`nav-menu-item ${activeSection === 'import-guide' ? 'active' : ''}`}
+                onClick={() => setActiveSection('import-guide')}
               >
-                {title}
+                Schritt-für-Schritt Anleitung
               </button>
-            ))}
+              <button
+                className={`nav-menu-item ${activeSection === 'import-formats' ? 'active' : ''}`}
+                onClick={() => setActiveSection('import-formats')}
+              >
+                Unterstützte Dateiformate
+              </button>
+              <button
+                className={`nav-menu-item ${activeSection === 'export-functions' ? 'active' : ''}`}
+                onClick={() => setActiveSection('export-functions')}
+              >
+                Fav-Exportieren
+              </button>
+            </div>
+
+            <div className="nav-section">
+              <h4 className="nav-section-title">⚙️ Funktionen</h4>
+              <button
+                className={`nav-menu-item ${activeSection === 'link-validation' ? 'active' : ''}`}
+                onClick={() => setActiveSection('link-validation')}
+              >
+                Link Validierung
+              </button>
+              <button
+                className={`nav-menu-item ${activeSection === 'duplicate-management' ? 'active' : ''}`}
+                onClick={() => setActiveSection('duplicate-management')}
+              >
+                Duplikat-Management
+              </button>
+              <button
+                className={`nav-menu-item ${activeSection === 'category-management' ? 'active' : ''}`}
+                onClick={() => setActiveSection('category-management')}
+              >
+                Kategorien verwalten
+              </button>
+            </div>
+
+            <div className="nav-section">
+              <h4 className="nav-section-title">⌨️ Shortcuts</h4>
+              <button
+                className={`nav-menu-item ${activeSection === 'shortcuts' ? 'active' : ''}`}
+                onClick={() => setActiveSection('shortcuts')}
+              >
+                Shortcuts
+              </button>
+            </div>
+
+            <div className="nav-section">
+              <h4 className="nav-section-title">💡 Tipps und Tricks</h4>
+              <button
+                className={`nav-menu-item ${activeSection === 'supported-browsers' ? 'active' : ''}`}
+                onClick={() => setActiveSection('supported-browsers')}
+              >
+                Unterstützte Browser
+              </button>
+              <button
+                className={`nav-menu-item ${activeSection === 'installation-help' ? 'active' : ''}`}
+                onClick={() => setActiveSection('installation-help')}
+              >
+                Installationshilfe
+              </button>
+              <button
+                className={`nav-menu-item ${activeSection === 'tips-tricks' ? 'active' : ''}`}
+                onClick={() => setActiveSection('tips-tricks')}
+              >
+                Tipps & Tricks
+              </button>
+            </div>
+
+            <div className="nav-section">
+              <h4 className="nav-section-title">📋 Features Übersicht</h4>
+              <button
+                className={`nav-menu-item ${activeSection === 'features-overview' ? 'active' : ''}`}
+                onClick={() => setActiveSection('features-overview')}
+              >
+                Features Übersicht
+              </button>
+            </div>
           </div>
           
           {/* Content Area */}
