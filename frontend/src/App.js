@@ -1681,6 +1681,32 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                 
                 <div className="export-buttons-modern">
                   <Button
+                    onClick={() => handleExport('html')}
+                    disabled={isExporting}
+                    className="export-btn-modern html-btn-modern"
+                  >
+                    {isExporting ? (
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <FileText className="w-4 h-4 mr-2" />
+                    )}
+                    HTML exportieren
+                  </Button>
+
+                  <Button
+                    onClick={() => handleExport('json')}
+                    disabled={isExporting}
+                    className="export-btn-modern json-btn-modern"
+                  >
+                    {isExporting ? (
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Database className="w-4 h-4 mr-2" />
+                    )}
+                    JSON exportieren
+                  </Button>
+                  
+                  <Button
                     onClick={() => handleExport('xml')}
                     disabled={isExporting}
                     className="export-btn-modern xml-btn-modern"
@@ -1704,6 +1730,19 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                       <FileSpreadsheet className="w-4 h-4 mr-2" />
                     )}
                     CSV exportieren
+                  </Button>
+
+                  <Button
+                    onClick={() => handleExportAllFormats()}
+                    disabled={isExporting}
+                    className="export-btn-modern all-formats-btn-modern"
+                  >
+                    {isExporting ? (
+                      <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Archive className="w-4 h-4 mr-2" />
+                    )}
+                    Alle Formate exportieren
                   </Button>
                 </div>
 
