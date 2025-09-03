@@ -2842,14 +2842,12 @@ function App() {
     }
   };
 
-  // Drag & Drop Handler für Kategorien
+  // Drag & Drop Handler für Kategorien (erweitert für echte Verschiebung)
   const handleCategoryReorder = async (draggedCategory, targetCategory) => {
     try {
-      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
-      // Für jetzt simulieren wir die Neuordnung lokal
       console.log(`Kategorie "${draggedCategory.name}" zu "${targetCategory.name}" verschoben`);
       
-      // Optional: Lokale Neuordnung der Kategorien
+      // Lokale Neuordnung der Kategorien
       const newCategories = [...categories];
       const draggedIndex = newCategories.findIndex(cat => cat.id === draggedCategory.id);
       const targetIndex = newCategories.findIndex(cat => cat.id === targetCategory.id);
@@ -2857,15 +2855,41 @@ function App() {
       if (draggedIndex !== -1 && targetIndex !== -1) {
         // Element entfernen und an neuer Position einfügen
         const [draggedItem] = newCategories.splice(draggedIndex, 1);
+        
+        // Für Unterkategorien: Parent-Kategorie ändern wenn zur Hauptkategorie verschoben
+        if (draggedCategory.isSubcategory && !targetCategory.isSubcategory) {
+          draggedItem.parent_category = targetCategory.name;
+          console.log(`Unterkategorie "${draggedItem.name}" wird zu Hauptkategorie "${targetCategory.name}" verschoben`);
+        }
+        // Wenn von Hauptkategorie zu Unterkategorie verschoben
+        else if (!draggedCategory.isSubcategory && targetCategory.isSubcategory) {
+          draggedItem.parent_category = targetCategory.parent_category;
+          console.log(`Kategorie "${draggedItem.name}" wird zu Unterkategorie von "${targetCategory.parent_category}" verschoben`);
+        }
+        // Unterkategorie zu anderer Hauptkategorie
+        else if (draggedCategory.isSubcategory && !targetCategory.isSubcategory) {
+          draggedItem.parent_category = targetCategory.name;
+        }
+        
         newCategories.splice(targetIndex, 0, draggedItem);
         setCategories(newCategories);
         
         // Speichere Sortierung im localStorage
-        const categoryOrder = newCategories.map(cat => cat.id);
+        const categoryOrder = newCategories.map(cat => ({
+          id: cat.id,
+          name: cat.name,
+          parent_category: cat.parent_category
+        }));
         localStorage.setItem('favorg-category-order', JSON.stringify(categoryOrder));
+        
+        // Daten neu laden um Änderungen zu reflektieren
+        await loadCategories();
+        await loadBookmarks();
       }
       
-      toast.success(`Kategorie "${draggedCategory.name}" wurde neu sortiert`);
+      const draggedType = draggedCategory.isSubcategory ? 'Unterkategorie' : 'Kategorie';
+      const targetType = targetCategory.isSubcategory ? 'Unterkategorie' : 'Kategorie';
+      toast.success(`${draggedType} "${draggedCategory.name}" wurde zu ${targetType} "${targetCategory.name}" verschoben`);
     } catch (error) {
       console.error('Category reorder error:', error);
       toast.error('Kategorien-Sortierung fehlgeschlagen: ' + error.message);
