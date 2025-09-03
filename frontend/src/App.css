@@ -1718,6 +1718,111 @@ body {
   min-width: 780px;
 }
 
+/* Help Dialog mit Navigation */
+.help-body-with-nav {
+  display: flex;
+  gap: 20px;
+  max-height: 500px;
+  overflow: hidden;
+}
+
+.help-navigation {
+  width: 220px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.nav-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.nav-menu-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-align: left;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Verdana', sans-serif;
+}
+
+.nav-menu-item:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.nav-menu-item.active {
+  background: var(--cyan-400);
+  color: white;
+  font-weight: 500;
+}
+
+.help-content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px;
+  min-height: 0;
+}
+
+.help-content-area .help-section {
+  margin-bottom: 24px;
+}
+
+.help-content-area .help-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--cyan-400);
+  padding-bottom: 4px;
+}
+
+.help-content-area .help-section p {
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.help-content-area .help-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.help-content-area .help-section li {
+  margin-bottom: 8px;
+  padding-left: 16px;
+  position: relative;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.help-content-area .help-section li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--cyan-400);
+  font-weight: bold;
+}
+
+.help-content-area .help-section strong {
+  color: var(--text-primary);
+}
+
 .bookmark-form {
   display: flex;
   flex-direction: column;
