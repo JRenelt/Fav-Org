@@ -631,7 +631,6 @@ const HelpDialog = ({ isOpen, onClose }) => {
         <div className="help-body-with-nav">
           {/* Navigation Menu */}
           <div className="help-navigation">
-            <h4 className="nav-title">Navigation</h4>
             {Object.entries(menuSections).map(([key, title]) => (
               <button
                 key={key}
