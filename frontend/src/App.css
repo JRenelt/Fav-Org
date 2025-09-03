@@ -809,8 +809,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* Wird automatisch durch Sidebar-Breite angepasst */
-  margin-left: 0; /* Kein fester Margin */
+  height: 100%;
+  /* Entferne den margin-left da wir jetzt in Flexbox sind */
   transition: all 0.2s ease;
   
   /* TEMPORÄRE DEBUG GRENZEN */
