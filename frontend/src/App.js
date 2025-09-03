@@ -612,6 +612,7 @@ const HelpDialog = ({ isOpen, onClose }) => {
     'import-browsers': 'Unterstützte Browser', 
     'import-guide': 'Schritt-für-Schritt Anleitung',
     'import-formats': 'Unterstützte Dateiformate',
+    'installation': 'Installationshilfe',
     'features-overview': 'Features Übersicht',
     'validation': 'Link-Validierung',
     'shortcuts': 'Shortcuts',
