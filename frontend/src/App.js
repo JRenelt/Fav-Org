@@ -2515,6 +2515,23 @@ function App() {
   const [showExportDialog, setShowExportDialog] = useState(false); // Neu: Export Dialog
   const [editingBookmark, setEditingBookmark] = useState(null);
 
+  // Clear all toasts function
+  const clearAllToasts = () => {
+    // Remove all toast elements from DOM
+    const toastContainer = document.querySelector('.draggable-toast-container');
+    if (toastContainer) {
+      const toasts = toastContainer.querySelectorAll('.draggable-toast');
+      toasts.forEach(toast => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 200);
+      });
+    }
+  };
+
   // Validation and Duplicates
   const [hasValidated, setHasValidated] = useState(false);
   const [duplicateCount, setDuplicateCount] = useState(0);
