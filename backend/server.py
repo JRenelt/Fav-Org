@@ -1171,7 +1171,7 @@ async def download_collector():
 
 @api_router.post("/export")
 async def export_bookmarks(export_request: ExportRequest):
-    """Exportiert Bookmarks in XML oder CSV Format"""
+    """Exportiert Bookmarks in XML, CSV, HTML oder JSON Format"""
     # Hole Bookmarks basierend auf Filter
     if export_request.category:
         bookmarks = await bookmark_manager.get_bookmarks_by_category(export_request.category)
@@ -1179,16 +1179,30 @@ async def export_bookmarks(export_request: ExportRequest):
         bookmarks = await bookmark_manager.get_all_bookmarks()
     
     # Exportiere basierend auf Format
-    if export_request.format.lower() == "xml":
+    format_lower = export_request.format.lower()
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    
+    if format_lower == "xml":
         content = bookmark_manager.export_manager.export_to_xml(bookmarks)
         media_type = "application/xml"
-        filename = f"bookmarks_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xml"
-    elif export_request.format.lower() == "csv":
+        filename = f"bookmarks_{timestamp}.xml"
+    elif format_lower == "csv":
         content = bookmark_manager.export_manager.export_to_csv(bookmarks)
         media_type = "text/csv"
-        filename = f"bookmarks_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+        filename = f"bookmarks_{timestamp}.csv"
+    elif format_lower == "html":
+        content = bookmark_manager.export_manager.export_to_html(bookmarks)
+        media_type = "text/html"
+        filename = f"bookmarks_{timestamp}.html"
+    elif format_lower == "json":
+        content = bookmark_manager.export_manager.export_to_json(bookmarks)
+        media_type = "application/json"
+        filename = f"bookmarks_{timestamp}.json"
     else:
-        raise HTTPException(status_code=400, detail="Unsupported export format")
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Unsupported export format: {export_request.format}. Supported formats: XML, CSV, HTML, JSON"
+        )
     
     return StreamingResponse(
         io.StringIO(content),
