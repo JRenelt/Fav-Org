@@ -146,6 +146,21 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Export-Funktionalität vollständig getestet. XML Export (11231 Zeichen), CSV Export (36 Zeilen), Category-Filter für Development-Kategorie funktioniert perfekt. Alle Export-Formate arbeiten einwandfrei mit korrekten Daten."
+      - working: true
+        agent: "testing"
+        comment: "✅ ERWEITERTE EXPORT-FUNKTIONALITÄT GETESTET: XML/CSV Export funktionieren perfekt (96.7% Success Rate). XML Export mit korrekten Headers (application/xml, attachment filename), CSV Export mit korrekten Headers (text/csv, attachment filename). Alle Bookmark-Daten korrekt in beiden Formaten. Category-Filter funktioniert einwandfrei. KRITISCH: HTML und JSON Export-Formate NICHT IMPLEMENTIERT - Backend wirft 'Unsupported export format' Fehler für format=html/json."
+
+  - task: "Extended Export Functionality (HTML/JSON)"
+    implemented: false
+    working: false
+    file: "backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ NEUE EXPORT-FORMATE NICHT IMPLEMENTIERT: HTML Export (format=html) und JSON Export (format=json) sind nicht implementiert. Backend-Code in server.py Zeile 1084 wirft HTTPException 'Unsupported export format' für alle Formate außer XML/CSV. Frontend erwartet HTML-Format für Browser-Kompatibilität und JSON-Format für Chrome Bookmarks. Multi-Format Export 'Alle Formate exportieren' funktioniert nur zu 50% (XML/CSV ja, HTML/JSON nein)."
 
   - task: "Link Validation"
     implemented: true
