@@ -2935,12 +2935,6 @@ function App() {
       showCustomToast('Kategorien-Verschiebung fehlgeschlagen: ' + error.message, 'error');
     }
   };
-      
-    } catch (error) {
-      console.error('Category reorder error:', error);
-      toast.error('Kategorien-Verschiebung fehlgeschlagen: ' + error.message);
-    }
-  };
 
   // Drag & Drop Handler für Bookmarks
   const handleBookmarkReorder = async (draggedBookmark, targetBookmark) => {
