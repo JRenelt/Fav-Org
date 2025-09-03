@@ -322,6 +322,42 @@ backend:
         comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Neue Status-Typen Validierung erneut vollständig getestet. Alle Status-Typen (active, dead, localhost, duplicate, unchecked) werden korrekt gespeichert, abgerufen und in Statistiken berücksichtigt. status_type Feld funktioniert perfekt mit is_dead_link Synchronisation. Datenkonsistenz gewährleistet."
 
 frontend:
+  - task: "Statistics Dialog Vertical Layout"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js, frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Statistik-Dialog von Grid-Layout auf vertikale Liste umgestellt. Format: '📊 Gesamt Favoriten [41]' pro Zeile implementiert. Neue CSS-Klassen .stats-vertical-list und .stat-line hinzugefügt."
+
+  - task: "Help Dialog Enhanced Layout"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js, frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Hilfe-Dialog um 30% verbreitert (780px) und Untermenü-System implementiert. Navigation mit 8 Sektionen: Import-Grundlagen, Browser, Anleitung, Formate, Features, Validierung, Shortcuts, Tipps."
+
+  - task: "Category Tooltip Smart Positioning"
+    implemented: true
+    working: true
+    file: "frontend/src/App.js, frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Auflösungserkennung beim Programmstart implementiert. Kategorien-Notizen werden basierend auf Bildschirmbreite intelligent positioniert - standardmäßig rechts, bei Platzproblemen innerhalb der Sidebar. Close-Button hinzugefügt."
+
   - task: "Bookmark Dialog (Create/Edit)"
     implemented: true
     working: "NA"
