@@ -929,11 +929,13 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
   );
 };
 
-const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics }) => {
+const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics, onCategoryReorder }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
   const [showBrowserInfo, setShowBrowserInfo] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [draggedCategory, setDraggedCategory] = useState(null);
+  const [dragOverCategory, setDragOverCategory] = useState(null);
 
   // Auflösungserkennung beim Programmstart und bei Änderungen
   useEffect(() => {
@@ -975,6 +977,50 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     
     setTooltipPosition({ top, left });
     setShowBrowserInfo(!showBrowserInfo);
+  };
+
+  // Drag & Drop Handlers für Kategorien
+  const handleCategoryDragStart = (e, category) => {
+    setDraggedCategory(category);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', category.id);
+  };
+
+  const handleCategoryDragOver = (e, category) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setDragOverCategory(category);
+  };
+
+  const handleCategoryDragLeave = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setDragOverCategory(null);
+    }
+  };
+
+  const handleCategoryDrop = (e, targetCategory) => {
+    e.preventDefault();
+    
+    if (draggedCategory && targetCategory && draggedCategory.id !== targetCategory.id) {
+      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
+      // Für jetzt loggen wir die Aktion
+      console.log('Moving category:', draggedCategory.name, 'to position of', targetCategory.name);
+      
+      // Simulate category reorder
+      if (onCategoryReorder) {
+        onCategoryReorder(draggedCategory, targetCategory);
+      }
+      
+      toast.success(`Kategorie "${draggedCategory.name}" wurde verschoben`);
+    }
+    
+    setDraggedCategory(null);
+    setDragOverCategory(null);
+  };
+
+  const handleCategoryDragEnd = () => {
+    setDraggedCategory(null);
+    setDragOverCategory(null);
   };
 
   // Organisiere Kategorien nach Hierarchie
@@ -1050,10 +1096,17 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
           {organizedCategories.map(category => (
             <div key={category.id} className="category-group">
               <div
-                className={`category-item main-category ${activeCategory === category.name && !activeSubcategory ? 'active' : ''}`}
+                className={`category-item main-category draggable ${activeCategory === category.name && !activeSubcategory ? 'active' : ''} ${dragOverCategory?.id === category.id ? 'drag-over' : ''}`}
                 onClick={() => onCategoryChange(category.name, null)}
+                draggable={category.name !== 'Alle'}
+                onDragStart={(e) => handleCategoryDragStart(e, category)}
+                onDragOver={(e) => handleCategoryDragOver(e, category)}
+                onDragLeave={handleCategoryDragLeave}
+                onDrop={(e) => handleCategoryDrop(e, category)}
+                onDragEnd={handleCategoryDragEnd}
               >
                 <div className="category-info">
+                  <GripVertical className="drag-handle" />
                   {category.subcategories.length > 0 ? (
                     expandedCategories.has(category.name) ? (
                       <ChevronDown 
@@ -1089,11 +1142,18 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
               {expandedCategories.has(category.name) && category.subcategories.map(subcategory => (
                 <div
                   key={subcategory.id}
-                  className={`category-item subcategory ${activeCategory === category.name && activeSubcategory === subcategory.name ? 'active' : ''}`}
+                  className={`category-item subcategory draggable ${activeCategory === category.name && activeSubcategory === subcategory.name ? 'active' : ''} ${dragOverCategory?.id === subcategory.id ? 'drag-over' : ''}`}
                   onClick={() => onCategoryChange(category.name, subcategory.name)}
+                  draggable
+                  onDragStart={(e) => handleCategoryDragStart(e, subcategory)}
+                  onDragOver={(e) => handleCategoryDragOver(e, subcategory)}
+                  onDragLeave={handleCategoryDragLeave}
+                  onDrop={(e) => handleCategoryDrop(e, subcategory)}
+                  onDragEnd={handleCategoryDragEnd}
                 >
                   <div className="category-info">
                     <div className="subcategory-indent">
+                      <GripVertical className="drag-handle subcategory-drag" />
                       <Folder className="category-icon sub-icon" />
                       <span className="category-name">
                         {subcategory.name} ({subcategory.bookmark_count})
