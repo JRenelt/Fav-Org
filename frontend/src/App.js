@@ -499,30 +499,29 @@ const ExportDialog = ({ isOpen, onClose, onExport }) => {
     { value: 'csv', label: 'CSV', description: 'Tabellenformat, kompatibel mit Excel und Tabellenkalkulation', icon: '📊' }
   ];
 
-  const handleExport = async (format) => {
+  const handleSingleExport = async () => {
     setIsExporting(true);
     try {
-      await onExport(format, null);
-      toast.success(`${format.toUpperCase()}-Export erfolgreich heruntergeladen.`);
+      await onExport(selectedFormat, null);  // null für alle Kategorien
     } catch (error) {
-      toast.error('Export fehlgeschlagen: ' + error.message);
+      console.error('Export error:', error);
     } finally {
       setIsExporting(false);
     }
   };
 
-  const handleExportAllFormats = async () => {
+  const handleMultiExport = async () => {
     setIsExporting(true);
     try {
       // Exportiere alle Formate einzeln
-      const formats = ['html', 'json', 'xml', 'csv'];
-      for (const format of formats) {
-        await onExport(format, null);
+      for (const format of exportFormats) {
+        await onExport(format.value, null);
         // Kleine Pause zwischen den Downloads
         await new Promise(resolve => setTimeout(resolve, 500));
       }
       toast.success('Alle Formate erfolgreich exportiert! (HTML, JSON, XML, CSV)');
     } catch (error) {
+      console.error('Multi-export error:', error);
       toast.error('Multi-Format Export fehlgeschlagen: ' + error.message);
     } finally {
       setIsExporting(false);
@@ -570,7 +569,7 @@ const ExportDialog = ({ isOpen, onClose, onExport }) => {
           
           <div className="export-actions">
             <Button
-              onClick={() => handleExport(selectedFormat)}
+              onClick={handleSingleExport}
               disabled={isExporting}
               className="export-single-btn"
             >
@@ -583,7 +582,7 @@ const ExportDialog = ({ isOpen, onClose, onExport }) => {
             </Button>
             
             <Button
-              onClick={handleExportAllFormats}
+              onClick={handleMultiExport}
               disabled={isExporting}
               className="export-all-btn"
               variant="outline"
