@@ -361,71 +361,74 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
   return (
     <header className="header-fixed">
       <div className="header-content">
-        <div className="logo-section">
-          <div className="logo-icon">
-            <LinkIcon className="w-6 h-6" />
-          </div>
-          <div className="app-info">
-            <h1 className="app-title">
-              FavOrg 
-              <span className="bookmark-count">[{filteredCount !== null ? filteredCount : totalBookmarks}]</span>
-            </h1>
-            <p className="app-subtitle">Verwalten Sie Ihre Lesezeichen</p>
+        {/* Linkes Div: Logo und FavOrg */}
+        <div className="header-left">
+          <div className="logo-section">
+            <div className="logo-icon">
+              <LinkIcon className="w-6 h-6" />
+            </div>
+            <div className="app-info">
+              <h1 className="app-title">
+                FavOrg 
+                <span className="bookmark-count">[{filteredCount !== null ? filteredCount : totalBookmarks}]</span>
+              </h1>
+              <p className="app-subtitle">Verwalten Sie Ihre Lesezeichen</p>
+            </div>
           </div>
         </div>
 
-        <div className="header-actions">
-          <Button 
-            onClick={onCreateBookmarkClick} 
-            className="action-btn create-btn"
-            size="sm"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Neu
-          </Button>
-          
-          <Button 
-            onClick={onFileUploadClick} 
-            className="action-btn upload-btn"
-            size="sm"
-          >
-            <Upload className="w-4 h-4 mr-2" />
-            Datei wählen
-          </Button>
+        {/* Mittleres Div: Navigation */}
+        <div className="header-center">
+          <div className="header-actions">
+            <Button 
+              onClick={onCreateBookmarkClick} 
+              className="action-btn create-btn"
+              size="sm"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Neu
+            </Button>
+            
+            <Button 
+              onClick={onFileUploadClick} 
+              className="action-btn upload-btn"
+              size="sm"
+            >
+              <Upload className="w-4 h-4 mr-2" />
+              Datei wählen
+            </Button>
 
-          <Button 
-            onClick={onExportClick} 
-            className="action-btn export-btn"
-            size="sm"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Fav-Export
-          </Button>
-          
-          <Button 
-            onClick={onValidateClick} 
-            className="action-btn check-btn"
-            size="sm"
-          >
-            <CheckCircle className="w-4 h-4 mr-2" />
-            {deadLinksCount > 0 ? `Prüfen [${deadLinksCount}]` : 'Prüfen'}
-          </Button>
-          
-          <Button 
-            onClick={onRemoveDuplicatesClick} 
-            className="action-btn duplicate-btn"
-            size="sm"
-          >
-            <Copy className="w-4 h-4 mr-2" />
-            {duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
-          </Button>
-          
-
+            <Button 
+              onClick={onExportClick} 
+              className="action-btn export-btn"
+              size="sm"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Fav-Export
+            </Button>
+            
+            <Button 
+              onClick={onValidateClick} 
+              className="action-btn check-btn"
+              size="sm"
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              {deadLinksCount > 0 ? `Prüfen [${deadLinksCount}]` : 'Prüfen'}
+            </Button>
+            
+            <Button 
+              onClick={onRemoveDuplicatesClick} 
+              className="action-btn duplicate-btn"
+              size="sm"
+            >
+              <Copy className="w-4 h-4 mr-2" />
+              {duplicateCount > 0 ? `Duplikate [${duplicateCount}]` : 'Duplikate'}
+            </Button>
+          </div>
         </div>
 
+        {/* Rechtes Div: Action Buttons */}
         <div className="header-right">
-          <span className="made-with-emergent">Made with Emergent</span>
-          
           <Button
             onClick={onHelpClick}
             className="header-btn"
