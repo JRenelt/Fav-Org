@@ -888,6 +888,18 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
 const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
   const [showBrowserInfo, setShowBrowserInfo] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+
+  // Auflösungserkennung beim Programmstart und bei Änderungen
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleCategory = (categoryName) => {
     const newExpanded = new Set(expandedCategories);
@@ -897,6 +909,28 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       newExpanded.add(categoryName);
     }
     setExpandedCategories(newExpanded);
+  };
+
+  const handleInfoClick = (event) => {
+    const rect = event.target.getBoundingClientRect();
+    const sidebarRect = event.target.closest('.sidebar').getBoundingClientRect();
+    
+    // Berechne Position basierend auf Auflösung
+    let left = rect.right + 10; // Standardposition rechts vom Icon
+    let top = rect.top;
+    
+    // Wenn nicht genug Platz rechts, positioniere innerhalb der Sidebar
+    if (left + 200 > screenWidth) {
+      left = sidebarRect.right - 220; // 200px Tooltip-Breite + 20px Margin
+    }
+    
+    // Stelle sicher, dass Tooltip nicht über Bildschirmrand hinausgeht
+    if (top + 60 > window.innerHeight) {
+      top = window.innerHeight - 70;
+    }
+    
+    setTooltipPosition({ top, left });
+    setShowBrowserInfo(!showBrowserInfo);
   };
 
   // Organisiere Kategorien nach Hierarchie
@@ -931,14 +965,28 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
           <div className="sidebar-info">
             <button
               className="info-link"
-              onClick={() => setShowBrowserInfo(!showBrowserInfo)}
+              onClick={handleInfoClick}
               title="Information über Kategorien"
             >
               <AlertTriangle className="w-4 h-4" />
             </button>
             {showBrowserInfo && (
-              <div className="info-tooltip">
+              <div 
+                className="info-tooltip info-tooltip-positioned"
+                style={{
+                  position: 'fixed',
+                  top: `${tooltipPosition.top}px`,
+                  left: `${tooltipPosition.left}px`,
+                  zIndex: 9999
+                }}
+              >
                 Basierend auf Browser-Ordnern
+                <button 
+                  className="tooltip-close"
+                  onClick={() => setShowBrowserInfo(false)}
+                >
+                  ×
+                </button>
               </div>
             )}
           </div>
