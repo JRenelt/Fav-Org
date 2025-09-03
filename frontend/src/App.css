@@ -813,9 +813,6 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
-  margin-left: 280px; /* Angepasst an neue Sidebar-Breite */
-  height: calc(100vh - 80px - 60px);
   overflow: hidden;
   /* Wird automatisch durch Sidebar-Breite angepasst */
   margin-left: 0; /* Kein fester Margin */
