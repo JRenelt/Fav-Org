@@ -603,8 +603,21 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-// Help Dialog Component with comprehensive content
+// Help Dialog Component with comprehensive content and submenu system
 const HelpDialog = ({ isOpen, onClose }) => {
+  const [activeSection, setActiveSection] = useState('import-basics');
+  
+  const menuSections = {
+    'import-basics': 'Favoriten Importieren',
+    'import-browsers': 'Unterstützte Browser', 
+    'import-guide': 'Schritt-für-Schritt Anleitung',
+    'import-formats': 'Unterstützte Dateiformate',
+    'features-overview': 'Features Übersicht',
+    'validation': 'Link-Validierung',
+    'shortcuts': 'Shortcuts',
+    'tips': 'Tipps & Tricks'
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="help-dialog">
@@ -615,197 +628,163 @@ const HelpDialog = ({ isOpen, onClose }) => {
           </DialogTitle>
         </DialogHeader>
         
-        <div className="help-body">
-          <Tabs defaultValue="overview" className="help-tabs">
-            <TabsList className="help-tab-list">
-              <TabsTrigger value="overview" className="help-tab-trigger">
-                <BookOpen className="w-4 h-4 mr-2" />
-                Übersicht
-              </TabsTrigger>
-              <TabsTrigger value="import" className="help-tab-trigger">
-                <Upload className="w-4 h-4 mr-2" />
-                Import
-              </TabsTrigger>
-              <TabsTrigger value="features" className="help-tab-trigger">
-                <Workflow className="w-4 h-4 mr-2" />
-                Features
-              </TabsTrigger>
-              <TabsTrigger value="shortcuts" className="help-tab-trigger">
-                <Keyboard className="w-4 h-4 mr-2" />
-                Shortcuts
-              </TabsTrigger>
-              <TabsTrigger value="tips" className="help-tab-trigger">
-                <Monitor className="w-4 h-4 mr-2" />
-                Tipps
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="overview" className="help-tab-content">
-              <div className="help-content">
-                <div className="help-section">
-                  <h4>Willkommen bei FavOrg</h4>
-                  <p>
-                    FavOrg ist eine professionelle SaaS-Anwendung zur Verwaltung Ihrer Browser-Favoriten. 
-                    Die Anwendung bietet umfassende Funktionen zum Importieren, Organisieren, Validieren 
-                    und Exportieren Ihrer Lesezeichen.
-                  </p>
-                  
-                  <h4>Hauptfunktionen</h4>
-                  <ul>
-                    <li><strong>Multi-Browser Import:</strong> Importieren Sie Favoriten aus Chrome, Firefox, Edge und Safari</li>
-                    <li><strong>Link-Validierung:</strong> Automatische Überprüfung auf tote Links</li>
-                    <li><strong>Duplikat-Erkennung:</strong> Finden und entfernen Sie doppelte Einträge</li>
-                    <li><strong>Hierarchische Kategorien:</strong> Organisieren Sie Favoriten in Ordnern und Unterordnern</li>
-                    <li><strong>Export-Funktionen:</strong> Exportieren Sie Ihre Daten in XML oder CSV Format</li>
-                    <li><strong>Erweiterte Suche:</strong> Durchsuchen Sie Titel, URLs und Kategorien</li>
-                  </ul>
-                </div>
+        <div className="help-body-with-nav">
+          {/* Navigation Menu */}
+          <div className="help-navigation">
+            <h4 className="nav-title">Navigation</h4>
+            {Object.entries(menuSections).map(([key, title]) => (
+              <button
+                key={key}
+                className={`nav-menu-item ${activeSection === key ? 'active' : ''}`}
+                onClick={() => setActiveSection(key)}
+              >
+                {title}
+              </button>
+            ))}
+          </div>
+          
+          {/* Content Area */}
+          <div className="help-content-area">
+            {activeSection === 'import-basics' && (
+              <div className="help-section">
+                <h4>Favoriten Importieren</h4>
+                <p>
+                  FavOrg unterstützt den Import aus verschiedenen Browsern und Formaten.
+                  Die Anwendung erkennt automatisch das Format und importiert Ihre Favoriten
+                  mit allen Kategorien und Hierarchien.
+                </p>
+                <ul>
+                  <li><strong>Multi-Browser Unterstützung:</strong> Chrome, Firefox, Edge, Safari</li>
+                  <li><strong>Automatische Erkennung:</strong> Format wird automatisch erkannt</li>
+                  <li><strong>Duplikat-Schutz:</strong> Doppelte Einträge werden vermieden</li>
+                  <li><strong>Kategoriestruktur:</strong> Ordnerhierarchie bleibt erhalten</li>
+                </ul>
               </div>
-            </TabsContent>
+            )}
             
-            <TabsContent value="import" className="help-tab-content">
-              <div className="help-content">
-                <div className="help-section">
-                  <h4>Favoriten Importieren</h4>
-                  <p>
-                    FavOrg unterstützt den Import aus verschiedenen Browsern und Formaten:
-                  </p>
-                  
-                  <h4>Unterstützte Browser</h4>
-                  <ul>
-                    <li><strong>Google Chrome:</strong> HTML-Export aus Lesezeichen-Manager</li>
-                    <li><strong>Mozilla Firefox:</strong> HTML-Export aus Bibliothek</li>
-                    <li><strong>Microsoft Edge:</strong> HTML-Export aus Favoriten</li>
-                    <li><strong>Safari:</strong> HTML-Export aus Datei-Menü</li>
-                  </ul>
-                  
-                  <h4>Schritt-für-Schritt Anleitung</h4>
-                  <ul>
-                    <li>Klicken Sie auf den "Datei wählen" Button in der Header-Leiste</li>
-                    <li>Wählen Sie Ihre exportierte Lesezeichen-Datei aus</li>
-                    <li>FavOrg erkennt automatisch das Format und importiert die Favoriten</li>
-                    <li>Duplikate werden automatisch erkannt und entfernt</li>
-                    <li>Kategorien werden basierend auf Ihrer Ordnerstruktur erstellt</li>
-                  </ul>
-                  
-                  <h4>Unterstützte Dateiformate</h4>
-                  <ul>
-                    <li><strong>HTML:</strong> Standard Browser-Export Format</li>
-                    <li><strong>JSON:</strong> Chrome Bookmark Export</li>
-                    <li><strong>CSV:</strong> Tabellenformat mit Titel, URL, Kategorie</li>
-                    <li><strong>XML:</strong> Strukturiertes Datenformat</li>
-                  </ul>
-                </div>
+            {activeSection === 'import-browsers' && (
+              <div className="help-section">
+                <h4>Unterstützte Browser</h4>
+                <p>FavOrg kann Favoriten aus allen gängigen Browsern importieren:</p>
+                <ul>
+                  <li><strong>Google Chrome:</strong> Bookmarks → Lesezeichen-Manager → Exportieren</li>
+                  <li><strong>Mozilla Firefox:</strong> Lesezeichen → Alle Lesezeichen anzeigen → Exportieren</li>
+                  <li><strong>Microsoft Edge:</strong> Favoriten → Favoriten verwalten → Exportieren</li>
+                  <li><strong>Safari:</strong> Datei → Lesezeichen exportieren</li>
+                  <li><strong>Opera:</strong> Lesezeichen → Lesezeichen exportieren</li>
+                  <li><strong>Vivaldi:</strong> Lesezeichen → Lesezeichen exportieren</li>
+                </ul>
               </div>
-            </TabsContent>
+            )}
             
-            <TabsContent value="features" className="help-tab-content">
-              <div className="help-content">
-                <div className="help-section">
-                  <h4>Link-Validierung</h4>
-                  <p>
-                    Der "Prüfen" Button überprüft alle Ihre Favoriten auf Erreichbarkeit:
-                  </p>
-                  <ul>
-                    <li><strong>Aktiv (Grün):</strong> Link ist erreichbar</li>
-                    <li><strong>Tot (Rot):</strong> Link ist nicht erreichbar</li>
-                    <li><strong>Localhost (Hellgrau):</strong> Lokale Entwicklungslinks</li>
-                    <li><strong>Ungeprüft (Weiß):</strong> Noch nicht validiert</li>
-                  </ul>
-                  
-                  <h4>Duplikat-Management</h4>
-                  <p>
-                    Der "Duplikate" Button findet und verwaltet doppelte Einträge:
-                  </p>
-                  <ul>
-                    <li>Automatische Erkennung basierend auf URL-Normalisierung</li>
-                    <li>Markierung als "Duplikat" (Orange)</li>
-                    <li>Bulk-Löschung aller markierten Duplikate</li>
-                    <li>Beibehaltung des neuesten Eintrags</li>
-                  </ul>
-                  
-                  <h4>Status-Management</h4>
-                  <p>
-                    Jeder Favorit kann verschiedene Status haben:
-                  </p>
-                  <ul>
-                    <li>Klicken Sie auf Status-Badge zum Ändern</li>
-                    <li>Dropdown-Auswahl für alle Status-Optionen</li>
-                    <li>Automatische Aktualisierung der Statistiken</li>
-                    <li>Filter-Optionen basierend auf Status</li>
-                  </ul>
-                </div>
+            {activeSection === 'import-guide' && (
+              <div className="help-section">
+                <h4>Schritt-für-Schritt Anleitung</h4>
+                <p>So importieren Sie Ihre Favoriten in wenigen Schritten:</p>
+                <ul>
+                  <li><strong>Schritt 1:</strong> Exportieren Sie Favoriten aus Ihrem Browser</li>
+                  <li><strong>Schritt 2:</strong> Klicken Sie auf "Datei wählen" in FavOrg</li>
+                  <li><strong>Schritt 3:</strong> Wählen Sie die exportierte Datei aus</li>
+                  <li><strong>Schritt 4:</strong> FavOrg verarbeitet die Datei automatisch</li>
+                  <li><strong>Schritt 5:</strong> Überprüfen Sie die importierten Favoriten</li>
+                  <li><strong>Schritt 6:</strong> Nutzen Sie "Prüfen" um Links zu validieren</li>
+                </ul>
               </div>
-            </TabsContent>
+            )}
             
-            <TabsContent value="shortcuts" className="help-tab-content">
-              <div className="help-content">
-                <div className="help-section">
-                  <h4>Tastatur-Shortcuts</h4>
-                  <ul>
-                    <li><strong>Escape:</strong> Suchfeld leeren</li>
-                    <li><strong>Ctrl + F:</strong> Fokus auf Suchfeld</li>
-                    <li><strong>Ctrl + N:</strong> Neuen Favorit erstellen</li>
-                    <li><strong>Ctrl + I:</strong> Importieren</li>
-                    <li><strong>Ctrl + E:</strong> Exportieren</li>
-                    <li><strong>F5:</strong> Statistiken aktualisieren</li>
-                  </ul>
-                  
-                  <h4>Maus-Aktionen</h4>
-                  <ul>
-                    <li><strong>Doppelklick:</strong> Favorit öffnen</li>
-                    <li><strong>Rechtsklick:</strong> Kontext-Menü (geplant)</li>
-                    <li><strong>Drag & Drop:</strong> Favoriten verschieben (geplant)</li>
-                  </ul>
-                  
-                  <h4>Tabellen-Ansicht</h4>
-                  <ul>
-                    <li><strong>Spaltenbreite:</strong> Ziehen Sie die Spaltenränder zum Anpassen</li>
-                    <li><strong>Sortierung:</strong> Klicken Sie auf Spaltenüberschriften</li>
-                    <li><strong>Einstellungen:</strong> Spaltenbreiten werden automatisch gespeichert</li>
-                  </ul>
-                </div>
+            {activeSection === 'import-formats' && (
+              <div className="help-section">
+                <h4>Unterstützte Dateiformate</h4>
+                <p>FavOrg unterstützt verschiedene Importformate:</p>
+                <ul>
+                  <li><strong>HTML:</strong> Standard Browser-Export Format (.html)</li>
+                  <li><strong>JSON:</strong> Chrome Bookmark Export (.json)</li>
+                  <li><strong>CSV:</strong> Tabellenformat mit Titel, URL, Kategorie (.csv)</li>
+                  <li><strong>XML:</strong> Strukturiertes Datenformat (.xml)</li>
+                </ul>
+                <p>
+                  Das HTML-Format wird am häufigsten verwendet und von allen Browsern unterstützt.
+                  JSON-Dateien enthalten zusätzliche Metadaten wie Erstellungsdatum.
+                </p>
               </div>
-            </TabsContent>
+            )}
             
-            <TabsContent value="tips" className="help-tab-content">
-              <div className="help-content">
-                <div className="help-section">
-                  <h4>Produktivitäts-Tipps</h4>
-                  <ul>
-                    <li><strong>Regelmäßige Validierung:</strong> Überprüfen Sie Links monatlich</li>
-                    <li><strong>Kategorisierung:</strong> Nutzen Sie aussagekräftige Kategorienamen</li>
-                    <li><strong>Duplikat-Bereinigung:</strong> Entfernen Sie regelmäßig Duplikate</li>
-                    <li><strong>Export-Backup:</strong> Erstellen Sie regelmäßige Backups</li>
-                  </ul>
-                  
-                  <h4>Best Practices</h4>
-                  <ul>
-                    <li><strong>Aussagekräftige Titel:</strong> Verwenden Sie klare, beschreibende Titel</li>
-                    <li><strong>Konsistente Kategorien:</strong> Entwickeln Sie ein einheitliches Schema</li>
-                    <li><strong>Unterkategorien:</strong> Nutzen Sie Hierarchien für bessere Organisation</li>
-                    <li><strong>Localhost-Links:</strong> Markieren Sie Entwicklungslinks entsprechend</li>
-                  </ul>
-                  
-                  <h4>Fehlerbehebung</h4>
-                  <ul>
-                    <li><strong>Import-Probleme:</strong> Überprüfen Sie das Dateiformat</li>
-                    <li><strong>Langsame Validierung:</strong> Große Datenmengen benötigen Zeit</li>
-                    <li><strong>Browser-Kompatibilität:</strong> Verwenden Sie moderne Browser</li>
-                    <li><strong>Daten-Verlust:</strong> Nutzen Sie regelmäßige Exports als Backup</li>
-                  </ul>
-                  
-                  <h4>Erweiterte Features</h4>
-                  <ul>
-                    <li><strong>Toast-Nachrichten:</strong> Ziehen Sie Benachrichtigungen an gewünschte Position</li>
-                    <li><strong>Theme-Wechsel:</strong> Wählen Sie zwischen Hell- und Dunkel-Modus</li>
-                    <li><strong>Spalten-Anpassung:</strong> Passen Sie Tabellenansicht an Ihre Bedürfnisse an</li>
-                    <li><strong>Lokale Speicherung:</strong> Ihre Einstellungen werden automatisch gespeichert</li>
-                  </ul>
-                </div>
+            {activeSection === 'features-overview' && (
+              <div className="help-section">
+                <h4>Features Übersicht</h4>
+                <p>FavOrg bietet umfassende Funktionen für die Favoritenverwaltung:</p>
+                <ul>
+                  <li><strong>Import/Export:</strong> Verschiedene Formate unterstützt</li>
+                  <li><strong>Link-Validierung:</strong> Automatische Überprüfung auf tote Links</li>
+                  <li><strong>Duplikat-Erkennung:</strong> Finden und entfernen doppelter Einträge</li>
+                  <li><strong>Kategorisierung:</strong> Hierarchische Organisation</li>
+                  <li><strong>Suche:</strong> Durchsuchen von Titel, URL und Kategorien</li>
+                  <li><strong>Status-Management:</strong> Verschiedene Link-Status</li>
+                  <li><strong>Statistiken:</strong> Detaillierte Übersicht Ihrer Sammlung</li>
+                </ul>
               </div>
-            </TabsContent>
-          </Tabs>
+            )}
+            
+            {activeSection === 'validation' && (
+              <div className="help-section">
+                <h4>Link-Validierung</h4>
+                <p>Der "Prüfen" Button überprüft alle Favoriten auf Erreichbarkeit:</p>
+                <ul>
+                  <li><strong>Aktiv (Grün):</strong> Link ist erreichbar und funktioniert</li>
+                  <li><strong>Tot (Rot):</strong> Link ist nicht mehr erreichbar</li>
+                  <li><strong>Localhost (Grau):</strong> Lokale Entwicklungslinks</li>
+                  <li><strong>Timeout (Gelb):</strong> Link antwortet nicht rechtzeitig</li>
+                  <li><strong>Ungeprüft (Weiß):</strong> Noch nicht validiert</li>
+                </ul>
+                <p>
+                  Nach der Validierung können tote Links automatisch entfernt werden.
+                  Localhost-Links werden dabei geschützt und nicht gelöscht.
+                </p>
+              </div>
+            )}
+            
+            {activeSection === 'shortcuts' && (
+              <div className="help-section">
+                <h4>Tastatur-Shortcuts</h4>
+                <ul>
+                  <li><strong>Escape:</strong> Suchfeld leeren</li>
+                  <li><strong>Ctrl + F:</strong> Fokus auf Suchfeld</li>
+                  <li><strong>Ctrl + N:</strong> Neuen Favorit erstellen</li>
+                  <li><strong>Ctrl + I:</strong> Import-Dialog öffnen</li>
+                  <li><strong>Ctrl + E:</strong> Export-Dialog öffnen</li>
+                  <li><strong>F5:</strong> Statistiken aktualisieren</li>
+                </ul>
+                
+                <h4>Maus-Aktionen</h4>
+                <ul>
+                  <li><strong>Doppelklick:</strong> Favorit in neuem Tab öffnen</li>
+                  <li><strong>Status-Badge klicken:</strong> Status ändern</li>
+                  <li><strong>Spaltenränder ziehen:</strong> Spaltenbreite anpassen</li>
+                </ul>
+              </div>
+            )}
+            
+            {activeSection === 'tips' && (
+              <div className="help-section">
+                <h4>Tipps & Tricks</h4>
+                <ul>
+                  <li><strong>Regelmäßige Validierung:</strong> Überprüfen Sie Links monatlich</li>
+                  <li><strong>Kategorisierung:</strong> Nutzen Sie aussagekräftige Namen</li>
+                  <li><strong>Export-Backup:</strong> Erstellen Sie regelmäßige Backups</li>
+                  <li><strong>Duplikat-Bereinigung:</strong> Entfernen Sie regelmäßig Duplikate</li>
+                  <li><strong>Localhost-Markierung:</strong> Markieren Sie Entwicklungslinks</li>
+                </ul>
+                
+                <h4>Best Practices</h4>
+                <ul>
+                  <li><strong>Konsistente Kategorien:</strong> Entwickeln Sie ein Schema</li>
+                  <li><strong>Aussagekräftige Titel:</strong> Verwenden Sie klare Beschreibungen</li>
+                  <li><strong>Hierarchien nutzen:</strong> Unterkategorien für bessere Organisation</li>
+                  <li><strong>Regelmäßige Wartung:</strong> Monatliche Bereinigung empfohlen</li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
