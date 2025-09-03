@@ -487,7 +487,121 @@ const Header = ({ onSettingsClick, onHelpClick, onStatsToggle, onCreateBookmarkC
   );
 };
 
-// Bookmark Dialog Component
+// Export Dialog Component
+const ExportDialog = ({ isOpen, onClose, onExport }) => {
+  const [isExporting, setIsExporting] = useState(false);
+  const [selectedFormat, setSelectedFormat] = useState('html');
+
+  const exportFormats = [
+    { value: 'html', label: 'HTML', description: 'Standard Browser-Format, kompatibel mit Chrome, Firefox, Edge, Safari', icon: '🌐' },
+    { value: 'json', label: 'JSON', description: 'Chrome Bookmarks Format mit vollständigen Metadaten', icon: '📋' },
+    { value: 'xml', label: 'XML', description: 'Strukturierte Daten mit Metainformationen, ideal für Re-Import', icon: '📄' },
+    { value: 'csv', label: 'CSV', description: 'Tabellenformat, kompatibel mit Excel und Tabellenkalkulation', icon: '📊' }
+  ];
+
+  const handleExport = async (format) => {
+    setIsExporting(true);
+    try {
+      await onExport(format, null);
+      toast.success(`${format.toUpperCase()}-Export erfolgreich heruntergeladen.`);
+    } catch (error) {
+      toast.error('Export fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportAllFormats = async () => {
+    setIsExporting(true);
+    try {
+      const favoritesService = new FavoritesService();
+      await favoritesService.exportForAllBrowsers();
+      toast.success('Alle Formate erfolgreich exportiert! (HTML, JSON, XML, CSV)');
+    } catch (error) {
+      toast.error('Multi-Format Export fehlgeschlagen: ' + error.message);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="export-dialog">
+        <DialogHeader>
+          <DialogTitle className="export-title">
+            <Download className="w-5 h-5 mr-2" />
+            Favoriten Exportieren
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="export-body">
+          <p className="export-description">
+            Wählen Sie das gewünschte Export-Format für Ihre Favoriten:
+          </p>
+          
+          <div className="export-formats-grid">
+            {exportFormats.map((format) => (
+              <div 
+                key={format.value}
+                className={`export-format-card ${selectedFormat === format.value ? 'selected' : ''}`}
+                onClick={() => setSelectedFormat(format.value)}
+              >
+                <div className="format-icon">{format.icon}</div>
+                <div className="format-info">
+                  <h4>{format.label}</h4>
+                  <p>{format.description}</p>
+                </div>
+                <input
+                  type="radio"
+                  name="format"
+                  value={format.value}
+                  checked={selectedFormat === format.value}
+                  onChange={() => setSelectedFormat(format.value)}
+                  className="format-radio"
+                />
+              </div>
+            ))}
+          </div>
+          
+          <div className="export-actions">
+            <Button
+              onClick={() => handleExport(selectedFormat)}
+              disabled={isExporting}
+              className="export-single-btn"
+            >
+              {isExporting ? (
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4 mr-2" />
+              )}
+              {selectedFormat.toUpperCase()} exportieren
+            </Button>
+            
+            <Button
+              onClick={handleExportAllFormats}
+              disabled={isExporting}
+              className="export-all-btn"
+              variant="outline"
+            >
+              {isExporting ? (
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Archive className="w-4 h-4 mr-2" />
+              )}
+              Alle Formate exportieren
+            </Button>
+          </div>
+          
+          <div className="export-info">
+            <p className="info-text">
+              <strong>Tipp:</strong> Das HTML-Format wird von allen Browsern unterstützt und ist die beste Wahl für den Re-Import in andere Browser.
+            </p>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   const [formData, setFormData] = useState({
     title: '',
