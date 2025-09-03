@@ -272,6 +272,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Categories Endpunkt vollständig getestet. GET /api/categories funktioniert perfekt (200 OK). 37 Kategorien erfolgreich abgerufen mit korrekten Feldern (name, bookmark_count). JSON-Format und CORS-Header korrekt. Categories-Endpunkt arbeitet einwandfrei."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Categories Endpunkt für verbesserte Tooltip-Funktionalität vollständig getestet. GET /api/categories funktioniert perfekt (200 OK). 24 Kategorien erfolgreich abgerufen mit korrekten Feldern (id, name, parent_category, bookmark_count, subcategory_count, created_at). JSON-Format und CORS-Header korrekt. Categories-Endpunkt ist vollständig bereit für die verbesserte Tooltip-Positionierung im Frontend."
 
   - task: "Status Toggle Functionality (NEW)"
     implemented: true
