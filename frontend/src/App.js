@@ -651,15 +651,80 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             </datalist>
           </div>
           
+          {/* Neue Unterkategorien-Sektion */}
+          <div className="form-group">
+            <Label>Unterkategorien</Label>
+            
+            {/* Anzeige bestehender Unterkategorien */}
+            {formData.subcategories.length > 0 && (
+              <div className="subcategories-list">
+                {formData.subcategories.map((subcat, index) => (
+                  <div key={index} className="subcategory-tag">
+                    <span>{subcat}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeSubcategory(subcat)}
+                      className="remove-subcategory-btn"
+                      title="Unterkategorie entfernen"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {/* Eingabefeld für neue Unterkategorie */}
+            <div className="add-subcategory-section">
+              <Input
+                value={newSubcategory}
+                onChange={(e) => setNewSubcategory(e.target.value)}
+                placeholder="Neue Unterkategorie eingeben"
+                className="subcategory-input"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addSubcategory();
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                onClick={addSubcategory}
+                className="add-subcategory-btn"
+                size="sm"
+                disabled={!newSubcategory.trim()}
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            </div>
+            
+            <p className="subcategory-help">
+              Erstellen Sie eine oder mehrere Unterkategorien für bessere Organisation.
+            </p>
+          </div>
+          
+          {/* Kompatibilitäts-Sektion für bestehende Unterkategorien */}
           {subcategoriesForCategory.length > 0 && (
             <div className="form-group">
-              <Label htmlFor="subcategory">Unterkategorie</Label>
+              <Label htmlFor="subcategory">Bestehende Unterkategorie wählen</Label>
               <input
                 type="text"
                 id="subcategory"
                 value={formData.subcategory && formData.subcategory !== "__none__" ? formData.subcategory : ""}
-                onChange={(e) => setFormData({...formData, subcategory: e.target.value || null})}
-                placeholder="Unterkategorie eingeben (optional)"
+                onChange={(e) => {
+                  const value = e.target.value || '__none__';
+                  setFormData({...formData, subcategory: value});
+                  // Füge zur subcategories Liste hinzu, wenn nicht bereits vorhanden
+                  if (value !== '__none__' && !formData.subcategories.includes(value)) {
+                    setFormData({
+                      ...formData, 
+                      subcategory: value,
+                      subcategories: [...formData.subcategories, value]
+                    });
+                  }
+                }}
+                placeholder="Unterkategorie wählen (optional)"
                 className="form-input"
                 list="subcategory-options"
               />
