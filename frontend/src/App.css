@@ -2423,10 +2423,11 @@ body {
 /* Export Dialog Styles */
 .export-dialog {
   max-width: 700px;
-  max-height: 80vh;
+  max-height: 90vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   color: var(--text-primary);
+  overflow-y: auto;
 }
 
 .export-title {
