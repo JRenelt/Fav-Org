@@ -1856,9 +1856,9 @@ body {
   color: var(--text-primary);
 }
 
-/* Help Dialog - 30% breiter und dynamische Breite */
+/* Help Dialog - Weitere 30% Verbreiterung */
 .help-dialog {
-  max-width: 780px; /* 600px + 30% = 780px */
+  max-width: 1014px; /* 780px + 30% = 1014px */
   max-height: 80vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
@@ -1866,7 +1866,7 @@ body {
   
   /* Dynamische Breite basierend auf Inhalt */
   width: max-content;
-  min-width: 780px;
+  min-width: 1014px;
 }
 
 /* Help Dialog mit Navigation */
