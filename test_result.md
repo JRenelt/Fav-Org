@@ -251,6 +251,9 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Statistik-Endpunkt mit allen neuen Status-Typen vollständig getestet. Korrekte Zählung: 35 total, 27 aktive, 6 dead, 0 localhost, 0 duplicate, 15 unchecked Links. Status-basierte Statistiken arbeiten perfekt und reflektieren alle Änderungen korrekt."
+      - working: true
+        agent: "testing"
+        comment: "🎯 CRITICAL FIX & COMPREHENSIVE TESTING NACH FRONTEND UPDATES: Statistics Endpoint für vertikales Layout vollständig getestet und repariert. PROBLEM BEHOBEN: localhost_links und duplicate_links Felder fehlten in Statistics Pydantic Model - jetzt hinzugefügt. ✅ Alle erforderlichen Felder für vertikales Layout vorhanden: total_bookmarks=22, active_links=21, dead_links=0, localhost_links=0, duplicate_links=0, unchecked_links=1. Statistics Endpoint ist jetzt vollständig kompatibel mit dem neuen Frontend vertikalen Layout."
 
   - task: "Categories Endpoint (User Reported Issue)"
     implemented: true
