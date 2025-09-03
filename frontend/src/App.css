@@ -604,6 +604,12 @@ body {
   margin-right: 6px;
 }
 
+.table-drag {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
 /* Category specific drag styles */
 .category-item.draggable {
   transition: all 0.2s ease;
