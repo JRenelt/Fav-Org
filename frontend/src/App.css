@@ -806,12 +806,11 @@ body {
 /* Main Content - BookmarkPro Style */
 .main-content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  padding: 20px;
+  overflow-y: auto;
+  min-width: 0;
   height: 100%;
   /* Entferne den margin-left da wir jetzt in Flexbox sind */
-  transition: all 0.2s ease;
   
   /* TEMPORÄRE DEBUG GRENZEN */
   border: 1px solid purple;
