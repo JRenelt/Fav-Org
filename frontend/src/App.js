@@ -2856,53 +2856,64 @@ function App() {
   const handleCategoryReorder = async (draggedCategory, targetCategory) => {
     try {
       console.log(`Kategorie "${draggedCategory.name}" zu "${targetCategory.name}" verschoben`);
+      console.log('Dragged Category:', draggedCategory);
+      console.log('Target Category:', targetCategory);
       
-      // Lokale Neuordnung der Kategorien
-      const newCategories = [...categories];
-      const draggedIndex = newCategories.findIndex(cat => cat.id === draggedCategory.id);
-      const targetIndex = newCategories.findIndex(cat => cat.id === targetCategory.id);
+      // WICHTIG: Bestimme das richtige Ziel basierend auf dem Szenario
+      let newParentCategory = null;
+      let moveDescription = '';
       
-      if (draggedIndex !== -1 && targetIndex !== -1) {
-        // Element entfernen und an neuer Position einfügen
-        const [draggedItem] = newCategories.splice(draggedIndex, 1);
-        
-        // Für Unterkategorien: Parent-Kategorie ändern wenn zur Hauptkategorie verschoben
-        if (draggedCategory.isSubcategory && !targetCategory.isSubcategory) {
-          draggedItem.parent_category = targetCategory.name;
-          console.log(`Unterkategorie "${draggedItem.name}" wird zu Hauptkategorie "${targetCategory.name}" verschoben`);
-        }
-        // Wenn von Hauptkategorie zu Unterkategorie verschoben
-        else if (!draggedCategory.isSubcategory && targetCategory.isSubcategory) {
-          draggedItem.parent_category = targetCategory.parent_category;
-          console.log(`Kategorie "${draggedItem.name}" wird zu Unterkategorie von "${targetCategory.parent_category}" verschoben`);
-        }
-        // Unterkategorie zu anderer Hauptkategorie
-        else if (draggedCategory.isSubcategory && !targetCategory.isSubcategory) {
-          draggedItem.parent_category = targetCategory.name;
-        }
-        
-        newCategories.splice(targetIndex, 0, draggedItem);
-        setCategories(newCategories);
-        
-        // Speichere Sortierung im localStorage
-        const categoryOrder = newCategories.map(cat => ({
-          id: cat.id,
-          name: cat.name,
-          parent_category: cat.parent_category
-        }));
-        localStorage.setItem('favorg-category-order', JSON.stringify(categoryOrder));
-        
-        // Daten neu laden um Änderungen zu reflektieren
-        await loadCategories();
-        await loadBookmarks();
+      if (draggedCategory.isSubcategory && !targetCategory.isSubcategory) {
+        // Unterkategorie zu Hauptkategorie -> wird Unterkategorie der Hauptkategorie
+        newParentCategory = targetCategory.name;
+        moveDescription = `Unterkategorie "${draggedCategory.name}" zur Hauptkategorie "${targetCategory.name}" verschoben`;
+      } else if (draggedCategory.isSubcategory && targetCategory.isSubcategory) {
+        // Unterkategorie zu Unterkategorie -> nimmt die gleiche Parent-Kategorie
+        newParentCategory = targetCategory.parent_category;
+        moveDescription = `Unterkategorie "${draggedCategory.name}" zur Gruppe "${targetCategory.parent_category}" verschoben`;
+      } else if (!draggedCategory.isSubcategory && targetCategory.isSubcategory) {
+        // Hauptkategorie zu Unterkategorie -> wird Unterkategorie der Parent-Kategorie
+        newParentCategory = targetCategory.parent_category;
+        moveDescription = `Kategorie "${draggedCategory.name}" zur Unterkategorie unter "${targetCategory.parent_category}" verschoben`;
+      } else {
+        // Hauptkategorie zu Hauptkategorie -> bleibt Hauptkategorie
+        newParentCategory = null;
+        moveDescription = `Kategorien "${draggedCategory.name}" und "${targetCategory.name}" getauscht`;
       }
       
-      const draggedType = draggedCategory.isSubcategory ? 'Unterkategorie' : 'Kategorie';
-      const targetType = targetCategory.isSubcategory ? 'Unterkategorie' : 'Kategorie';
-      toast.success(`${draggedType} "${draggedCategory.name}" wurde zu ${targetType} "${targetCategory.name}" verschoben`);
+      // Lokale Kategorien-Liste aktualisieren
+      const updatedCategories = categories.map(cat => {
+        if (cat.id === draggedCategory.id) {
+          return {
+            ...cat,
+            parent_category: newParentCategory
+          };
+        }
+        return cat;
+      });
+      
+      // Sofort State aktualisieren für bessere UX
+      setCategories(updatedCategories);
+      
+      // Lokale Speicherung für Persistenz
+      const categoryOrder = updatedCategories.map(cat => ({
+        id: cat.id,
+        name: cat.name,
+        parent_category: cat.parent_category
+      }));
+      localStorage.setItem('favorg-category-order', JSON.stringify(categoryOrder));
+      
+      // Neue Daten vom Backend laden um Synchronisation zu gewährleisten
+      setTimeout(async () => {
+        await loadCategories();
+        await loadBookmarks();
+      }, 100);
+      
+      toast.success(moveDescription);
+      
     } catch (error) {
       console.error('Category reorder error:', error);
-      toast.error('Kategorien-Sortierung fehlgeschlagen: ' + error.message);
+      toast.error('Kategorien-Verschiebung fehlgeschlagen: ' + error.message);
     }
   };
 
