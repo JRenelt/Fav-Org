@@ -538,73 +538,67 @@ class FavLinkBackendTester:
 
 def main():
     print("🚀 Starting FavLink Manager Backend API Tests")
-    print("🎯 FOCUS: Dead Links Removal & Integration Workflow")
-    print("=" * 60)
+    print("🎯 FOCUS: Comprehensive Backend Testing nach Frontend Updates")
+    print("🇩🇪 Teste das FavOrg Backend nach den aktuellen Frontend-Updates")
+    print("=" * 70)
     
     tester = FavLinkBackendTester()
     
-    # Test sequence - prioritizing Dead Links Removal testing
-    print("\n📋 Phase 1: Basic API Connectivity & Initial State")
-    tester.test_get_all_bookmarks()
-    tester.test_get_categories()
-    tester.test_get_statistics()
+    # Test sequence - prioritizing Statistics and Status Management as requested
+    print("\n📋 Phase 1: 🎯 PRIORITY - Statistics Endpoint (für vertikales Layout)")
+    print("   Testing statistics endpoint for new vertical layout requirements")
+    stats_success, stats_response = tester.test_statistics_comprehensive()
     
-    print("\n📋 Phase 2: Sample Data Creation (includes dead links for testing)")
-    tester.test_create_sample_bookmarks()
+    print("\n📋 Phase 2: Categories Endpoint (für verbesserte Tooltip-Funktionalität)")
+    categories_success, categories_response = tester.test_get_categories()
     
-    print("\n📋 Phase 3: 🎯 DEAD LINKS REMOVAL TESTING (NEW FEATURE)")
-    print("   Testing the new DELETE /api/bookmarks/dead-links endpoint")
-    
-    # Test the complete integration workflow
-    workflow_success, workflow_result = tester.test_integration_workflow()
-    
-    # Test error handling for dead links removal
-    tester.test_dead_links_error_handling()
-    
-    print("\n📋 Phase 4: Existing Endpoints Retest")
-    print("   Retesting existing endpoints as requested")
-    
-    # Link Validation (retest)
-    tester.test_validate_links()
-    
-    # Statistics (retest) 
-    tester.test_get_statistics()
-    
-    # Export functionality (retest)
-    tester.test_export_xml()
-    tester.test_export_csv()
-    tester.test_export_xml("Development")  # Test with category filter
-    
-    # Scripts download (retest)
-    tester.test_download_collector_zip()
-    
-    print("\n📋 Phase 5: CRUD Operations Verification")
+    print("\n📋 Phase 3: CRUD Operations (Basis-Operationen)")
     # Create
     create_success, create_response = tester.test_create_single_bookmark()
     bookmark_id = None
     if create_success and 'id' in create_response:
         bookmark_id = create_response['id']
         
+        # Read
+        tester.test_get_all_bookmarks()
+        tester.test_get_bookmarks_by_category("Development")
+        
         # Update
         update_data = {
-            "title": "Updated Test Bookmark",
-            "category": "Updated Category",
-            "subcategory": "Updated Subcategory"
+            "title": "Updated Test Bookmark für Backend Test",
+            "category": "Testing"
         }
         tester.test_update_bookmark(bookmark_id, update_data)
         
-        # Move (we'll move this bookmark to a different category)
-        tester.test_move_bookmarks([bookmark_id], "Development", "Testing")
+        # Move
+        tester.test_move_bookmarks([bookmark_id], "Development")
+        
+        # Delete (will be done at end)
     
-    # Read operations
-    tester.test_get_bookmarks_by_category("Development")
-    tester.test_search_bookmarks("GitHub")
+    print("\n📋 Phase 4: 🎯 Status Management (alle status_type Operationen)")
+    status_success, status_response = tester.test_status_management()
     
-    print("\n📋 Phase 6: Additional Export & Duplicate Tests")
-    tester.test_export_csv("Social Media")  # Export Social Media category as CSV
-    tester.test_remove_duplicates()
+    print("\n📋 Phase 5: Export-Funktionalität (XML/CSV)")
+    xml_success, xml_response = tester.test_export_xml()
+    csv_success, csv_response = tester.test_export_csv()
+    # Test with category filter
+    tester.test_export_xml("Development")
+    tester.test_export_csv("Development")
     
-    print("\n📋 Phase 7: Final Verification")
+    print("\n📋 Phase 6: Link-Validierung (POST /api/bookmarks/validate)")
+    validation_success, validation_response = tester.test_validate_links()
+    
+    print("\n📋 Phase 7: 🎯 Duplikat-Management (Find und Delete Operationen)")
+    duplicate_success, duplicate_response = tester.test_duplicate_workflow()
+    
+    print("\n📋 Phase 8: Dead Links Removal & Integration Workflow")
+    workflow_success, workflow_result = tester.test_integration_workflow()
+    tester.test_dead_links_error_handling()
+    
+    print("\n📋 Phase 9: Scripts Download (ZIP)")
+    scripts_success, scripts_response = tester.test_download_collector_zip()
+    
+    print("\n📋 Phase 10: Final Verification")
     # Get final statistics to verify everything is consistent
     final_stats_success, final_stats = tester.test_get_statistics()
     
@@ -613,28 +607,40 @@ def main():
         tester.test_delete_single_bookmark(bookmark_id)
     
     # Print final results
-    print("\n" + "=" * 60)
-    print(f"📊 FINAL RESULTS")
+    print("\n" + "=" * 70)
+    print(f"📊 FINAL RESULTS - Backend Testing nach Frontend Updates")
     print(f"Tests Run: {tester.tests_run}")
     print(f"Tests Passed: {tester.tests_passed}")
     print(f"Tests Failed: {tester.tests_run - tester.tests_passed}")
     print(f"Success Rate: {(tester.tests_passed/tester.tests_run)*100:.1f}%")
     
-    # Special focus on Dead Links Removal results
-    print(f"\n🎯 DEAD LINKS REMOVAL FEATURE STATUS:")
-    if workflow_success:
-        print("✅ Dead Links Removal endpoint working correctly")
-        print("✅ Integration workflow (Validate → Remove → Statistics Update) working")
-        print("✅ Error handling for empty dead links working")
-        if isinstance(workflow_result, dict):
-            print(f"   Workflow details: {workflow_result}")
-    else:
-        print("❌ Dead Links Removal feature has issues")
-        print(f"   Issue: {workflow_result}")
+    # Detailed results for key areas
+    print(f"\n🎯 KEY AREAS STATUS:")
+    print(f"✅ Statistics Endpoint (vertikales Layout): {'PASS' if stats_success else 'FAIL'}")
+    print(f"✅ Categories Endpoint (Tooltip): {'PASS' if categories_success else 'FAIL'}")
+    print(f"✅ CRUD Operations: {'PASS' if create_success else 'FAIL'}")
+    print(f"✅ Status Management: {'PASS' if status_success else 'FAIL'}")
+    print(f"✅ Export Functionality: {'PASS' if xml_success and csv_success else 'FAIL'}")
+    print(f"✅ Link Validation: {'PASS' if validation_success else 'FAIL'}")
+    print(f"✅ Duplicate Management: {'PASS' if duplicate_success else 'FAIL'}")
+    print(f"✅ Scripts Download: {'PASS' if scripts_success else 'FAIL'}")
+    
+    # Critical issues check
+    critical_failures = []
+    if not stats_success:
+        critical_failures.append("Statistics Endpoint")
+    if not categories_success:
+        critical_failures.append("Categories Endpoint")
+    if not create_success:
+        critical_failures.append("CRUD Operations")
+    
+    if critical_failures:
+        print(f"\n❌ CRITICAL FAILURES: {', '.join(critical_failures)}")
+        print("   These failures could impact frontend functionality!")
     
     if tester.tests_passed == tester.tests_run:
-        print("\n🎉 All tests passed! Backend API is working correctly.")
-        print("🎯 Dead Links Removal feature is fully functional!")
+        print("\n🎉 All tests passed! Backend API is fully functional nach Frontend Updates.")
+        print("🎯 Alle kritischen Endpunkte funktionieren einwandfrei!")
         return 0
     else:
         print(f"\n⚠️  {tester.tests_run - tester.tests_passed} tests failed. Check the output above for details.")
