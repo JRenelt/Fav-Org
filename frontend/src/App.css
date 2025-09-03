@@ -1020,6 +1020,8 @@ body {
   padding: 2px 4px !important;
   cursor: pointer !important;
   border-radius: 12px !important;
+  width: auto !important;
+  min-width: max-content !important;
 }
 
 .status-select:focus {
