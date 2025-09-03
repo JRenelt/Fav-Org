@@ -506,9 +506,8 @@ body {
 
 .info-tooltip {
   position: absolute;
+  top: -40px;
   right: 0;
-  top: 100%;
-  margin-top: 8px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-primary);
   border-radius: 6px;
