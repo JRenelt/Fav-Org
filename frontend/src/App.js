@@ -1243,7 +1243,7 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
         <DialogHeader>
           <DialogTitle className="dialog-title" style={{ color: 'var(--text-primary)' }}>
             <BarChart3 className="w-5 h-5 mr-2" />
-            Statistiken
+            📊 Statistiken
           </DialogTitle>
         </DialogHeader>
         
