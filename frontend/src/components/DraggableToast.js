@@ -72,8 +72,10 @@ const DraggableToast = ({
   };
 
   const handleClose = (e) => {
-    e.stopPropagation();  // Verhindert Event-Bubbling
-    e.preventDefault();
+    if (e && e.stopPropagation) {
+      e.stopPropagation();  // Verhindert Event-Bubbling
+      e.preventDefault();
+    }
     setIsVisible(false);
     setTimeout(() => {
       if (onClose) onClose();
