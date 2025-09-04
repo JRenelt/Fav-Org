@@ -2635,31 +2635,70 @@ function App() {
   const [hideTimeLeft, setHideTimeLeft] = useState(0);
   const [gameTimer, setGameTimer] = useState(null);
   const [moveTimer, setMoveTimer] = useState(null);
+  const [personPosition, setPersonPosition] = useState({ x: 10, y: 90 });
+  const [personDirection, setPersonDirection] = useState(1); // 1 = rechts, -1 = links
 
-  // Game elements positions - Kleine Stadt-Szene
+  // Game elements positions - Komplexe Stadtszene mit Straßen-Layout
   const hideSpots = [
-    { type: '🏠', x: 15, y: 20, width: 10, height: 12 }, // Haus 1
-    { type: '🏠', x: 70, y: 25, width: 10, height: 12 }, // Haus 2
-    { type: '🏢', x: 45, y: 15, width: 12, height: 15 }, // Gebäude
-    { type: '🌳', x: 25, y: 40, width: 8, height: 10 },  // Baum 1
-    { type: '🌳', x: 80, y: 45, width: 8, height: 10 },  // Baum 2  
-    { type: '🌳', x: 60, y: 60, width: 8, height: 10 },  // Baum 3
-    { type: '🌿', x: 10, y: 70, width: 6, height: 8 },   // Busch 1
-    { type: '🌿', x: 35, y: 75, width: 6, height: 8 },   // Busch 2
-    { type: '🌿', x: 85, y: 70, width: 6, height: 8 },   // Busch 3
-    { type: '⛲', x: 55, y: 40, width: 6, height: 6 },   // Brunnen
-    { type: '🌸', x: 20, y: 65, width: 4, height: 4 },   // Blumen 1
-    { type: '🌻', x: 75, y: 65, width: 4, height: 4 },   // Blumen 2
-    { type: '🟢', x: 40, y: 70, width: 15, height: 8 },  // Grünfläche
-    { type: '🌉', x: 50, y: 80, width: 12, height: 6 },  // Brücke
-    { type: '💧', x: 30, y: 85, width: 20, height: 8 },  // Teich
+    // Gebäude-Cluster oben links
+    { type: '🏠', x: 15, y: 20, width: 8, height: 10 },
+    { type: '🏢', x: 25, y: 15, width: 10, height: 12 },
+    { type: '🏬', x: 8, y: 35, width: 12, height: 8 },
+    
+    // Zentrale Gebäude um Kreuzung
+    { type: '🏛️', x: 45, y: 25, width: 12, height: 10 }, // Rathaus
+    { type: '🏥', x: 60, y: 20, width: 10, height: 12 }, // Krankenhaus
+    { type: '🏫', x: 35, y: 40, width: 15, height: 10 }, // Schule
+    
+    // Rechte Seite
+    { type: '🏪', x: 75, y: 15, width: 8, height: 8 },   // Shop
+    { type: '🏨', x: 85, y: 25, width: 10, height: 15 }, // Hotel
+    { type: '🏭', x: 80, y: 45, width: 12, height: 10 }, // Fabrik
+    
+    // Untere Reihe
+    { type: '⛪', x: 20, y: 65, width: 10, height: 12 }, // Kirche
+    { type: '🏤', x: 40, y: 70, width: 12, height: 8 },  // Post
+    { type: '🏦', x: 65, y: 65, width: 10, height: 10 }, // Bank
+    
+    // Natur-Elemente
+    { type: '🌳', x: 30, y: 55, width: 6, height: 8 },   // Park-Baum
+    { type: '🌳', x: 70, y: 55, width: 6, height: 8 },   // Straßen-Baum
+    { type: '⛲', x: 50, y: 50, width: 8, height: 8 },   // Zentral-Brunnen
+    { type: '🌿', x: 15, y: 80, width: 8, height: 6 },   // Parkanlage
+    { type: '🌻', x: 85, y: 75, width: 4, height: 4 },   // Blumen
+    
+    // Verkehrs-Elemente
+    { type: '🚏', x: 25, y: 45, width: 3, height: 6 },   // Bushaltestelle
+    { type: '🚗', x: 55, y: 35, width: 6, height: 4 },   // Auto
+    { type: '🚌', x: 10, y: 50, width: 8, height: 4 },   // Bus
   ];
 
-  // Game settings - kann in System-Einstellungen geändert werden
+  // Straßen-Layout (wird als CSS-Pattern gerendert)
+  const streetLayout = {
+    // Hauptstraße horizontal
+    horizontal: [
+      { x: 0, y: 45, width: 100, height: 8 },
+      { x: 0, y: 35, width: 100, height: 6 },
+    ],
+    // Hauptstraße vertikal  
+    vertical: [
+      { x: 45, y: 0, width: 8, height: 100 },
+      { x: 25, y: 0, width: 6, height: 100 },
+      { x: 70, y: 0, width: 6, height: 100 },
+    ],
+    // Kreuzungen
+    intersections: [
+      { x: 40, y: 40, width: 18, height: 18 }, // Zentrale Kreuzung
+      { x: 20, y: 40, width: 15, height: 15 }, // Links
+      { x: 65, y: 40, width: 15, height: 15 }, // Rechts
+    ]
+  };
+
+  // Game settings - versteckt als S-Time in erweiterten Einstellungen
   const [gameSettings, setGameSettings] = useState(() => {
-    const saved = localStorage.getItem('favorg-game-settings');
+    const saved = localStorage.getItem('favorg-advanced-settings');
     return saved ? JSON.parse(saved) : {
-      'M-Hidden-Zeit': 3 // Standard: 3 Sekunden
+      'S-Time': 3 // Versteckt als System-Time
     };
   });
 
