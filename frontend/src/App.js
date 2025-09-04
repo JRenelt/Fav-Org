@@ -2811,6 +2811,18 @@ function App() {
     setMoveTimer(null);
   };
 
+  // Helper function für Element-Titel
+  const getElementTitle = (type) => {
+    const titles = {
+      '🏠': 'Wohnhaus', '🏢': 'Bürogebäude', '🏬': 'Geschäft', '🏛️': 'Rathaus',
+      '🏥': 'Krankenhaus', '🏫': 'Schule', '🏪': 'Laden', '🏨': 'Hotel',
+      '🏭': 'Fabrik', '⛪': 'Kirche', '🏤': 'Postamt', '🏦': 'Bank',
+      '🌳': 'Baum', '⛲': 'Brunnen', '🌿': 'Park', '🌻': 'Blumen',
+      '🚏': 'Bushaltestelle', '🚗': 'Auto', '🚌': 'Bus'
+    };
+    return titles[type] || 'Stadt-Element';
+  };
+
   // Validation and Duplicates
   const [hasValidated, setHasValidated] = useState(false);
   const [duplicateCount, setDuplicateCount] = useState(0);
