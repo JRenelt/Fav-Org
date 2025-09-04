@@ -3276,7 +3276,24 @@ function App() {
               </div>
             </div>
             <div className="game-area">
-              {gameActive && (
+              {/* Hide spots - Haus, Bäume, Büsche */}
+              {hideSpots.map((spot, index) => (
+                <div
+                  key={index}
+                  className="hide-spot"
+                  style={{
+                    left: `${spot.x}%`,
+                    top: `${spot.y}%`,
+                    width: `${spot.width}%`,
+                    height: `${spot.height}%`
+                  }}
+                  title={spot.type === '🏠' ? 'Haus' : spot.type === '🌳' ? 'Baum' : 'Busch'}
+                >
+                  {spot.type}
+                </div>
+              ))}
+              
+              {gameActive && !mouseHidden && (
                 <div 
                   className="game-mouse"
                   style={{
@@ -3289,6 +3306,17 @@ function App() {
                   🐭
                 </div>
               )}
+              
+              {mouseHidden && (
+                <div className="mouse-hidden-indicator">
+                  <div className="hidden-message">
+                    🏠 Maus versteckt sich! 
+                    <br />
+                    <small>Kommt in {hideTimeLeft}s raus</small>
+                  </div>
+                </div>
+              )}
+              
               {!gameActive && timeLeft === 0 && (
                 <div className="game-over">
                   <h3>Spiel beendet!</h3>
