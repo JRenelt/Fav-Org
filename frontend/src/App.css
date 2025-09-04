@@ -2356,19 +2356,43 @@ body {
 }
 
 /* Footer */
-.app-footer {
+.footer {
   background: var(--bg-secondary);
-  color: var(--text-secondary);
-  text-align: center;
-  padding: 16px 24px;
-  font-size: 12px;
   border-top: 1px solid var(--border-primary);
+  padding: 16px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 100;
   height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Copyright Game Trigger - visuell versteckt aber klickbar */
+.copyright-game-trigger {
+  cursor: default !important;  /* Kein pointer cursor */
+  transition: none !important; /* Keine Hover-Effekte */
+  user-select: none;           /* Nicht selektierbar */
+}
+
+.copyright-game-trigger:hover {
+  color: var(--text-muted) !important; /* Keine Farbänderung */
+  text-decoration: none !important;    /* Keine Unterstreichung */
+}
+
+.made-with {
+  color: var(--text-muted);
+  font-size: 0.8rem;
 }
 
 /* Custom Scrollbar */
