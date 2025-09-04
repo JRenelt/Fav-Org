@@ -2406,47 +2406,6 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
               <Table className="w-4 h-4" />
             </button>
           </div>
-          
-          {/* Header-Buttons nur für Kartenansicht */}
-          {viewMode === 'cards' && (
-            <div className="card-header-actions">
-              <Button
-                onClick={onHelpClick}
-                className="card-header-btn"
-                size="sm"
-                title="Hilfe"
-              >
-                <HelpCircle className="w-4 h-4" />
-              </Button>
-              
-              <Button
-                onClick={onStatsToggle}
-                className="card-header-btn"
-                size="sm"
-                title="Statistiken ein-/ausblenden"
-              >
-                <BarChart3 className="w-4 h-4" />
-              </Button>
-              
-              <Button
-                onClick={onSettingsClick}
-                className="card-header-btn"
-                size="sm" 
-                title="System-Einstellungen"
-              >
-                <Settings className="w-4 h-4" />
-              </Button>
-              
-              <Button 
-                onClick={onDeleteAllClick}
-                className="card-header-btn delete-btn"
-                size="sm"
-                title="Alle Favoriten löschen"
-              >
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-          )}
         </div>
         
         {viewMode === 'table' ? (
