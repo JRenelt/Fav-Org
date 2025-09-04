@@ -3137,6 +3137,7 @@ function App() {
           bookmarkCounts={bookmarkCounts}
           statistics={statistics}
           onCategoryReorder={handleCategoryReorder}
+          onBookmarkToCategory={handleBookmarkToCategory}
         />
         
 
