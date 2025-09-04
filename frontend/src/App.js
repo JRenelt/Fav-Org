@@ -3011,6 +3011,30 @@ function App() {
     }
   };
 
+  // Handler für Bookmark zu Kategorie verschieben
+  const handleBookmarkToCategory = async (bookmark, targetCategory, isTargetSubcategory = false) => {
+    try {
+      const targetCategoryName = targetCategory.name;
+      const targetSubcategoryName = isTargetSubcategory ? targetCategory.name : null;
+      
+      // Verwende die FavoritesService moveBookmarks Methode
+      await favoritesService.moveBookmarks([bookmark.id], targetCategoryName, targetSubcategoryName);
+      
+      // Aktualisiere lokale Daten
+      await loadBookmarks();
+      await loadCategories();
+      
+      const moveDescription = isTargetSubcategory 
+        ? `Favorit "${bookmark.title}" zur Unterkategorie "${targetCategory.name}" verschoben`
+        : `Favorit "${bookmark.title}" zur Kategorie "${targetCategory.name}" verschoben`;
+      
+      toast.success(moveDescription);
+    } catch (error) {
+      console.error('Bookmark to category move error:', error);
+      toast.error('Favorit-Verschiebung fehlgeschlagen: ' + error.message);
+    }
+  };
+
   const handleEditBookmark = (bookmark) => {
     setEditingBookmark(bookmark);
     setShowBookmarkDialog(true);
