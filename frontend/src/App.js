@@ -2727,13 +2727,40 @@ function App() {
     }, 1000);
     setGameTimer(newGameTimer);
     
-    // Auto move timer
+    // Auto move timer für Maus
     const newMoveTimer = setInterval(() => {
       if (!mouseHidden) {
         moveMouseToRandomPosition();
       }
     }, 2000); // Maus bewegt sich alle 2 Sekunden
     setMoveTimer(newMoveTimer);
+    
+    // Person animation timer
+    const personTimer = setInterval(() => {
+      setPersonPosition(prev => {
+        const newX = prev.x + (personDirection * 2); // 2% pro Schritt
+        
+        // Richtungsänderung an den Rändern
+        if (newX >= 90) {
+          setPersonDirection(-1);
+          return { x: 90, y: prev.y };
+        } else if (newX <= 5) {
+          setPersonDirection(1);
+          return { x: 5, y: prev.y };
+        }
+        
+        return { x: newX, y: prev.y };
+      });
+    }, 1500); // Person bewegt sich alle 1.5 Sekunden
+    
+    // Cleanup function
+    const cleanup = () => {
+      if (newGameTimer) clearInterval(newGameTimer);
+      if (newMoveTimer) clearInterval(newMoveTimer);
+      if (personTimer) clearInterval(personTimer);
+    };
+    
+    return cleanup;
   };
 
   const moveMouseToRandomPosition = () => {
