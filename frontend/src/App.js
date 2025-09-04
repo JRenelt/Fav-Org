@@ -3053,12 +3053,17 @@ function App() {
         moveDescription = `Kategorien "${draggedCategory.name}" und "${targetCategory.name}" getauscht`;
       }
       
-      // Sofort lokale Kategorien-Liste aktualisieren für bessere UX
+      // ⚠️ TEMPORÄRE WARNUNG: Kategorie-Verschiebung ist nur visuell
+      showCustomToast(`⚠️ ${moveDescription} (nur visuell - noch nicht im Backend gespeichert)`, 'warning', 5000);
+      
+      // Visuelle Aktualisierung für bessere UX
       const updatedCategories = categories.map(cat => {
         if (cat.id === draggedCategory.id) {
           return {
             ...cat,
-            parent_category: newParentCategory
+            parent_category: newParentCategory,
+            // Markiere als "visuell verschoben" für später
+            __visuallyMoved: true
           };
         }
         return cat;
@@ -3067,23 +3072,19 @@ function App() {
       // State aktualisieren
       setCategories(updatedCategories);
       
-      // Lokale Speicherung für Persistenz zwischen Sessions
+      // Lokale Speicherung für Session-Persistenz
       const categoryOrder = updatedCategories.map(cat => ({
         id: cat.id,
         name: cat.name,
-        parent_category: cat.parent_category
+        parent_category: cat.parent_category,
+        __visuallyMoved: cat.__visuallyMoved || false
       }));
       localStorage.setItem('favorg-category-order', JSON.stringify(categoryOrder));
       
-      // ⚠️ WICHTIG: NICHT die Kategorien neu laden, da das Backend die Änderung nicht kennt
-      // Stattdessen aktualisiere nur die Bookmarks um die neue Kategorie-Zuordnung zu reflektieren
+      // NUR Statistiken aktualisieren (nicht Categories neu laden!)
       setTimeout(async () => {
-        await loadBookmarks(); // Nur Bookmarks aktualisieren
-        await loadStatistics(); // Statistiken aktualisieren (wichtig für Kategorie-Anzahlen!)
-        // loadCategories() NICHT aufrufen - das würde die lokalen Änderungen überschreiben
+        await loadStatistics(); // Statistiken aktualisieren
       }, 100);
-      
-      showCustomToast(moveDescription, 'success');
       
     } catch (error) {
       console.error('Category reorder error:', error);
