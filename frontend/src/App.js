@@ -1426,6 +1426,22 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
   const handleCategoryDrop = (e, targetCategory, isTargetSubcategory = false) => {
     e.preventDefault();
     
+    // Check if dragging a bookmark from main area to category
+    const bookmarkData = e.dataTransfer.getData('application/json');
+    if (bookmarkData) {
+      try {
+        const draggedBookmark = JSON.parse(bookmarkData);
+        if (draggedBookmark && draggedBookmark.id && draggedBookmark.title) {
+          // Bookmark zu Kategorie verschoben
+          handleBookmarkToCategory(draggedBookmark, targetCategory, isTargetSubcategory);
+          return;
+        }
+      } catch (parseError) {
+        console.log('Not a bookmark drag operation, checking for category...');
+      }
+    }
+    
+    // Original category-to-category logic
     if (draggedCategory && targetCategory && draggedCategory.id !== targetCategory.id) {
       // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
       // Für jetzt loggen wir die Aktion
