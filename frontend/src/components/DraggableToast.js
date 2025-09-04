@@ -10,7 +10,15 @@ const DraggableToast = ({
 }) => {
   const [position, setPosition] = useState(() => {
     const saved = localStorage.getItem(`favorg-toast-position-${id || 'default'}`);
-    return saved ? JSON.parse(saved) : { x: 20, y: 100 };
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    
+    // Zentrierte Standard-Position
+    const centerX = (window.innerWidth - 320) / 2;  // 320px ist die Toast-Breite
+    const centerY = 100;  // Etwas vom oberen Rand entfernt
+    
+    return { x: centerX, y: centerY };
   });
 
   const [isDragging, setIsDragging] = useState(false);
