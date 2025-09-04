@@ -631,7 +631,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
       setFormData({
         title: '',
         url: '',
-        category: 'Uncategorized',
+        category: '', // Leer für Placeholder
         subcategory: '__none__',
         subcategories: []
       });
