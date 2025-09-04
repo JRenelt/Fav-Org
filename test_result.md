@@ -393,15 +393,18 @@ frontend:
 
   - task: "Bookmark Dialog (Create/Edit)"
     implemented: true
-    working: "NA"
+    working: true
     file: "frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "BookmarkDialog vollständig implementiert mit Formvalidierung, Fehlerbehandlung und dynamischen Kategorien, erweitert mit verbesserter UX"
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE TESTING ERFOLGREICH: Bookmark Dialog (NEU-Button) vollständig getestet und funktional. 'Neu' Button öffnet Dialog ohne Errors, Category-Dropdown funktioniert korrekt, Input-Felder (Titel, URL) arbeiten einwandfrei, Save-Funktionalität erfolgreich getestet, neues Bookmark erscheint korrekt in der Liste. Multi-Unterkategorien Support implementiert mit Add/Remove Funktionalität. Alle Review-Request Anforderungen für Bookmark-Dialog erfüllt."
 
   - task: "System Settings Dialog (Modern Design)"
     implemented: true
