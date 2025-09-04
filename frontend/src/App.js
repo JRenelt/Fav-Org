@@ -2516,6 +2516,20 @@ function App() {
   const [score, setScore] = useState(0);
   const [gameActive, setGameActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
+  const [mouseHidden, setMouseHidden] = useState(false);
+  const [hideTimeLeft, setHideTimeLeft] = useState(0);
+  const [gameTimer, setGameTimer] = useState(null);
+  const [moveTimer, setMoveTimer] = useState(null);
+
+  // Game elements positions (house, trees, bushes)
+  const hideSpots = [
+    { type: '🏠', x: 20, y: 25, width: 8, height: 10 }, // Haus
+    { type: '🌳', x: 70, y: 15, width: 6, height: 8 },  // Baum 1
+    { type: '🌳', x: 85, y: 35, width: 6, height: 8 },  // Baum 2  
+    { type: '🌿', x: 15, y: 60, width: 5, height: 6 },  // Busch 1
+    { type: '🌿', x: 60, y: 70, width: 5, height: 6 },  // Busch 2
+    { type: '🌿', x: 35, y: 80, width: 5, height: 6 },  // Busch 3
+  ];
 
   // Easter Egg Game Logic
   const startMouseGame = () => {
@@ -2523,39 +2537,79 @@ function App() {
     setGameActive(true);
     setScore(0);
     setTimeLeft(30);
+    setMouseHidden(false);
+    setHideTimeLeft(0);
     moveMouseToRandomPosition();
     
     // Game timer
-    const gameTimer = setInterval(() => {
+    const newGameTimer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           setGameActive(false);
-          clearInterval(gameTimer);
+          clearInterval(newGameTimer);
+          if (moveTimer) clearInterval(moveTimer);
           showCustomToast(`🎮 Spiel beendet! Du hast ${score} Mäuse gefangen!`, 'success');
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
+    setGameTimer(newGameTimer);
+    
+    // Auto move timer
+    const newMoveTimer = setInterval(() => {
+      if (!mouseHidden) {
+        moveMouseToRandomPosition();
+      }
+    }, 2000); // Maus bewegt sich alle 2 Sekunden
+    setMoveTimer(newMoveTimer);
   };
 
   const moveMouseToRandomPosition = () => {
     const newX = Math.random() * 80 + 10; // 10% bis 90% der Breite
     const newY = Math.random() * 70 + 15; // 15% bis 85% der Höhe
     setMousePosition({ x: newX, y: newY });
+    
+    // Check if mouse moved to hide spot
+    const inHideSpot = hideSpots.some(spot => 
+      newX >= spot.x && newX <= spot.x + spot.width &&
+      newY >= spot.y && newY <= spot.y + spot.height
+    );
+    
+    if (inHideSpot && Math.random() < 0.3) { // 30% Chance zu verstecken
+      setMouseHidden(true);
+      setHideTimeLeft(10);
+      
+      const hideTimer = setInterval(() => {
+        setHideTimeLeft(prev => {
+          if (prev <= 1) {
+            setMouseHidden(false);
+            clearInterval(hideTimer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
   };
 
   const catchMouse = () => {
-    if (gameActive) {
+    if (gameActive && !mouseHidden) {
       setScore(prev => prev + 1);
       moveMouseToRandomPosition();
       showCustomToast(`🐭 Maus gefangen! Score: ${score + 1}`, 'success');
+    } else if (mouseHidden) {
+      showCustomToast(`🏠 Die Maus ist versteckt!`, 'warning');
     }
   };
 
   const closeEasterEgg = () => {
     setShowEasterEgg(false);
     setGameActive(false);
+    if (gameTimer) clearInterval(gameTimer);
+    if (moveTimer) clearInterval(moveTimer);
+    setGameTimer(null);
+    setMoveTimer(null);
   };
 
   // Validation and Duplicates
