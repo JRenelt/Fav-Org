@@ -2381,68 +2381,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                 </div>
               </div>
             </TabsContent>
-
-            <TabsContent value="game" className="settings-tab-content-modern">
-              <div className="settings-section">
-                <h3 className="section-title">🎮 Spiel-Einstellungen</h3>
-                <p className="section-description">
-                  Konfigurieren Sie das versteckte "Fang die Maus" Spiel. Klicken Sie auf die Copyright-Zeile oder drücken Sie ALT+G zum Spielen.
-                </p>
-                
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <Label className="setting-label">M-Hidden-Zeit</Label>
-                    <span className="setting-description">Zeit in Sekunden, die sich die Maus verstecken kann (1-10 Sekunden)</span>
-                  </div>
-                  <div className="setting-input-group">
-                    <Input
-                      type="number"
-                      min="1"
-                      max="10"
-                      value={gameSettings['M-Hidden-Zeit']}
-                      onChange={(e) => {
-                        const newValue = Math.max(1, Math.min(10, parseInt(e.target.value) || 3));
-                        setGameSettings(prev => ({
-                          ...prev,
-                          'M-Hidden-Zeit': newValue
-                        }));
-                      }}
-                      className="setting-number-input"
-                    />
-                    <span className="input-suffix">Sekunden</span>
-                  </div>
-                </div>
-
-                <div className="setting-item">
-                  <div className="setting-info">
-                    <Label className="setting-label">Spiel-Beschreibung</Label>
-                    <span className="setting-description">Das Easter Egg Spiel "Fang die Maus" ist eine kleine Stadtszene mit:</span>
-                  </div>
-                  <div className="game-info-list">
-                    <div className="game-info-item">🏠 Häuser & Gebäude</div>
-                    <div className="game-info-item">🌳 Bäume & Natur</div>
-                    <div className="game-info-item">⛲ Brunnen & Teich</div>
-                    <div className="game-info-item">🌉 Brücke & Grünflächen</div>
-                    <div className="game-info-item">🐭 Maus mit Schlagschatten</div>
-                  </div>
-                </div>
-
-                <div className="setting-item">
-                  <Button
-                    onClick={() => {
-                      // Save game settings to localStorage
-                      localStorage.setItem('favorg-game-settings', JSON.stringify(gameSettings));
-                      // Reload page to apply changes
-                      window.location.reload();
-                    }}
-                    className="apply-game-settings-btn"
-                  >
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Spiel-Einstellungen anwenden
-                  </Button>
-                </div>
-              </div>
-            </TabsContent>
           </Tabs>
         </div>
         
