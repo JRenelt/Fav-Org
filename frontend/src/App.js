@@ -1322,7 +1322,7 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
   );
 };
 
-const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics, onCategoryReorder }) => {
+const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics, onCategoryReorder, onBookmarkToCategory }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
   const [showBrowserInfo, setShowBrowserInfo] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
