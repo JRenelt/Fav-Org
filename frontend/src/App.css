@@ -2716,7 +2716,7 @@ body {
 /* Hide spots - Haus, Bäume, Büsche */
 .hide-spot {
   position: absolute;
-  font-size: 20px;
+  font-size: 40px; /* 100% größer: 20px -> 40px */
   user-select: none;
   z-index: 2;
   display: flex;
