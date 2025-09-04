@@ -2601,9 +2601,9 @@ function App() {
     if (gameActive && !mouseHidden) {
       setScore(prev => prev + 1);
       moveMouseToRandomPosition();
-      showCustomToast(`🐭 Maus gefangen! Score: ${score + 1}`, 'success');
+      showCustomToast(`🐭 Maus gefangen! Score: ${score + 1}`, 'warning', 3000); // Gelb, 3 Sek
     } else if (mouseHidden) {
-      showCustomToast(`🏠 Die Maus ist versteckt!`, 'warning');
+      showCustomToast(`🏠 Die Maus ist versteckt!`, 'warning', 2000); // Gelb, 2 Sek
     }
   };
 
