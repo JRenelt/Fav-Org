@@ -9,12 +9,7 @@ const DraggableToast = ({
   id 
 }) => {
   const [position, setPosition] = useState(() => {
-    const saved = localStorage.getItem(`favorg-toast-position-${id || 'default'}`);
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    
-    // Komplett zentriert auf Monitor - nicht sidebar-bewusst
+    // Für neue Toasts: IMMER Monitor-zentriert (nicht LocalStorage verwenden)
     const toastWidth = 320;  // Toast-Breite
     const centerX = (window.innerWidth - toastWidth) / 2;  // Exakte Monitor-Mitte
     const centerY = 120;  // Etwas unter dem Header
