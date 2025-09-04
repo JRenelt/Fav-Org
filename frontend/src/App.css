@@ -2408,11 +2408,12 @@ body {
   margin: 0;
 }
 
-/* Copyright Game Trigger - visuell versteckt aber klickbar */
+/* Copyright Game Trigger - visuell versteckt aber klickbar, 50% kleiner */
 .copyright-game-trigger {
   cursor: default !important;  /* Kein pointer cursor */
   transition: none !important; /* Keine Hover-Effekte */
   user-select: none;           /* Nicht selektierbar */
+  font-size: 0.6rem !important; /* 50% kleiner: 0.875rem -> 0.6rem */
 }
 
 .copyright-game-trigger:hover {
