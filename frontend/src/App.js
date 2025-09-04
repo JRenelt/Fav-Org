@@ -2493,21 +2493,52 @@ function App() {
   const [showExportDialog, setShowExportDialog] = useState(false); // Neu: Export Dialog
   const [editingBookmark, setEditingBookmark] = useState(null);
 
-  // Clear all toasts function
-  const clearAllToasts = () => {
-    // Remove all toast elements from DOM
-    const toastContainer = document.querySelector('.draggable-toast-container');
-    if (toastContainer) {
-      const toasts = toastContainer.querySelectorAll('.draggable-toast');
-      toasts.forEach(toast => {
-        toast.style.opacity = '0';
-        setTimeout(() => {
-          if (toast.parentNode) {
-            toast.parentNode.removeChild(toast);
-          }
-        }, 200);
+  // Easter Egg Game State
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
+  const [score, setScore] = useState(0);
+  const [gameActive, setGameActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(30);
+
+  // Easter Egg Game Logic
+  const startMouseGame = () => {
+    setShowEasterEgg(true);
+    setGameActive(true);
+    setScore(0);
+    setTimeLeft(30);
+    moveMouseToRandomPosition();
+    
+    // Game timer
+    const gameTimer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          setGameActive(false);
+          clearInterval(gameTimer);
+          showCustomToast(`🎮 Spiel beendet! Du hast ${score} Mäuse gefangen!`, 'success');
+          return 0;
+        }
+        return prev - 1;
       });
+    }, 1000);
+  };
+
+  const moveMouseToRandomPosition = () => {
+    const newX = Math.random() * 80 + 10; // 10% bis 90% der Breite
+    const newY = Math.random() * 70 + 15; // 15% bis 85% der Höhe
+    setMousePosition({ x: newX, y: newY });
+  };
+
+  const catchMouse = () => {
+    if (gameActive) {
+      setScore(prev => prev + 1);
+      moveMouseToRandomPosition();
+      showCustomToast(`🐭 Maus gefangen! Score: ${score + 1}`, 'success');
     }
+  };
+
+  const closeEasterEgg = () => {
+    setShowEasterEgg(false);
+    setGameActive(false);
   };
 
   // Validation and Duplicates
