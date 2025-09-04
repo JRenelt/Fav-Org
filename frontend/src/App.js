@@ -1484,6 +1484,56 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
+  // Handler für Bookmark zu Kategorie Verschiebung
+  const handleBookmarkToCategory = async (draggedBookmark, targetCategory, isTargetSubcategory) => {
+    try {
+      const newCategory = targetCategory.name;
+      const newSubcategory = isTargetSubcategory ? targetCategory.name : null;
+      
+      console.log(`Bookmark "${draggedBookmark.title}" zu Kategorie "${newCategory}" verschoben`);
+      
+      // Update bookmark category locally
+      const updatedBookmarks = bookmarks.map(bookmark => {
+        if (bookmark.id === draggedBookmark.id) {
+          return {
+            ...bookmark,
+            category: newCategory,
+            subcategory: newSubcategory
+          };
+        }
+        return bookmark;
+      });
+      
+      // Update state immediately for better UX
+      setBookmarks(updatedBookmarks);
+      
+      // Save to localStorage for persistence
+      localStorage.setItem('favorg-bookmark-categories', JSON.stringify(
+        updatedBookmarks.map(bm => ({
+          id: bm.id,
+          category: bm.category,
+          subcategory: bm.subcategory
+        }))
+      ));
+      
+      // Reload data to reflect changes
+      setTimeout(async () => {
+        await loadBookmarks();
+        await loadStatistics();
+      }, 100);
+      
+      const moveDescription = isTargetSubcategory 
+        ? `Favorit "${draggedBookmark.title}" zur Unterkategorie "${targetCategory.name}" verschoben`
+        : `Favorit "${draggedBookmark.title}" zur Kategorie "${targetCategory.name}" verschoben`;
+      
+      showCustomToast(moveDescription, 'success');
+      
+    } catch (error) {
+      console.error('Bookmark to category move error:', error);
+      showCustomToast('Favoriten-Verschiebung fehlgeschlagen: ' + error.message, 'error');
+    }
+  };
+
   // Organisiere Kategorien nach Hierarchie
   const organizeCategories = () => {
     const mainCategories = {};
