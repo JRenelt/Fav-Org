@@ -792,7 +792,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             </div>
           </div>
           
-          {/* Neue Unterkategorien-Sektion */}
+          {/* Unterkategorien-Sektion */}
           <div className="form-group">
             <Label>Unterkategorien</Label>
             
@@ -815,20 +815,41 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
               </div>
             )}
             
-            {/* Eingabefeld für neue Unterkategorie */}
+            {/* Auswahl oder Eingabe für neue Unterkategorie */}
             <div className="add-subcategory-section">
-              <Input
-                value={newSubcategory}
-                onChange={(e) => setNewSubcategory(e.target.value)}
-                placeholder="Neue Unterkategorie eingeben"
-                className="subcategory-input"
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addSubcategory();
-                  }
-                }}
-              />
+              <div className="subcategory-input-container">
+                <Select 
+                  value={newSubcategory} 
+                  onValueChange={(value) => {
+                    if (value === '__new__') {
+                      setNewSubcategory('');
+                    } else {
+                      setNewSubcategory(value);
+                    }
+                  }}
+                >
+                  <SelectTrigger className="subcategory-selector">
+                    <SelectValue placeholder="Unterkategorie auswählen oder neue eingeben" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__new__">🆕 Neue Unterkategorie erstellen...</SelectItem>
+                    {subcategoriesForCategory.map(subcat => (
+                      <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                
+                {/* Eingabefeld für neue Unterkategorie */}
+                {(newSubcategory === '' || !subcategoriesForCategory.includes(newSubcategory)) && (
+                  <Input
+                    value={newSubcategory}
+                    onChange={(e) => setNewSubcategory(e.target.value)}
+                    placeholder="Neue Unterkategorie eingeben"
+                    className="form-input new-subcategory-input"
+                  />
+                )}
+              </div>
+              
               <Button
                 type="button"
                 onClick={addSubcategory}
@@ -839,10 +860,6 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                 <Plus className="w-4 h-4" />
               </Button>
             </div>
-            
-            <p className="subcategory-help">
-              Erstellen Sie eine oder mehrere Unterkategorien für bessere Organisation.
-            </p>
           </div>
           
           {/* Kompatibilitäts-Sektion für bestehende Unterkategorien */}
