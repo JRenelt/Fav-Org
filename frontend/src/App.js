@@ -2342,6 +2342,33 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                   />
                 </div>
 
+                <div className="setting-item">
+                  <div className="setting-info">
+                    <Label className="setting-label">S-Time</Label>
+                    <span className="setting-description">System-Timer Konfiguration (1-10)</span>
+                  </div>
+                  <div className="setting-input-group">
+                    <Input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={gameSettings['S-Time'] || 3}
+                      onChange={(e) => {
+                        const newValue = Math.max(1, Math.min(10, parseInt(e.target.value) || 3));
+                        setGameSettings(prev => ({
+                          ...prev,
+                          'S-Time': newValue
+                        }));
+                        localStorage.setItem('favorg-advanced-settings', JSON.stringify({
+                          ...gameSettings,
+                          'S-Time': newValue
+                        }));
+                      }}
+                      className="setting-number-input"
+                    />
+                  </div>
+                </div>
+
                 <div className="settings-danger-zone">
                   <h4 className="danger-title">Gefahrenbereich</h4>
                   <p className="danger-description">
