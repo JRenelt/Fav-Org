@@ -2713,13 +2713,58 @@ body {
   overflow: hidden;
 }
 
+/* Hide spots - Haus, Bäume, Büsche */
+.hide-spot {
+  position: absolute;
+  font-size: 20px;
+  user-select: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  transform: translate(-50%, -50%);
+}
+
+.hide-spot:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.4));
+}
+
+/* Mouse hidden indicator */
+.mouse-hidden-indicator {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.hidden-message {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: pulseHidden 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulseHidden {
+  0% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+}
+
+/* Improved game mouse with hiding animation */
 .game-mouse {
   position: absolute;
   font-size: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
   user-select: none;
-  z-index: 1;
+  z-index: 3; /* Above hide spots */
   animation: mouseBounce 0.5s ease-in-out;
   transform: translate(-50%, -50%);
 }
