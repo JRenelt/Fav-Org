@@ -1873,6 +1873,14 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
     autoBackup: false
   });
 
+  // Game Settings State
+  const [gameSettings, setGameSettings] = useState(() => {
+    const saved = localStorage.getItem('favorg-game-settings');
+    return saved ? JSON.parse(saved) : {
+      'M-Hidden-Zeit': 3
+    };
+  });
+
   // Settings laden beim Dialog öffnen
   useEffect(() => {
     if (isOpen) {
