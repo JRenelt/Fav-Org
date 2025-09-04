@@ -3251,8 +3251,15 @@ function App() {
         />
       </div>
 
-      <footer className="app-footer">
-        <p>&copy; 2025 Jörg Renelt – Version 2.1.0 – Alle Rechte vorbehalten.</p>
+      <footer className="footer">
+        <p 
+          onClick={startMouseGame} 
+          className="copyright-game-trigger"
+          title="🐭 Klick für Easter Egg!"
+        >
+          &copy; 2025 Jörg Renelt – Version 2.1.0 – Alle Rechte vorbehalten.
+        </p>
+        <p className="made-with">Made with Emergent</p>
       </footer>
 
       {/* Custom Draggable Toasts */}
