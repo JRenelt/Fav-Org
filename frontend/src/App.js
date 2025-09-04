@@ -752,21 +752,20 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
           
           <div className="form-group">
             <Label htmlFor="category">Kategorie</Label>
-            <input
-              type="text"
-              id="category"
-              value={formData.category}
-              onChange={(e) => setFormData({...formData, category: e.target.value, subcategory: null})}
-              placeholder="Kategorie eingeben"
-              className="form-input"
-              list="category-options"
-            />
-            <datalist id="category-options">
-              <option value="Uncategorized">Nicht zugeordnet</option>
-              {uniqueCategories.map(cat => (
-                <option key={cat} value={cat} />
-              ))}
-            </datalist>
+            <Select 
+              value={formData.category} 
+              onValueChange={(value) => setFormData({...formData, category: value, subcategory: null})}
+            >
+              <SelectTrigger className="category-selector">
+                <SelectValue placeholder="Kategorie auswählen" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Uncategorized">Nicht zugeordnet</SelectItem>
+                {uniqueCategories.filter(cat => cat !== 'Uncategorized').map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           {/* Neue Unterkategorien-Sektion */}
