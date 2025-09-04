@@ -2562,15 +2562,32 @@ function App() {
   const [gameTimer, setGameTimer] = useState(null);
   const [moveTimer, setMoveTimer] = useState(null);
 
-  // Game elements positions (house, trees, bushes)
+  // Game elements positions - Kleine Stadt-Szene
   const hideSpots = [
-    { type: '🏠', x: 20, y: 25, width: 8, height: 10 }, // Haus
-    { type: '🌳', x: 70, y: 15, width: 6, height: 8 },  // Baum 1
-    { type: '🌳', x: 85, y: 35, width: 6, height: 8 },  // Baum 2  
-    { type: '🌿', x: 15, y: 60, width: 5, height: 6 },  // Busch 1
-    { type: '🌿', x: 60, y: 70, width: 5, height: 6 },  // Busch 2
-    { type: '🌿', x: 35, y: 80, width: 5, height: 6 },  // Busch 3
+    { type: '🏠', x: 15, y: 20, width: 10, height: 12 }, // Haus 1
+    { type: '🏠', x: 70, y: 25, width: 10, height: 12 }, // Haus 2
+    { type: '🏢', x: 45, y: 15, width: 12, height: 15 }, // Gebäude
+    { type: '🌳', x: 25, y: 40, width: 8, height: 10 },  // Baum 1
+    { type: '🌳', x: 80, y: 45, width: 8, height: 10 },  // Baum 2  
+    { type: '🌳', x: 60, y: 60, width: 8, height: 10 },  // Baum 3
+    { type: '🌿', x: 10, y: 70, width: 6, height: 8 },   // Busch 1
+    { type: '🌿', x: 35, y: 75, width: 6, height: 8 },   // Busch 2
+    { type: '🌿', x: 85, y: 70, width: 6, height: 8 },   // Busch 3
+    { type: '⛲', x: 55, y: 40, width: 6, height: 6 },   // Brunnen
+    { type: '🌸', x: 20, y: 65, width: 4, height: 4 },   // Blumen 1
+    { type: '🌻', x: 75, y: 65, width: 4, height: 4 },   // Blumen 2
+    { type: '🟢', x: 40, y: 70, width: 15, height: 8 },  // Grünfläche
+    { type: '🌉', x: 50, y: 80, width: 12, height: 6 },  // Brücke
+    { type: '💧', x: 30, y: 85, width: 20, height: 8 },  // Teich
   ];
+
+  // Game settings - kann in System-Einstellungen geändert werden
+  const [gameSettings, setGameSettings] = useState(() => {
+    const saved = localStorage.getItem('favorg-game-settings');
+    return saved ? JSON.parse(saved) : {
+      'M-Hidden-Zeit': 3 // Standard: 3 Sekunden
+    };
+  });
 
   // Easter Egg Game Logic
   const startMouseGame = () => {
