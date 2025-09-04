@@ -2552,7 +2552,7 @@ function App() {
           setGameActive(false);
           clearInterval(newGameTimer);
           if (moveTimer) clearInterval(moveTimer);
-          showCustomToast(`🎮 Spiel beendet! Du hast ${score} Mäuse gefangen!`, 'success');
+          showCustomToast(`🎮 Spiel beendet! Du hast ${score} Mäuse gefangen!`, 'warning', 10000); // Gelb, 10 Sek
           return 0;
         }
         return prev - 1;
