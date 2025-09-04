@@ -2009,10 +2009,6 @@ const SettingsDialog = ({ isOpen, onClose, onExport, onCreateTestData }) => {
                 <span className="tab-icon">⚙️</span>
                 Erweitert
               </TabsTrigger>
-              <TabsTrigger value="game" className="settings-tab-trigger">
-                <span className="tab-icon">🎮</span>
-                Spiel
-              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="display" className="settings-tab-content-modern">
