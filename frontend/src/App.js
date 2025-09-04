@@ -534,7 +534,7 @@ const ExportDialog = ({ isOpen, onClose, onExport }) => {
         <DialogHeader>
           <DialogTitle className="export-title">
             <Download className="w-5 h-5 mr-2" />
-            Favoriten Exportieren
+            📤 Favoriten Exportieren
           </DialogTitle>
         </DialogHeader>
         
