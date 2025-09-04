@@ -3482,18 +3482,33 @@ function App() {
               </div>
             </div>
             <div className="game-area">
-              {/* Hide spots - Haus, Bäume, Büsche */}
+              {/* Straßen-Layout (über CSS gerendert) wird automatisch angezeigt */}
+              
+              {/* Spazierender Mensch */}
+              <div
+                className="walking-person"
+                style={{
+                  left: `${personPosition.x}%`,
+                  top: `${personPosition.y}%`,
+                  transform: `scaleX(${personDirection})` // Spiegelt Person je nach Richtung
+                }}
+                title="Spazierender Bürger"
+              >
+                🚶
+              </div>
+              
+              {/* Stadt-Elemente - Gebäude, Natur, Verkehr */}
               {hideSpots.map((spot, index) => (
                 <div
                   key={index}
-                  className="hide-spot"
+                  className="city-element"
                   style={{
                     left: `${spot.x}%`,
                     top: `${spot.y}%`,
                     width: `${spot.width}%`,
                     height: `${spot.height}%`
                   }}
-                  title={spot.type === '🏠' ? 'Haus' : spot.type === '🌳' ? 'Baum' : 'Busch'}
+                  title={getElementTitle(spot.type)}
                 >
                   {spot.type}
                 </div>
