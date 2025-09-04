@@ -3209,6 +3209,46 @@ function App() {
         />
       ))}
 
+      {/* Easter Egg Game */}
+      {showEasterEgg && (
+        <div className="easter-egg-game">
+          <div className="game-overlay">
+            <div className="game-header">
+              <h2>🐭 Fang die Maus!</h2>
+              <div className="game-stats">
+                <span>Score: {score}</span>
+                <span>Zeit: {timeLeft}s</span>
+                <button onClick={closeEasterEgg} className="close-game-btn">✕</button>
+              </div>
+            </div>
+            <div className="game-area">
+              {gameActive && (
+                <div 
+                  className="game-mouse"
+                  style={{
+                    left: `${mousePosition.x}%`,
+                    top: `${mousePosition.y}%`
+                  }}
+                  onClick={catchMouse}
+                  title="Klick mich! 🐭"
+                >
+                  🐭
+                </div>
+              )}
+              {!gameActive && timeLeft === 0 && (
+                <div className="game-over">
+                  <h3>Spiel beendet!</h3>
+                  <p>Du hast {score} Mäuse gefangen!</p>
+                  <button onClick={startMouseGame} className="restart-game-btn">
+                    Nochmal spielen
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <BookmarkDialog
         isOpen={showBookmarkDialog}
         onClose={() => {
