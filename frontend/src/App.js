@@ -3020,8 +3020,23 @@ function App() {
         await favoritesService.updateBookmark(editingBookmark.id, bookmarkData);
         toast.success('Favorit aktualisiert.');
       } else {
-        await favoritesService.createBookmark(bookmarkData);
-        toast.success('Favorit erstellt.');
+        // Beim Erstellen: Hauptbookmark speichern
+        const response = await favoritesService.createBookmark(bookmarkData);
+        
+        // Zusätzliche Unterkategorien erstellen (wenn mehr als eine)
+        if (formData.subcategories && formData.subcategories.length > 1) {
+          for (let i = 1; i < formData.subcategories.length; i++) {
+            const additionalSubcategory = formData.subcategories[i];
+            const additionalBookmarkData = {
+              ...bookmarkData,
+              subcategory: additionalSubcategory
+            };
+            await favoritesService.createBookmark(additionalBookmarkData);
+          }
+          toast.success(`Favorit mit ${formData.subcategories.length} Unterkategorien erstellt`);
+        } else {
+          toast.success('Favorit erstellt.');
+        }
       }
       
       setShowBookmarkDialog(false);
