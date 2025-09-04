@@ -757,7 +757,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             <Label htmlFor="category">Kategorie</Label>
             <div className="category-selection-container">
               <Select 
-                value={formData.category} 
+                value={formData.category || ''} 
                 onValueChange={(value) => {
                   if (value === '__new__') {
                     setFormData({...formData, category: '', subcategory: null});
@@ -767,7 +767,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                 }}
               >
                 <SelectTrigger className="category-selector">
-                  <SelectValue placeholder="Kategorie auswählen oder neue eingeben" />
+                  <SelectValue placeholder="Kategorie auswählen oder neu eingeben" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="__new__">🆕 Neue Kategorie erstellen...</SelectItem>
