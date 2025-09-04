@@ -2951,7 +2951,7 @@ function App() {
       // Stattdessen aktualisiere nur die Bookmarks um die neue Kategorie-Zuordnung zu reflektieren
       setTimeout(async () => {
         await loadBookmarks(); // Nur Bookmarks aktualisieren
-        await loadStatistics(); // Statistiken aktualisieren
+        await loadStatistics(); // Statistiken aktualisieren (wichtig für Kategorie-Anzahlen!)
         // loadCategories() NICHT aufrufen - das würde die lokalen Änderungen überschreiben
       }, 100);
       
