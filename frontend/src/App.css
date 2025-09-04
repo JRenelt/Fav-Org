@@ -877,9 +877,10 @@ body {
   color: var(--text-primary);
 }
 
-/* Form Input Styles - Bessere Lesbarkeit */
+/* Form Input Styles - Bessere Lesbarkeit und korrekte Breite */
 .form-input {
   width: 100%;
+  max-width: 100%; /* Verhindert Überlauf */
   padding: 8px 12px;
   border: 1px solid var(--border-primary);
   border-radius: 6px;
@@ -888,6 +889,7 @@ body {
   font-family: var(--font-family);
   font-size: 0.875rem;
   transition: border-color 0.2s ease;
+  box-sizing: border-box; /* Padding included in width */
 }
 
 .form-input:focus {
@@ -899,6 +901,21 @@ body {
 .form-input::placeholder {
   color: var(--text-muted) !important;  /* Grauer Placeholder */
   opacity: 0.7;
+}
+
+/* Category & Subcategory Selector Styles */
+.category-selector, .subcategory-selector {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.category-selector:focus, .subcategory-selector:focus {
+  border-color: var(--cyan-400);
+  box-shadow: 0 0 0 2px rgba(34, 197, 198, 0.2);
 }
 
 /* Category Selection Container */
