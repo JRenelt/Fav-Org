@@ -819,7 +819,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             <div className="add-subcategory-section">
               <div className="subcategory-input-container">
                 <Select 
-                  value={newSubcategory} 
+                  value={newSubcategory || ''} 
                   onValueChange={(value) => {
                     if (value === '__new__') {
                       setNewSubcategory('');
@@ -829,7 +829,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                   }}
                 >
                   <SelectTrigger className="subcategory-selector">
-                    <SelectValue placeholder="Unterkategorie auswählen oder neue eingeben" />
+                    <SelectValue placeholder="Unterkategorie auswählen oder neu eingeben" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="__new__">🆕 Neue Unterkategorie erstellen...</SelectItem>
@@ -840,9 +840,9 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                 </Select>
                 
                 {/* Eingabefeld für neue Unterkategorie */}
-                {(newSubcategory === '' || !subcategoriesForCategory.includes(newSubcategory)) && (
+                {(newSubcategory === '' || newSubcategory === '__new__' || !subcategoriesForCategory.includes(newSubcategory)) && (
                   <Input
-                    value={newSubcategory}
+                    value={newSubcategory === '__new__' ? '' : newSubcategory}
                     onChange={(e) => setNewSubcategory(e.target.value)}
                     placeholder="Neue Unterkategorie eingeben"
                     className="form-input new-subcategory-input"
@@ -855,7 +855,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
                 onClick={addSubcategory}
                 className="add-subcategory-btn"
                 size="sm"
-                disabled={!newSubcategory.trim()}
+                disabled={!newSubcategory.trim() || newSubcategory === '__new__'}
               >
                 <Plus className="w-4 h-4" />
               </Button>
