@@ -2630,10 +2630,10 @@ function App() {
         return;
       }
       
-      // Alt+E for Export
-      if (event.altKey && event.key === 'e') {
+      // Alt+G for Game (Easter Egg)
+      if (event.altKey && event.key === 'g') {
         event.preventDefault();
-        setShowExportDialog(true);
+        startMouseGame();
         return;
       }
       
