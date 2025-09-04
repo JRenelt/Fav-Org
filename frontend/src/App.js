@@ -1646,6 +1646,8 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
     setDraggedBookmark(bookmark);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', bookmark.id);
+    // Add JSON data for cross-component drag & drop
+    e.dataTransfer.setData('application/json', JSON.stringify(bookmark));
   };
 
   const handleBookmarkDragOver = (e, bookmark) => {
