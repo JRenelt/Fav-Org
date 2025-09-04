@@ -703,8 +703,8 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   };
 
   // Einzigartige Kategorien für Dropdown erstellen
-  const uniqueCategories = [...new Set(categories.map(cat => cat.name))];
-  const subcategoriesForCategory = categories
+  const uniqueCategories = [...new Set((categories || []).map(cat => cat.name))];
+  const subcategoriesForCategory = (categories || [])
     .filter(cat => cat.parent_category === formData.category)
     .map(cat => cat.name);
 
