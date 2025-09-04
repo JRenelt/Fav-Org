@@ -1881,10 +1881,11 @@ body {
 
 .toast-warning {
   border-left: 4px solid var(--yellow-500);
+  background: var(--yellow-50, #fefce8) !important;  /* Gelber Hintergrund */
 }
 
 .toast-warning .toast-message {
-  color: var(--yellow-500);
+  color: var(--yellow-800, #854d0e);  /* Dunklere gelbe Schrift für Lesbarkeit */
 }
 
 .toast-info {
