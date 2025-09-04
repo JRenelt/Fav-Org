@@ -2776,7 +2776,7 @@ function App() {
     
     if (inHideSpot && Math.random() < 0.3) { // 30% Chance zu verstecken
       setMouseHidden(true);
-      const hideTime = gameSettings['M-Hidden-Zeit'] || 3; // Aus Einstellungen oder 3 Sek Standard
+      const hideTime = gameSettings['S-Time'] || 3; // Aus versteckten Einstellungen oder 3 Sek Standard
       setHideTimeLeft(hideTime);
       
       const hideTimer = setInterval(() => {
