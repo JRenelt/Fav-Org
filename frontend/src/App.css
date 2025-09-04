@@ -2829,7 +2829,7 @@ body {
   100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
 }
 
-/* Improved game mouse with hiding animation */
+/* Improved game mouse with shadow */
 .game-mouse {
   position: absolute;
   font-size: 24px;
@@ -2839,15 +2839,88 @@ body {
   z-index: 3; /* Above hide spots */
   animation: mouseBounce 0.5s ease-in-out;
   transform: translate(-50%, -50%);
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.6)); /* Schlagschatten */
 }
 
 .game-mouse:hover {
   font-size: 28px;
-  filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.6));
+  filter: drop-shadow(0 2px 6px rgba(255, 215, 0, 0.8)) drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.8));
 }
 
 .game-mouse:active {
   animation: mouseClick 0.2s ease-in-out;
+}
+
+/* Game area with stadtszene background */
+.game-area {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(135deg, 
+    #87CEEB 0%,    /* Sky blue */
+    #98FB98 40%,   /* Pale green for grass */
+    #90EE90 60%,   /* Light green */
+    #8FBC8F 100%   /* Dark sea green */
+  );
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: hidden;
+}
+
+/* Street pattern overlay */
+.game-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(90deg, transparent 48%, #666 49%, #666 51%, transparent 52%),
+    linear-gradient(0deg, transparent 78%, #666 79%, #666 81%, transparent 82%);
+  background-size: 100px 80px;
+  opacity: 0.3;
+  z-index: 1;
+}
+
+/* Game Settings Styles */
+.game-info-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.game-info-item {
+  background: var(--bg-secondary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.setting-number-input {
+  width: 80px;
+}
+
+.input-suffix {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-left: 8px;
+}
+
+.apply-game-settings-btn {
+  background: var(--cyan-400);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.apply-game-settings-btn:hover {
+  background: var(--cyan-500);
 }
 
 @keyframes mouseBounce {
