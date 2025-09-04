@@ -14,11 +14,15 @@ const DraggableToast = ({
       return JSON.parse(saved);
     }
     
-    // Zentrierte Standard-Position
-    const centerX = (window.innerWidth - 320) / 2;  // 320px ist die Toast-Breite
-    const centerY = 100;  // Etwas vom oberen Rand entfernt
+    // Zentrierte Standard-Position - berücksichtigt Sidebar-Breite
+    const sidebarWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width') || '280', 10);
+    const availableWidth = window.innerWidth - sidebarWidth;  // Verfügbare Breite ohne Sidebar
+    const toastWidth = 320;  // Toast-Breite
     
-    return { x: centerX, y: centerY };
+    const centerX = sidebarWidth + (availableWidth - toastWidth) / 2;  // Zentriert im Main-Content-Bereich
+    const centerY = 120;  // Etwas unter dem Header
+    
+    return { x: Math.max(sidebarWidth + 20, centerX), y: centerY };  // Mindestens 20px vom Sidebar-Rand
   });
 
   const [isDragging, setIsDragging] = useState(false);
