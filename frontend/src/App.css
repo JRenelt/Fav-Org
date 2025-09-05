@@ -3092,7 +3092,7 @@ body {
   overflow: hidden;
 }
 
-/* Organisches Straßennetz basierend auf Gebäude-Layout - REALISTISCH */
+/* Realistisches Straßennetz basierend auf Kartenteppich2.png Referenz */
 .game-area::before {
   content: '';
   position: absolute;
@@ -3101,37 +3101,64 @@ body {
   right: 0;
   bottom: 0;
   background-image: 
-    /* Hauptstraße horizontal - verbindet Gebäude-Cluster */
-    linear-gradient(90deg, transparent 0%, #555 20%, #666 25%, #555 30%, transparent 35%),
-    linear-gradient(90deg, transparent 60%, #555 65%, #666 70%, #555 75%, transparent 100%),
-    /* Vertikale Straße zwischen Gebäuden */
-    linear-gradient(0deg, transparent 15%, #555 25%, #666 30%, #555 35%, transparent 45%),
-    linear-gradient(0deg, transparent 55%, #555 65%, #666 70%, #555 75%, transparent 85%),
-    /* Kurvige Verbindungsstraßen um Gebäude herum */
-    radial-gradient(ellipse 100px 40px at 30% 45%, transparent 60%, #555 65%, #666 70%, #555 75%, transparent 80%),
-    radial-gradient(ellipse 80px 30px at 70% 35%, transparent 60%, #555 65%, #666 70%, #555 75%, transparent 80%),
-    /* Organische Pfade zwischen Gebäuden */
-    conic-gradient(from 45deg at 25% 25%, transparent 0%, #555 20%, #666 25%, #555 30%, transparent 50%),
-    conic-gradient(from 135deg at 75% 75%, transparent 0%, #555 15%, #666 20%, #555 25%, transparent 40%);
+    /* Hauptstraßen - horizontal */
+    linear-gradient(90deg, transparent 0%, #555 15%, #666 20%, #777 25%, #666 30%, #555 35%, transparent 40%),
+    linear-gradient(90deg, transparent 50%, #555 55%, #666 60%, #777 65%, #666 70%, #555 75%, transparent 80%),
+    /* Hauptstraßen - vertikal */
+    linear-gradient(0deg, transparent 0%, #555 20%, #666 25%, #777 30%, #666 35%, #555 40%, transparent 45%),
+    linear-gradient(0deg, transparent 55%, #555 60%, #666 65%, #777 70%, #666 75%, #555 80%, transparent 85%),
+    /* Kreisverkehre */
+    radial-gradient(circle 60px at 25% 25%, transparent 50%, #666 60%, #777 70%, #666 80%, transparent 85%),
+    radial-gradient(circle 50px at 75% 75%, transparent 50%, #666 60%, #777 70%, #666 80%, transparent 85%),
+    radial-gradient(circle 40px at 50% 50%, transparent 50%, #666 60%, #777 70%, #666 80%, transparent 85%),
+    /* Kurvige Verbindungsstraßen */
+    conic-gradient(from 0deg at 20% 40%, transparent 0%, #555 30%, #666 45%, #555 60%, transparent 90%),
+    conic-gradient(from 90deg at 80% 60%, transparent 0%, #555 25%, #666 40%, #555 55%, transparent 85%),
+    conic-gradient(from 180deg at 60% 20%, transparent 0%, #555 35%, #666 50%, #555 65%, transparent 95%),
+    /* Organische Straßenverbindungen */
+    radial-gradient(ellipse 150px 80px at 30% 70%, transparent 60%, #555 65%, #666 70%, #555 75%, transparent 80%),
+    radial-gradient(ellipse 120px 60px at 70% 30%, transparent 60%, #555 65%, #666 70%, #555 75%, transparent 80%),
+    /* Nebenstraßen und Gassen */
+    linear-gradient(45deg, transparent 35%, #444 40%, #555 45%, #444 50%, transparent 55%),
+    linear-gradient(135deg, transparent 25%, #444 30%, #555 35%, #444 40%, transparent 45%),
+    /* Fahrbahnmarkierungen */
+    repeating-linear-gradient(90deg, transparent 0px, yellow 2px, yellow 4px, transparent 6px, transparent 25px),
+    repeating-linear-gradient(0deg, transparent 0px, white 1px, white 2px, transparent 3px, transparent 15px);
   background-size: 
-    100% 12%,  /* Hauptstraße horizontal */
-    100% 12%,  /* Weitere Hauptstraße */
-    12% 100%,  /* Vertikale Straße */
-    12% 100%,  /* Weitere vertikale */
-    120% 120%, /* Kurvige Verbindung */
-    100% 100%, /* Weitere Kurve */
-    150% 150%, /* Organischer Pfad */
-    150% 150%; /* Weiterer Pfad */
+    100% 15%,  /* Hauptstraße horizontal 1 */
+    100% 15%,  /* Hauptstraße horizontal 2 */
+    15% 100%,  /* Hauptstraße vertikal 1 */
+    15% 100%,  /* Hauptstraße vertikal 2 */
+    300px 300px, /* Kreisverkehr 1 */
+    250px 250px, /* Kreisverkehr 2 */
+    200px 200px, /* Kreisverkehr 3 */
+    400px 400px, /* Kurvige Verbindung 1 */
+    350px 350px, /* Kurvige Verbindung 2 */
+    300px 300px, /* Kurvige Verbindung 3 */
+    200% 200%, /* Organische Verbindung 1 */
+    180% 180%, /* Organische Verbindung 2 */
+    100% 100%, /* Nebenstraße 1 */
+    100% 100%, /* Nebenstraße 2 */
+    100% 8%,   /* Fahrbahnmarkierung horizontal */
+    8% 100%;   /* Fahrbahnmarkierung vertikal */
   background-position:
-    0% 42%,    /* Hauptstraße y=42% */
-    0% 65%,    /* Weitere bei y=65% */
-    23% 0%,    /* Vertikale bei x=23% */
-    67% 0%,    /* Vertikale bei x=67% */
-    0% 0%,     /* Kurvige Verbindung */
-    0% 0%,     /* Weitere Kurve */
-    0% 0%,     /* Organischer Pfad */
-    0% 0%;     /* Weiterer Pfad */
-  opacity: 0.5;
+    0% 25%,    /* Hauptstraße horizontal 1 */
+    0% 70%,    /* Hauptstraße horizontal 2 */
+    25% 0%,    /* Hauptstraße vertikal 1 */
+    70% 0%,    /* Hauptstraße vertikal 2 */
+    0% 0%,     /* Kreisverkehr 1 */
+    50% 50%,   /* Kreisverkehr 2 */
+    80% 20%,   /* Kreisverkehr 3 */
+    0% 0%,     /* Kurvige Verbindung 1 */
+    0% 0%,     /* Kurvige Verbindung 2 */
+    0% 0%,     /* Kurvige Verbindung 3 */
+    0% 0%,     /* Organische Verbindung 1 */
+    0% 0%,     /* Organische Verbindung 2 */
+    0% 0%,     /* Nebenstraße 1 */
+    0% 0%,     /* Nebenstraße 2 */
+    0% 25%,    /* Fahrbahnmarkierung horizontal */
+    25% 0%;    /* Fahrbahnmarkierung vertikal */
+  opacity: 0.6;
   z-index: 1;
 }
 
