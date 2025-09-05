@@ -3778,12 +3778,19 @@ function App() {
               )}
               
               {!gameActive && timeLeft === 0 && (
-                <div className="game-over">
-                  <h3>Spiel beendet!</h3>
-                  <p>Du hast {score} Mäuse gefangen!</p>
-                  <button onClick={startMouseGame} className="restart-game-btn">
-                    Nochmal spielen
-                  </button>
+                <div className="game-over-modal">
+                  <div className="game-over-content">
+                    <h3>🏁 Spiel beendet!</h3>
+                    <p className="final-score">Du hast <strong>{score} Mäuse</strong> gefangen!</p>
+                    <div className="game-over-actions">
+                      <button onClick={startMouseGame} className="restart-game-btn">
+                        🔄 Nochmal spielen
+                      </button>
+                      <button onClick={closeEasterEgg} className="close-game-btn-final">
+                        ✕ Schließen
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
