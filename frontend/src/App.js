@@ -617,7 +617,6 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [newSubcategory, setNewSubcategory] = useState(''); // Neu: Für neue Unterkategorien
 
   useEffect(() => {
     if (bookmark) {
@@ -638,26 +637,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
       });
     }
     setErrors({});
-    setNewSubcategory('');
   }, [bookmark, isOpen]);
-
-  // Funktionen für Unterkategorien-Management
-  const addSubcategory = () => {
-    if (newSubcategory.trim() && !formData.subcategories.includes(newSubcategory.trim())) {
-      setFormData({
-        ...formData,
-        subcategories: [...formData.subcategories, newSubcategory.trim()]
-      });
-      setNewSubcategory('');
-    }
-  };
-
-  const removeSubcategory = (subcatToRemove) => {
-    setFormData({
-      ...formData,
-      subcategories: formData.subcategories.filter(subcat => subcat !== subcatToRemove)
-    });
-  };
 
   const validateForm = () => {
     const newErrors = {};
