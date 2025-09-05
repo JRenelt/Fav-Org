@@ -1525,6 +1525,112 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
   );
 };
 
+// Rekursive Komponente für Kategorie-Hierarchie - MUSS VOR CategorySidebar definiert werden
+const CategoryNode = ({ category, level = 0, expandedCategories, onCategoryChange, activeCategory, activeSubcategory, onCategoryDragStart, onCategoryDragOver, onCategoryDragLeave, onCategoryDrop, onCategoryDragEnd, dragOverCategory, toggleCategory, organizedCategories }) => {
+  const isExpanded = expandedCategories.has(category.name);
+  const isActive = (level === 0 && activeCategory === category.name && !activeSubcategory) ||
+                   (level > 0 && activeCategory && activeSubcategory === category.name);
+  
+  return (
+    <div className="category-group">
+      <div
+        className={`category-item ${level === 0 ? 'main-category' : 'subcategory'} draggable ${isActive ? 'active' : ''} ${dragOverCategory?.id === category.id ? 'drag-over' : ''}`}
+        style={{ marginLeft: `${level * 20}px` }}
+        onClick={() => {
+          if (level === 0) {
+            onCategoryChange(category.name, null);
+          } else {
+            // Finde Parent-Kategorie für Subcategory
+            const findParent = (cats, targetName, currentParent = null) => {
+              for (const cat of cats) {
+                if (cat.name === targetName && currentParent) {
+                  return currentParent.name;
+                }
+                if (cat.children) {
+                  const result = findParent(cat.children, targetName, cat);
+                  if (result) return result;
+                }
+              }
+              return null;
+            };
+            const parentName = findParent(organizedCategories, category.name);
+            onCategoryChange(parentName || category.name, category.name);
+          }
+        }}
+        draggable={category.name !== 'Alle'}
+        onDragStart={(e) => onCategoryDragStart(e, category, level > 0)}
+        onDragOver={(e) => onCategoryDragOver(e, category, level > 0)}
+        onDragLeave={onCategoryDragLeave}
+        onDrop={(e) => onCategoryDrop(e, category, level > 0)}
+        onDragEnd={onCategoryDragEnd}
+      >
+        <div className="category-info">
+          <GripVertical className="drag-handle" />
+          
+          {/* Expand/Collapse für Kategorien mit Kindern */}
+          {category.children && category.children.length > 0 ? (
+            isExpanded ? (
+              <ChevronDown 
+                className="expand-icon" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleCategory(category.name);
+                }}
+              />
+            ) : (
+              <ChevronRight 
+                className="expand-icon" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleCategory(category.name);
+                }}
+              />
+            )
+          ) : (
+            <div className="expand-icon-placeholder" />
+          )}
+          
+          {/* Kategorie Icon basierend auf Level */}
+          {level === 0 ? (
+            category.name.startsWith('_') ? (
+              <Folder className="category-icon inactive-icon" />
+            ) : (
+              <Folder className="category-icon active-icon" />
+            )
+          ) : (
+            <Folder className="category-icon sub-icon" />
+          )}
+          
+          <span className="category-name">
+            {category.name} ({category.bookmark_count || 0})
+          </span>
+        </div>
+      </div>
+      
+      {/* Rekursiv Kinder rendern */}
+      {isExpanded && category.children && category.children.map(child => (
+        <CategoryNode
+          key={child.id}
+          category={child}
+          level={level + 1}
+          expandedCategories={expandedCategories}
+          onCategoryChange={onCategoryChange}
+          activeCategory={activeCategory}
+          activeSubcategory={activeSubcategory}
+          onCategoryDragStart={onCategoryDragStart}
+          onCategoryDragOver={onCategoryDragOver}
+          onCategoryDragLeave={onCategoryDragLeave}
+          onCategoryDrop={onCategoryDrop}
+          onCategoryDragEnd={onCategoryDragEnd}
+          dragOverCategory={dragOverCategory}
+          toggleCategory={toggleCategory}
+          organizedCategories={organizedCategories}
+        />
+      ))}
+    </div>
+  );
+};
+
 // Category Sidebar Component
 const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics, onCategoryReorder, onBookmarkToCategory, onCategoryManage }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
