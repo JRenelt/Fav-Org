@@ -752,62 +752,17 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             </Select>
           </div>
           
-          {/* Unterkategorien-Sektion - nur Auswahl existierender */}
           <div className="form-group">
-            <Label>Unterkategorie</Label>
-            <Select 
-              value={formData.subcategory || ''} 
-              onValueChange={(value) => setFormData({...formData, subcategory: value === '__none__' ? null : value})}
-            >
-              <SelectTrigger className="subcategory-selector">
-                <SelectValue placeholder="Unterkategorie auswählen (optional)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="__none__">Keine Unterkategorie</SelectItem>
-                {subcategoriesForCategory.map(subcat => (
-                  <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            {subcategoriesForCategory.length === 0 && formData.category && formData.category !== 'Uncategorized' && (
-              <p className="subcategory-hint">
-                Keine Unterkategorien vorhanden. Erstellen Sie neue über das "+" Symbol bei Kategorien.
-              </p>
-            )}
+            <Label htmlFor="description">Beschreibung (optional)</Label>
+            <textarea
+              id="description"
+              value={formData.description || ''}
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              placeholder="Kurze Beschreibung des Favoriten"
+              className="form-textarea"
+              rows="3"
+            />
           </div>
-          
-          {/* Kompatibilitäts-Sektion für bestehende Unterkategorien */}
-          {subcategoriesForCategory.length > 0 && (
-            <div className="form-group">
-              <Label htmlFor="subcategory">Bestehende Unterkategorie wählen</Label>
-              <input
-                type="text"
-                id="subcategory"
-                value={formData.subcategory && formData.subcategory !== "__none__" ? formData.subcategory : ""}
-                onChange={(e) => {
-                  const value = e.target.value || '__none__';
-                  setFormData({...formData, subcategory: value});
-                  // Füge zur subcategories Liste hinzu, wenn nicht bereits vorhanden
-                  if (value !== '__none__' && !formData.subcategories.includes(value)) {
-                    setFormData({
-                      ...formData, 
-                      subcategory: value,
-                      subcategories: [...formData.subcategories, value]
-                    });
-                  }
-                }}
-                placeholder="Unterkategorie wählen (optional)"
-                className="form-input"
-                list="subcategory-options"
-              />
-              <datalist id="subcategory-options">
-                {subcategoriesForCategory.map(subcat => (
-                  <option key={subcat} value={subcat} />
-                ))}
-              </datalist>
-            </div>
-          )}
           
           <div className="form-actions">
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
