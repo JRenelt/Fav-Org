@@ -3431,6 +3431,7 @@ function App() {
           statistics={statistics}
           onCategoryReorder={handleCategoryReorder}
           onBookmarkToCategory={handleBookmarkToCategory}
+          onCategoryManage={() => setShowCategoryManageDialog(true)}
         />
         
 
