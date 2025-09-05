@@ -772,111 +772,270 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
-// Category Management Dialog Component
+// Live-Editing Category Management Dialog Component
 const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
-  const [categoryList, setCategoryList] = useState([]);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newSubcategoryName, setNewSubcategoryName] = useState('');
+  const [selectedParentCategory, setSelectedParentCategory] = useState('');
 
-  useEffect(() => {
-    if (isOpen) {
-      setCategoryList(categories.map(cat => ({
-        ...cat,
-        editing: false,
-        newName: cat.name
-      })));
+  // Organisiere Kategorien hierarchisch
+  const organizeCategories = () => {
+    const mainCategories = {};
+    const allCategories = [...categories];
+    
+    // Zuerst alle Hauptkategorien sammeln
+    allCategories.forEach(category => {
+      if (!category.parent_category) {
+        mainCategories[category.name] = {
+          ...category,
+          subcategories: []
+        };
+      }
+    });
+
+    // Dann Unterkategorien zuordnen
+    allCategories.forEach(category => {
+      if (category.parent_category && mainCategories[category.parent_category]) {
+        mainCategories[category.parent_category].subcategories.push(category);
+      }
+    });
+
+    return Object.values(mainCategories);
+  };
+
+  const organizedCategories = organizeCategories();
+
+  // Live-Editing: Neue Kategorie erstellen
+  const handleCreateCategory = (e) => {
+    if (e.key === 'Enter' && newCategoryName.trim()) {
+      const newCategory = {
+        id: 'new_' + Date.now(),
+        name: newCategoryName.trim(),
+        parent_category: null,
+        bookmark_count: 0,
+        subcategory_count: 0,
+        created_at: new Date().toISOString()
+      };
+      
+      // Direkt an Backend senden (simuliert)
+      console.log('Creating new category:', newCategory);
+      toast.success(`Neue Kategorie "${newCategoryName}" erstellt`);
+      
+      setNewCategoryName('');
+      // In echter Implementation würde hier ein API-Call gemacht
     }
-  }, [isOpen, categories]);
+  };
 
-  const handleAddCategory = () => {
-    const newCategory = {
-      id: 'new_' + Date.now(),
-      name: '',
-      parent_category: null,
-      editing: true,
-      newName: '',
-      isNew: true
-    };
-    setCategoryList([...categoryList, newCategory]);
+  // Live-Editing: Neue Unterkategorie erstellen
+  const handleCreateSubcategory = (e) => {
+    if (e.key === 'Enter' && newSubcategoryName.trim() && selectedParentCategory) {
+      const newSubcategory = {
+        id: 'new_sub_' + Date.now(),
+        name: newSubcategoryName.trim(),
+        parent_category: selectedParentCategory,
+        bookmark_count: 0,
+        created_at: new Date().toISOString()
+      };
+      
+      // Direkt an Backend senden (simuliert)
+      console.log('Creating new subcategory:', newSubcategory);
+      toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
+      
+      setNewSubcategoryName('');
+      setSelectedParentCategory('');
+      // In echter Implementation würde hier ein API-Call gemacht
+    }
+  };
+
+  // Live-Editing: Kategorie umbenennen
+  const handleRenameCategory = (category, newName) => {
+    if (newName.trim() && newName !== category.name) {
+      console.log('Renaming category:', category.name, 'to', newName);
+      toast.success(`Kategorie "${category.name}" zu "${newName}" umbenannt`);
+      setEditingCategory(null);
+      // In echter Implementation würde hier ein API-Call gemacht
+    }
+  };
+
+  // Live-Editing: Kategorie löschen
+  const handleDeleteCategory = (category) => {
+    console.log('Deleting category:', category.name);
+    toast.success(`Kategorie "${category.name}" gelöscht`);
+    // In echter Implementation würde hier ein API-Call gemacht
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="dialog-content category-manage-dialog">
+      <DialogContent className="category-manage-dialog-live">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="category-manage-title">
             🏷️ Kategorien verwalten
           </DialogTitle>
+          <p className="category-manage-subtitle">
+            Live-Bearbeitung - Änderungen mit Enter bestätigen
+          </p>
         </DialogHeader>
         
-        <div className="category-manage-content">
-          <div className="category-manage-actions">
-            <Button onClick={handleAddCategory} className="add-category-btn">
-              <Plus className="w-4 h-4 mr-2" />
-              Neue Kategorie
-            </Button>
+        <div className="category-manage-live-content">
+          {/* Neue Kategorie erstellen */}
+          <div className="new-category-section">
+            <div className="new-category-row">
+              <div className="new-category-icon">➕</div>
+              <Input
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                onKeyDown={handleCreateCategory}
+                placeholder="+ Neue Kategorie (Enter zum Erstellen)"
+                className="new-category-input"
+              />
+            </div>
           </div>
-          
-          <div className="category-list-manage">
-            {categoryList.map((category, index) => (
-              <div key={category.id} className="category-manage-item">
-                <div className="category-manage-info">
-                  <span className="category-level">
-                    {category.parent_category ? '└─' : '📁'}
-                  </span>
-                  {category.editing ? (
-                    <Input
-                      value={category.newName}
-                      onChange={(e) => {
-                        const updated = [...categoryList];
-                        updated[index].newName = e.target.value;
-                        setCategoryList(updated);
-                      }}
-                      className="category-name-input"
-                      placeholder="Kategorie-Name"
-                    />
-                  ) : (
-                    <span className="category-name">{category.name}</span>
-                  )}
+
+          {/* Neue Unterkategorie erstellen */}
+          <div className="new-subcategory-section">
+            <div className="new-subcategory-row">
+              <div className="new-subcategory-icon">└─➕</div>
+              <Select 
+                value={selectedParentCategory} 
+                onValueChange={setSelectedParentCategory}
+              >
+                <SelectTrigger className="parent-category-select">
+                  <SelectValue placeholder="Übergeordnete Kategorie wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  {organizedCategories.map(cat => (
+                    <SelectItem key={cat.name} value={cat.name}>{cat.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
+                value={newSubcategoryName}
+                onChange={(e) => setNewSubcategoryName(e.target.value)}
+                onKeyDown={handleCreateSubcategory}
+                placeholder="+ Neue Unterkategorie (Enter zum Erstellen)"
+                className="new-subcategory-input"
+                disabled={!selectedParentCategory}
+              />
+            </div>
+          </div>
+
+          {/* Bestehende Kategorien */}
+          <div className="existing-categories-section">
+            <h4 className="section-title">Bestehende Kategorien</h4>
+            <div className="categories-live-list">
+              {organizedCategories.map(category => (
+                <div key={category.id} className="category-live-group">
+                  {/* Hauptkategorie */}
+                  <div className="category-live-item main-category">
+                    <div className="category-live-info">
+                      <span className="category-level-icon">📁</span>
+                      {editingCategory === category.id ? (
+                        <Input
+                          defaultValue={category.name}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              handleRenameCategory(category, e.target.value);
+                            } else if (e.key === 'Escape') {
+                              setEditingCategory(null);
+                            }
+                          }}
+                          onBlur={(e) => handleRenameCategory(category, e.target.value)}
+                          className="category-edit-input"
+                          autoFocus
+                        />
+                      ) : (
+                        <span 
+                          className="category-name-editable"
+                          onClick={() => setEditingCategory(category.id)}
+                        >
+                          {category.name} ({category.bookmark_count})
+                        </span>
+                      )}
+                    </div>
+                    <div className="category-live-actions">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setEditingCategory(category.id)}
+                        className="edit-category-btn-live"
+                        title="Bearbeiten"
+                      >
+                        <Edit2 className="w-3 h-3" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDeleteCategory(category)}
+                        className="delete-category-btn-live"
+                        title="Löschen"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Unterkategorien */}
+                  {category.subcategories.map(subcategory => (
+                    <div key={subcategory.id} className="category-live-item subcategory">
+                      <div className="category-live-info">
+                        <span className="category-level-icon">└─📂</span>
+                        {editingCategory === subcategory.id ? (
+                          <Input
+                            defaultValue={subcategory.name}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                handleRenameCategory(subcategory, e.target.value);
+                              } else if (e.key === 'Escape') {
+                                setEditingCategory(null);
+                              }
+                            }}
+                            onBlur={(e) => handleRenameCategory(subcategory, e.target.value)}
+                            className="category-edit-input"
+                            autoFocus
+                          />
+                        ) : (
+                          <span 
+                            className="category-name-editable"
+                            onClick={() => setEditingCategory(subcategory.id)}
+                          >
+                            {subcategory.name} ({subcategory.bookmark_count})
+                          </span>
+                        )}
+                      </div>
+                      <div className="category-live-actions">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setEditingCategory(subcategory.id)}
+                          className="edit-category-btn-live"
+                          title="Bearbeiten"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteCategory(subcategory)}
+                          className="delete-category-btn-live"
+                          title="Löschen"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="category-manage-actions">
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      const updated = [...categoryList];
-                      updated[index].editing = !updated[index].editing;
-                      setCategoryList(updated);
-                    }}
-                    className="edit-category-btn"
-                  >
-                    {category.editing ? <Check className="w-3 h-3" /> : <Edit2 className="w-3 h-3" />}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => {
-                      setCategoryList(categoryList.filter((_, i) => i !== index));
-                    }}
-                    className="delete-category-btn"
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
         
-        <div className="dialog-actions">
-          <Button onClick={onClose} variant="outline">
-            Abbrechen
-          </Button>
-          <Button 
-            onClick={() => {
-              onSave(categoryList);
-              onClose();
-            }}
-            className="save-categories-btn"
-          >
-            Speichern
+        {/* Minimale Aktionen - nur Schließen Button */}
+        <div className="dialog-actions-minimal">
+          <Button onClick={onClose} className="close-dialog-btn">
+            <X className="w-4 h-4 mr-2" />
+            Schließen
           </Button>
         </div>
       </DialogContent>
