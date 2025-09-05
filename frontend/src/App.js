@@ -612,8 +612,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   const [formData, setFormData] = useState({
     title: '',
     url: '',
-    category: 'Uncategorized',
-    subcategory: '__none__'
+    category: 'Uncategorized'
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -623,17 +622,13 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
       setFormData({
         title: bookmark.title || '',
         url: bookmark.url || '',
-        category: bookmark.category || 'Uncategorized',
-        subcategory: bookmark.subcategory || '__none__',
-        subcategories: bookmark.subcategories || []
+        category: bookmark.category || 'Uncategorized'
       });
     } else {
       setFormData({
         title: '',
         url: '',
-        category: '', // Leer für Placeholder
-        subcategory: '__none__',
-        subcategories: []
+        category: '' // Leer für Placeholder
       });
     }
     setErrors({});
