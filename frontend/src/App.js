@@ -2866,6 +2866,35 @@ function App() {
       });
     }, 1500); // Person bewegt sich alle 1.5 Sekunden
     
+    // Start vehicle movement
+    const newVehicleTimer = setInterval(() => {
+      setVehiclePositions(prev => {
+        const newBus = { ...prev.bus };
+        const newCar = { ...prev.car };
+        
+        // Bus bewegt sich horizontal auf Straße y=45
+        newBus.x += newBus.direction * 0.8;
+        if (newBus.x >= 90) {
+          newBus.direction = -1;
+        } else if (newBus.x <= 10) {
+          newBus.direction = 1;
+        }
+        
+        // Auto bewegt sich horizontal auf Straße y=35
+        newCar.x += newCar.direction * 1.2;
+        if (newCar.x >= 85) {
+          newCar.direction = -1;
+        } else if (newCar.x <= 15) {
+          newCar.direction = 1;
+        }
+        
+        return { bus: newBus, car: newCar };
+      });
+    }, 200);
+    
+    // Store timers
+    setVehicleTimer(newVehicleTimer);
+    
     // Cleanup function
     const cleanup = () => {
       if (newGameTimer) clearInterval(newGameTimer);
