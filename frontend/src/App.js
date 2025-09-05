@@ -3905,16 +3905,60 @@ function App() {
                 </div>
               )}
               
-              {!gameActive && timeLeft === 0 && (
-                <div className="game-over-modal">
-                  <div className="game-over-content">
-                    <h3>🏁 Spiel beendet!</h3>
-                    <p className="final-score">Du hast <strong>{score} Mäuse</strong> gefangen!</p>
-                    <div className="game-over-actions">
-                      <button onClick={startMouseGame} className="restart-game-btn">
+              {/* Highscore-Liste Dialog - wird nach Spielende angezeigt */}
+              {showHighscoreList && (
+                <div className="highscore-modal">
+                  <div className="highscore-dialog">
+                    <h2>🏁 Spiel beendet!</h2>
+                    <h3>Gefangene Mäuse: <span className="score-highlight">{currentGameScore}</span></h3>
+                    
+                    <div className="highscore-table-container">
+                      <h4>🏆 Siegerliste</h4>
+                      <table className="highscore-table">
+                        <thead>
+                          <tr>
+                            <th>Platz</th>
+                            <th>Mäuse</th>
+                            <th>Datum</th>
+                            <th>Zeit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {highscoreList.map((entry, index) => (
+                            <tr key={index} className={entry.score === currentGameScore ? 'current-score' : ''}>
+                              <td>{index + 1}</td>
+                              <td>{entry.score}</td>
+                              <td>{entry.date}</td>
+                              <td>{entry.time}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                    <div className="highscore-actions">
+                      <button 
+                        onClick={() => {
+                          setShowHighscoreList(false);
+                          startMouseGame();
+                        }} 
+                        className="restart-game-btn-highscore"
+                      >
                         🔄 Nochmal spielen
                       </button>
-                      <button onClick={closeEasterEgg} className="close-game-btn-final">
+                      <button 
+                        onClick={() => {
+                          setShowHighscoreList(false);
+                          closeEasterEgg();
+                        }} 
+                        className="close-game-btn-highscore"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Escape') {
+                            setShowHighscoreList(false);
+                            closeEasterEgg();
+                          }
+                        }}
+                      >
                         ✕ Schließen
                       </button>
                     </div>
