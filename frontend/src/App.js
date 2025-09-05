@@ -2832,6 +2832,7 @@ function App() {
           setGameActive(false);
           clearInterval(newGameTimer);
           if (moveTimer) clearInterval(moveTimer);
+          if (newVehicleTimer) clearInterval(newVehicleTimer);
           handleGameOver(score); // Verwende neue Ranglisten-Funktion
           return 0;
         }
