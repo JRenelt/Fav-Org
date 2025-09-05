@@ -2969,31 +2969,51 @@ function App() {
       });
     }, 1500); // Person bewegt sich alle 1.5 Sekunden
     
-    // Start vehicle movement
+    // Start vehicle movement - SPORADISCH horizontal UND vertikal auf Straßennetz
     const newVehicleTimer = setInterval(() => {
       setVehiclePositions(prev => {
         const newBus = { ...prev.bus };
         const newCar = { ...prev.car };
         
-        // Bus bewegt sich horizontal auf Straße y=45
-        newBus.x += newBus.direction * 0.8;
-        if (newBus.x >= 90) {
-          newBus.direction = -1;
-        } else if (newBus.x <= 10) {
-          newBus.direction = 1;
+        // Bus bewegt sich komplex auf Straßennetz (horizontal + vertikal)
+        const busRandom = Math.random();
+        if (busRandom < 0.7) {
+          // 70% horizontal movement (Hauptstraßen)
+          newBus.x += newBus.direction * (0.5 + Math.random() * 0.8);
+          if (newBus.x >= 85) {
+            newBus.direction = -1;
+          } else if (newBus.x <= 15) {
+            newBus.direction = 1;
+          }
+        } else {
+          // 30% vertikale Bewegung auf Kreuzungen
+          newBus.y += (Math.random() - 0.5) * 1.5;
+          // Bleibe auf Straßennetz (y zwischen 20-80)
+          newBus.y = Math.max(20, Math.min(80, newBus.y));
         }
         
-        // Auto bewegt sich horizontal auf Straße y=35
-        newCar.x += newCar.direction * 1.2;
-        if (newCar.x >= 85) {
-          newCar.direction = -1;
-        } else if (newCar.x <= 15) {
-          newCar.direction = 1;
+        // Auto bewegt sich agiler und wechselt oft Richtung
+        const carRandom = Math.random();
+        if (carRandom < 0.6) {
+          // 60% horizontal movement (schneller als Bus)
+          newCar.x += newCar.direction * (0.8 + Math.random() * 1.2);
+          if (newCar.x >= 80) {
+            newCar.direction = -1;
+          } else if (newCar.x <= 20) {
+            newCar.direction = 1;
+          }
+        } else if (carRandom < 0.9) {
+          // 30% vertikal auf Nebenstraßen
+          newCar.y += (Math.random() - 0.5) * 2;
+          newCar.y = Math.max(25, Math.min(75, newCar.y));
+        } else {
+          // 10% Richtungswechsel
+          newCar.direction *= -1;
         }
         
         return { bus: newBus, car: newCar };
       });
-    }, 200);
+    }, 150); // Schnellere Updates für flüssigere Bewegung
     
     // Store timers
     setVehicleTimer(newVehicleTimer);
