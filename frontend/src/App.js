@@ -2797,6 +2797,9 @@ function App() {
     
     showCustomToast(gameOverMessage, 'warning', 15000); // 15 Sekunden für Rangliste
   };
+
+  // Helper function für Element-Titel
+  const getElementTitle = (type) => {
     const titles = {
       '🏠': 'Wohnhaus', '🏢': 'Bürogebäude', '🏬': 'Geschäft', '🏛️': 'Rathaus',
       '🏥': 'Krankenhaus', '🏫': 'Schule', '🏪': 'Laden', '🏨': 'Hotel',
