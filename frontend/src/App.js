@@ -2900,6 +2900,7 @@ function App() {
       if (newGameTimer) clearInterval(newGameTimer);
       if (newMoveTimer) clearInterval(newMoveTimer);
       if (personTimer) clearInterval(personTimer);
+      if (newVehicleTimer) clearInterval(newVehicleTimer);
     };
     
     return cleanup;
