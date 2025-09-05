@@ -757,41 +757,20 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
           
           <div className="form-group">
             <Label htmlFor="category">Kategorie</Label>
-            <div className="category-selection-container">
-              <Select 
-                value={formData.category || ''} 
-                onValueChange={(value) => {
-                  if (value === '__new__') {
-                    setFormData({...formData, category: '', subcategory: null});
-                  } else {
-                    setFormData({...formData, category: value, subcategory: null});
-                  }
-                }}
-              >
-                <SelectTrigger className="category-selector">
-                  <SelectValue placeholder="Kategorie auswählen oder neu eingeben" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__new__">🆕 Neue Kategorie erstellen...</SelectItem>
-                  <SelectItem value="Uncategorized">Nicht zugeordnet</SelectItem>
-                  {uniqueCategories.filter(cat => cat !== 'Uncategorized' && cat !== '__new__').map(cat => (
-                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              
-              {/* Eingabefeld für neue Kategorie */}
-              {(formData.category === '' || !uniqueCategories.includes(formData.category)) && (
-                <div className="new-category-input">
-                  <Input
-                    value={formData.category}
-                    onChange={(e) => setFormData({...formData, category: e.target.value})}
-                    placeholder="Neue Kategorie eingeben"
-                    className="form-input"
-                  />
-                </div>
-              )}
-            </div>
+            <Select 
+              value={formData.category || ''} 
+              onValueChange={(value) => setFormData({...formData, category: value, subcategory: null})}
+            >
+              <SelectTrigger className="category-selector">
+                <SelectValue placeholder="Kategorie auswählen" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Uncategorized">Nicht zugeordnet</SelectItem>
+                {uniqueCategories.filter(cat => cat !== 'Uncategorized').map(cat => (
+                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           {/* Unterkategorien-Sektion */}
