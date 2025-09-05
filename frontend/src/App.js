@@ -2935,7 +2935,10 @@ function App() {
           clearInterval(newGameTimer);
           if (moveTimer) clearInterval(moveTimer);
           if (newVehicleTimer) clearInterval(newVehicleTimer);
-          handleGameOver(score); // Verwende neue Ranglisten-Funktion
+          // Rufe handleGameOver auf
+          setTimeout(() => {
+            handleGameOver(score);
+          }, 1000); // 1 Sekunde Delay für bessere UX
           return 0;
         }
         return prev - 1;
