@@ -1558,7 +1558,16 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       ></div>
       <div className="sidebar-content">
         <div className="sidebar-header">
-          <h3 className="sidebar-title">Kategorien</h3>
+          <div className="sidebar-title-section">
+            <h3 className="sidebar-title">Kategorien</h3>
+            <button
+              className="category-manage-btn"
+              onClick={() => setShowCategoryManageDialog(true)}
+              title="Kategorien verwalten"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
           <div className="sidebar-info">
             <button
               className="info-link"
