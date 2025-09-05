@@ -3172,9 +3172,29 @@ body {
   user-select: none;
   z-index: 3;
   transition: all 1.5s ease-in-out;
-  transform-origin: center;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
   animation: walkingBounce 3s ease-in-out infinite;
+}
+
+/* Moving vehicles animation */
+.moving-vehicle {
+  position: absolute;
+  font-size: 20px;
+  user-select: none;
+  z-index: 3;
+  transition: all 0.2s linear;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  transform-origin: center;
+}
+
+.moving-vehicle.bus {
+  font-size: 22px;
+  z-index: 4; /* Bus über Auto */
+}
+
+.moving-vehicle.car {
+  font-size: 18px;
+  z-index: 3;
 }
 
 @keyframes walkingBounce {
