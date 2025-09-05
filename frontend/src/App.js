@@ -42,6 +42,8 @@ import {
   Zap,
   Clock,
   Edit,
+  Edit2,
+  Check,
   Move,
   FileText,
   FileSpreadsheet,
