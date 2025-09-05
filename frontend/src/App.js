@@ -2740,6 +2740,7 @@ function App() {
   const [hideTimeLeft, setHideTimeLeft] = useState(0);
   const [gameTimer, setGameTimer] = useState(null);
   const [moveTimer, setMoveTimer] = useState(null);
+  const [vehicleTimer, setVehicleTimer] = useState(null);
   const [personPosition, setPersonPosition] = useState({ x: 10, y: 90 });
   const [personDirection, setPersonDirection] = useState(1); // 1 = rechts, -1 = links
 
