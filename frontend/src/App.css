@@ -2906,24 +2906,25 @@ body {
   animation: mouseClick 0.2s ease-in-out;
 }
 
-/* Game area with complex city background */
+/* Game area with organic city background inspired by template */
 .game-area {
   flex: 1;
   position: relative;
   background: 
-    /* Sky gradient */
+    /* Sky gradient wie im Template */
     linear-gradient(180deg, 
       #87CEEB 0%,    /* Sky blue */
-      #B0E0E6 25%,   /* Powder blue */
-      #98FB98 70%,   /* Pale green for grass */
-      #90EE90 100%   /* Light green */
+      #B0E0E6 15%,   /* Powder blue */
+      #98FB98 65%,   /* Pale green for grass */
+      #90EE90 85%,   /* Light green */
+      #8FBC8F 100%   /* Dark sea green */
     );
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow: hidden;
 }
 
-/* Complex street network overlay */
+/* Organisches Straßennetz basierend auf Template - NICHT gitterartig */
 .game-area::before {
   content: '';
   position: absolute;
@@ -2932,43 +2933,42 @@ body {
   right: 0;
   bottom: 0;
   background-image: 
-    /* Hauptstraße horizontal oben */
-    linear-gradient(0deg, transparent 33%, #555 34%, #666 36%, #555 37%, transparent 38%),
-    /* Hauptstraße horizontal mitte */
-    linear-gradient(0deg, transparent 43%, #555 44%, #666 46%, #555 47%, transparent 48%),
-    /* Hauptstraße vertikal links */
-    linear-gradient(90deg, transparent 23%, #555 24%, #666 26%, #555 27%, transparent 28%),
-    /* Hauptstraße vertikal mitte */
-    linear-gradient(90deg, transparent 43%, #555 44%, #666 46%, #555 47%, transparent 48%),
-    /* Hauptstraße vertikal rechts */
-    linear-gradient(90deg, transparent 68%, #555 69%, #666 71%, #555 72%, transparent 73%),
-    /* Zebrastreifen Markierungen */
-    repeating-linear-gradient(90deg, transparent 0px, transparent 8px, white 8px, white 10px),
-    /* Mittellinie Markierungen */
-    repeating-linear-gradient(0deg, transparent 0px, transparent 15px, yellow 15px, yellow 17px);
+    /* Organische Hauptstraße diagonal */
+    linear-gradient(45deg, transparent 45%, #555 47%, #666 49%, #555 51%, transparent 53%),
+    /* Kurvige Nebenstraße */
+    linear-gradient(-30deg, transparent 20%, #555 21%, #666 23%, #555 24%, transparent 25%),
+    /* Weitere organische Straße */
+    linear-gradient(15deg, transparent 65%, #555 66%, #666 68%, #555 69%, transparent 70%),
+    /* Gebogene Verbindungsstraße */
+    radial-gradient(ellipse 200px 50px at 30% 60%, transparent 40%, #555 42%, #666 45%, #555 47%, transparent 50%),
+    /* Runde Kreisstraße */
+    radial-gradient(circle 80px at 70% 30%, transparent 35%, #555 37%, #666 40%, #555 42%, transparent 45%),
+    /* Organische Pfade */
+    linear-gradient(75deg, transparent 80%, #777 81%, #888 82%, #777 83%, transparent 84%);
   background-size: 
-    100% 80px,  /* Horizontale Straßen */
-    100% 80px,
-    80px 100%,  /* Vertikale Straßen */
-    80px 100%,
-    80px 100%,
-    20px 20px,  /* Zebrastreifen */
-    30px 30px;  /* Mittellinie */
+    100% 100%,  /* Hauptstraße */
+    120% 120%,  /* Nebenstraße */
+    110% 110%,  /* Weitere Straße */
+    300px 200px, /* Verbindung */
+    200px 200px, /* Kreis */
+    150% 150%;   /* Pfade */
   opacity: 0.4;
   z-index: 1;
 }
 
-/* Kreuzungen als separate Overlays */
+/* Organische Kreuzungen und Plätze wie im Template */
 .game-area::after {
   content: '';
   position: absolute;
   background-image:
-    /* Zentrale Kreuzung */
-    radial-gradient(circle at 46% 45%, #666 0%, #666 15%, transparent 16%),
-    /* Linke Kreuzung */
-    radial-gradient(circle at 25% 45%, #666 0%, #666 12%, transparent 13%),
-    /* Rechte Kreuzung */
-    radial-gradient(circle at 70% 45%, #666 0%, #666 12%, transparent 13%);
+    /* Zentraler Marktplatz */
+    radial-gradient(ellipse 60px 40px at 50% 45%, #666 0%, #666 70%, transparent 71%),
+    /* Kleiner Platz links */
+    radial-gradient(circle 30px at 25% 35%, #666 0%, #666 60%, transparent 61%),
+    /* Runder Kreisverkehr rechts */
+    radial-gradient(circle 25px at 75% 60%, #666 0%, #666 50%, transparent 51%, transparent 70%, #666 71%, #666 80%, transparent 81%),
+    /* Organische Wegkreuzung */
+    radial-gradient(ellipse 40px 80px at 30% 70%, #666 0%, #666 40%, transparent 41%);
   background-size: 100% 100%;
   opacity: 0.3;
   top: 0;
@@ -2978,23 +2978,23 @@ body {
   z-index: 1;
 }
 
-/* City elements - Gebäude, Natur, Verkehr */
+/* City elements - größer wie zuvor */
 .city-element {
   position: absolute;
-  font-size: 20px; /* Kleiner als die alten hide-spots */
+  font-size: 40px; /* Größer wie zuvor */
   user-select: none;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
   transform: translate(-50%, -50%);
 }
 
 .city-element:hover {
   transform: translate(-50%, -50%) scale(1.05);
-  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.4));
 }
 
 /* Walking person animation */
