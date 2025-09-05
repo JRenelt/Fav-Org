@@ -664,11 +664,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     
     setIsSubmitting(true);
     try {
-      await onSave({
-        ...formData,
-        // Erste Unterkategorie als Hauptunterkategorie für Kompatibilität
-        subcategory: formData.subcategories.length > 0 ? formData.subcategories[0] : '__none__'
-      });
+      await onSave(formData);
       onClose();
     } catch (error) {
       console.error('Save error:', error);
