@@ -2772,8 +2772,31 @@ function App() {
     setMoveTimer(null);
   };
 
-  // Helper function für Element-Titel
-  const getElementTitle = (type) => {
+  // Game Over mit Rangliste und korrekte Anzeige
+  const handleGameOver = (finalScore) => {
+    // Bestehende Scores laden
+    const savedScores = JSON.parse(localStorage.getItem('favorg-game-scores') || '[]');
+    
+    // Neuen Score hinzufügen
+    const newScore = {
+      score: finalScore,
+      date: new Date().toLocaleDateString('de-DE'),
+      time: new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+    };
+    
+    savedScores.push(newScore);
+    
+    // Top 5 sortiert speichern
+    savedScores.sort((a, b) => b.score - a.score);
+    const top5 = savedScores.slice(0, 5);
+    localStorage.setItem('favorg-game-scores', JSON.stringify(top5));
+    
+    // Game Over Toast mit Rangliste
+    const rankText = top5.map((s, i) => `${i+1}. ${s.score} Mäuse (${s.date})`).join('\n');
+    const gameOverMessage = `🎮 Spiel beendet! Du hast ${finalScore} Mäuse gefangen!\n\n🏆 Top 5 Rangliste:\n${rankText}`;
+    
+    showCustomToast(gameOverMessage, 'warning', 15000); // 15 Sekunden für Rangliste
+  };
     const titles = {
       '🏠': 'Wohnhaus', '🏢': 'Bürogebäude', '🏬': 'Geschäft', '🏛️': 'Rathaus',
       '🏥': 'Krankenhaus', '🏫': 'Schule', '🏪': 'Laden', '🏨': 'Hotel',
