@@ -931,23 +931,33 @@ body {
   color: var(--text-primary);
 }
 
-/* Dialog Content - verhindert Überlauf */
+/* Dialog Content - verhindert Überlauf KRITISCH */
 .dialog-content {
-  max-width: 90vw;
-  max-height: 90vh;
+  max-width: 85vw;
+  width: 100%;
+  max-height: 85vh;
   overflow-y: auto;
-  padding: 24px;
+  padding: 20px;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
-/* Form Group - bessere Struktur */
+/* Bookmark Dialog spezifische Breite */
+.bookmark-dialog .dialog-content {
+  max-width: 600px;
+  width: 600px;
+}
+
+/* Form Group - bessere Struktur KRITISCH */
 .form-group {
   margin-bottom: 16px;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* Form Input Styles - KEIN Überlauf */
+/* Form Input Styles - KEIN Überlauf KRITISCH */
 .form-input {
   width: 100%;
   max-width: 100%;
@@ -960,21 +970,11 @@ body {
   font-size: 0.875rem;
   transition: border-color 0.2s ease;
   box-sizing: border-box;
-  min-width: 0; /* Wichtig für Flexbox */
+  min-width: 0;
+  overflow: hidden;
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: var(--cyan-400);
-  box-shadow: 0 0 0 2px rgba(34, 197, 198, 0.2);
-}
-
-.form-input::placeholder {
-  color: var(--text-muted) !important;
-  opacity: 0.7;
-}
-
-/* Category & Subcategory Selector Styles - KEIN Überlauf */
+/* Category & Subcategory Selector Styles - KEIN Überlauf KRITISCH */
 .category-selector, .subcategory-selector {
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
@@ -983,43 +983,17 @@ body {
   max-width: 100%;
   box-sizing: border-box;
   min-width: 0;
+  overflow: hidden;
 }
 
-.category-selector:focus, .subcategory-selector:focus {
-  border-color: var(--cyan-400);
-  box-shadow: 0 0 0 2px rgba(34, 197, 198, 0.2);
-}
-
-/* Category Selection Container - verhindert Überlauf */
-.category-selection-container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* Alle Container - verhindert Überlauf */
+.category-selection-container,
+.subcategory-input-container,
+.add-subcategory-section {
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
-  min-width: 0;
-}
-
-.new-category-input {
-  margin-top: 8px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Subcategory Input Container - verhindert Überlauf */
-.subcategory-input-container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex: 1;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-.new-subcategory-input {
-  margin-top: 8px;
-  width: 100%;
-  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .subcategory-selector {
