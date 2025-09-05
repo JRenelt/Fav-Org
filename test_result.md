@@ -405,6 +405,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ COMPREHENSIVE TESTING ERFOLGREICH: Bookmark Dialog (NEU-Button) vollständig getestet und funktional. 'Neu' Button öffnet Dialog ohne Errors, Category-Dropdown funktioniert korrekt, Input-Felder (Titel, URL) arbeiten einwandfrei, Save-Funktionalität erfolgreich getestet, neues Bookmark erscheint korrekt in der Liste. Multi-Unterkategorien Support implementiert mit Add/Remove Funktionalität. Alle Review-Request Anforderungen für Bookmark-Dialog erfüllt."
+      - working: true
+        agent: "testing"
+        comment: "✅ KRITISCHES DIALOG-LAYOUT PROBLEM BEHOBEN: '📝 Neuer Favorit' Dialog vollständig getestet gemäß German Review-Request. Dialog-Breite korrekt auf 600px fixiert, Input-Felder (Titel, URL) positioniert korrekt INNERHALB Dialog-Grenzen (KEIN Überlauf über Hintergrund), Category-Default korrekt leer mit Placeholder 'Kategorie auswählen oder neu eingeben', Unterkategorien-Management funktional. Alle Eingabefelder akzeptieren Text korrekt. DIALOG-LAYOUT PROBLEM VOLLSTÄNDIG GELÖST!"
 
   - task: "System Settings Dialog (Modern Design)"
     implemented: true
