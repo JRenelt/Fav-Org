@@ -773,74 +773,29 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
             </Select>
           </div>
           
-          {/* Unterkategorien-Sektion */}
+          {/* Unterkategorien-Sektion - nur Auswahl existierender */}
           <div className="form-group">
-            <Label>Unterkategorien</Label>
-            
-            {/* Anzeige bestehender Unterkategorien */}
-            {formData.subcategories.length > 0 && (
-              <div className="subcategories-list">
-                {formData.subcategories.map((subcat, index) => (
-                  <div key={index} className="subcategory-tag">
-                    <span>{subcat}</span>
-                    <button
-                      type="button"
-                      onClick={() => removeSubcategory(subcat)}
-                      className="remove-subcategory-btn"
-                      title="Unterkategorie entfernen"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </div>
+            <Label>Unterkategorie</Label>
+            <Select 
+              value={formData.subcategory || ''} 
+              onValueChange={(value) => setFormData({...formData, subcategory: value === '__none__' ? null : value})}
+            >
+              <SelectTrigger className="subcategory-selector">
+                <SelectValue placeholder="Unterkategorie auswählen (optional)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="__none__">Keine Unterkategorie</SelectItem>
+                {subcategoriesForCategory.map(subcat => (
+                  <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
                 ))}
-              </div>
-            )}
+              </SelectContent>
+            </Select>
             
-            {/* Auswahl oder Eingabe für neue Unterkategorie */}
-            <div className="add-subcategory-section">
-              <div className="subcategory-input-container">
-                <Select 
-                  value={newSubcategory || ''} 
-                  onValueChange={(value) => {
-                    if (value === '__new__') {
-                      setNewSubcategory('');
-                    } else {
-                      setNewSubcategory(value);
-                    }
-                  }}
-                >
-                  <SelectTrigger className="subcategory-selector">
-                    <SelectValue placeholder="Unterkategorie auswählen oder neu eingeben" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="__new__">🆕 Neue Unterkategorie erstellen...</SelectItem>
-                    {subcategoriesForCategory.map(subcat => (
-                      <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                
-                {/* Eingabefeld für neue Unterkategorie */}
-                {(newSubcategory === '' || newSubcategory === '__new__' || !subcategoriesForCategory.includes(newSubcategory)) && (
-                  <Input
-                    value={newSubcategory === '__new__' ? '' : newSubcategory}
-                    onChange={(e) => setNewSubcategory(e.target.value)}
-                    placeholder="Neue Unterkategorie eingeben"
-                    className="form-input new-subcategory-input"
-                  />
-                )}
-              </div>
-              
-              <Button
-                type="button"
-                onClick={addSubcategory}
-                className="add-subcategory-btn"
-                size="sm"
-                disabled={!newSubcategory.trim() || newSubcategory === '__new__'}
-              >
-                <Plus className="w-4 h-4" />
-              </Button>
-            </div>
+            {subcategoriesForCategory.length === 0 && formData.category && formData.category !== 'Uncategorized' && (
+              <p className="subcategory-hint">
+                Keine Unterkategorien vorhanden. Erstellen Sie neue über das "+" Symbol bei Kategorien.
+              </p>
+            )}
           </div>
           
           {/* Kompatibilitäts-Sektion für bestehende Unterkategorien */}
