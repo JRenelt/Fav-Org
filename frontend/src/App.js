@@ -1654,25 +1654,39 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     setDragOverCategory(null);
   };
 
-  // Organisiere Kategorien nach Hierarchie
+  // Organisiere Kategorien nach Hierarchie - UNBEGRENZTE EBENEN
   const organizeCategories = () => {
-    const mainCategories = {};
+    const categoryMap = new Map();
+    const rootCategories = [];
+    
+    // Erstelle Map aller Kategorien für schnelle Suche
     categories.forEach(category => {
+      categoryMap.set(category.name, {
+        ...category,
+        children: []
+      });
+    });
+    
+    // Erstelle hierarchische Struktur
+    categories.forEach(category => {
+      const categoryObj = categoryMap.get(category.name);
+      
       if (!category.parent_category) {
-        mainCategories[category.name] = {
-          ...category,
-          subcategories: []
-        };
+        // Hauptkategorie
+        rootCategories.push(categoryObj);
+      } else {
+        // Unterkategorie - füge zu Parent hinzu
+        const parent = categoryMap.get(category.parent_category);
+        if (parent) {
+          parent.children.push(categoryObj);
+        } else {
+          // Parent nicht gefunden - wird zu Hauptkategorie
+          rootCategories.push(categoryObj);
+        }
       }
     });
-
-    categories.forEach(category => {
-      if (category.parent_category && mainCategories[category.parent_category]) {
-        mainCategories[category.parent_category].subcategories.push(category);
-      }
-    });
-
-    return Object.values(mainCategories);
+    
+    return rootCategories;
   };
 
   const organizedCategories = organizeCategories();
