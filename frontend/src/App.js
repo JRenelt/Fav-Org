@@ -1810,7 +1810,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
     </div>
   );
 
-  // Rekursive Komponente für Kategorie-Hierarchie
+  // Rekursive Komponente für Kategorie-Hierarchie - MUSS VOR CategorySidebar definiert werden
   const CategoryNode = ({ category, level = 0, expandedCategories, onCategoryChange, activeCategory, activeSubcategory, onCategoryDragStart, onCategoryDragOver, onCategoryDragLeave, onCategoryDrop, onCategoryDragEnd, dragOverCategory, toggleCategory, organizedCategories }) => {
     const isExpanded = expandedCategories.has(category.name);
     const isActive = (level === 0 && activeCategory === category.name && !activeSubcategory) ||
