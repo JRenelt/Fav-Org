@@ -1525,6 +1525,7 @@ const StatisticsDialog = ({ isOpen, onClose, statistics, onRefresh }) => {
   );
 };
 
+// Category Sidebar Component
 const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCategoryChange, bookmarkCounts, statistics, onCategoryReorder, onBookmarkToCategory, onCategoryManage }) => {
   const [expandedCategories, setExpandedCategories] = useState(new Set(['Alle']));
   const [showBrowserInfo, setShowBrowserInfo] = useState(false);
