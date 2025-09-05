@@ -513,12 +513,9 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Statistics Dialog Vertical Layout"
-    - "Help Dialog Enhanced Layout" 
-    - "Category Tooltip Smart Positioning"
-    - "System Settings Dialog (Modern Design)"
-    - "Header Enhancements"
-    - "Sidebar Resizing Functionality (NEW)"
+    - "Easter Egg Game with Organic Street Network (NEW)"
+    - "Link Validation with System Messages (NEW)"
+    - "Bookmark Dialog (Create/Edit)"
     - "Drag & Drop Extended Functionality (NEW)"
   stuck_tasks: []
   test_all: false
