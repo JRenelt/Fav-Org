@@ -2576,6 +2576,7 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showStatistics, setShowStatistics] = useState(false);
   const [showExportDialog, setShowExportDialog] = useState(false); // Neu: Export Dialog
+  const [showCategoryManageDialog, setShowCategoryManageDialog] = useState(false); // Neu: Category Management
   const [editingBookmark, setEditingBookmark] = useState(null);
 
   // Clear all toasts function
