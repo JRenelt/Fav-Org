@@ -3079,7 +3079,12 @@ function App() {
     setVehicleTimer(null);
   };
 
-  // Game Over mit Rangliste und korrekte Anzeige
+  // State für Highscore-Liste
+  const [showHighscoreList, setShowHighscoreList] = useState(false);
+  const [currentGameScore, setCurrentGameScore] = useState(0);
+  const [highscoreList, setHighscoreList] = useState([]);
+
+  // Game Over mit verbesserter Siegerliste
   const handleGameOver = (finalScore) => {
     // Bestehende Scores laden
     const savedScores = JSON.parse(localStorage.getItem('favorg-game-scores') || '[]');
@@ -3098,11 +3103,10 @@ function App() {
     const top5 = savedScores.slice(0, 5);
     localStorage.setItem('favorg-game-scores', JSON.stringify(top5));
     
-    // Game Over Toast mit Rangliste
-    const rankText = top5.map((s, i) => `${i+1}. ${s.score} Mäuse (${s.date})`).join('\n');
-    const gameOverMessage = `🎮 Spiel beendet! Du hast ${finalScore} Mäuse gefangen!\n\n🏆 Top 5 Rangliste:\n${rankText}`;
-    
-    showCustomToast(gameOverMessage, 'warning', 15000); // 15 Sekunden für Rangliste
+    // Setze State für Highscore-Anzeige
+    setCurrentGameScore(finalScore);
+    setHighscoreList(top5);
+    setShowHighscoreList(true);
   };
 
   // Helper function für Element-Titel
