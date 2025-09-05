@@ -2816,6 +2816,13 @@ function App() {
     setTimeLeft(30);
     setMouseHidden(false);
     setHideTimeLeft(0);
+    
+    // Reset vehicle positions
+    setVehiclePositions({
+      bus: { x: 10, y: 45, direction: 1 },
+      car: { x: 80, y: 35, direction: -1 }
+    });
+    
     moveMouseToRandomPosition();
     
     // Game timer
