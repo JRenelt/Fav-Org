@@ -2951,8 +2951,10 @@ function App() {
     setGameActive(false);
     if (gameTimer) clearInterval(gameTimer);
     if (moveTimer) clearInterval(moveTimer);
+    if (vehicleTimer) clearInterval(vehicleTimer);
     setGameTimer(null);
     setMoveTimer(null);
+    setVehicleTimer(null);
   };
 
   // Game Over mit Rangliste und korrekte Anzeige
