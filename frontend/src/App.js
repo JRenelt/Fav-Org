@@ -3713,6 +3713,31 @@ function App() {
                 🚶
               </div>
               
+              {/* Bewegliche Fahrzeuge */}
+              <div
+                className="moving-vehicle bus"
+                style={{
+                  left: `${vehiclePositions.bus.x}%`,
+                  top: `${vehiclePositions.bus.y}%`,
+                  transform: `scaleX(${vehiclePositions.bus.direction})`
+                }}
+                title="Stadtbus"
+              >
+                🚌
+              </div>
+              
+              <div
+                className="moving-vehicle car"
+                style={{
+                  left: `${vehiclePositions.car.x}%`,
+                  top: `${vehiclePositions.car.y}%`,
+                  transform: `scaleX(${vehiclePositions.car.direction})`
+                }}
+                title="Auto"
+              >
+                🚗
+              </div>
+              
               {/* Stadt-Elemente - Gebäude, Natur, Verkehr */}
               {hideSpots.map((spot, index) => (
                 <div
