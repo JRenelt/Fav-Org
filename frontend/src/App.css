@@ -3261,12 +3261,119 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border-primary);
+  border-radius: 15px;
+  text-align: center;
+  z-index: 20;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--cyan-400);
+}
+
+/* Verbessertes Game Over Modal */
+.game-over-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50; /* Sehr hoch über allem anderen */
+  animation: fadeIn 0.3s ease-in;
+}
+
+.game-over-content {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  color: var(--text-primary);
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  border: 3px solid var(--cyan-400);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  min-width: 300px;
+  animation: slideInUp 0.4s ease-out;
+}
+
+.game-over-content h3 {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+  color: var(--cyan-400);
+}
+
+.final-score {
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+.final-score strong {
+  color: var(--yellow-400);
+  font-size: 1.4rem;
+}
+
+.game-over-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.restart-game-btn {
+  background: var(--green-500);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.restart-game-btn:hover {
+  background: var(--green-600);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+}
+
+.close-game-btn-final {
+  background: var(--red-500);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.close-game-btn-final:hover {
+  background: var(--red-600);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .game-over h3 {
