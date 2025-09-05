@@ -3712,6 +3712,13 @@ function App() {
         onRefresh={loadStatistics}
       />
 
+      <CategoryManageDialog
+        isOpen={showCategoryManageDialog}
+        onClose={() => setShowCategoryManageDialog(false)}
+        categories={categories}
+        onSave={handleSaveCategories}
+      />
+
       {/* Sonner Toaster - kept as fallback */}
       <Toaster 
         position="top-center" 
