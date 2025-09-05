@@ -1751,6 +1751,29 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
             </div>
           </div>
           
+          {organizedCategories.map(category => (
+            <CategoryNode
+              key={category.id}
+              category={category}
+              level={0}
+              expandedCategories={expandedCategories}
+              onCategoryChange={onCategoryChange}
+              activeCategory={activeCategory}
+              activeSubcategory={activeSubcategory}
+              onCategoryDragStart={handleCategoryDragStart}
+              onCategoryDragOver={handleCategoryDragOver}
+              onCategoryDragLeave={handleCategoryDragLeave}
+              onCategoryDrop={handleCategoryDrop}
+              onCategoryDragEnd={handleCategoryDragEnd}
+              dragOverCategory={dragOverCategory}
+              toggleCategory={toggleCategory}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   // Rekursive Komponente für Kategorie-Hierarchie
   const CategoryNode = ({ category, level = 0, expandedCategories, onCategoryChange, activeCategory, activeSubcategory, onCategoryDragStart, onCategoryDragOver, onCategoryDragLeave, onCategoryDrop, onCategoryDragEnd, dragOverCategory, toggleCategory }) => {
     const isExpanded = expandedCategories.has(category.name);
@@ -1855,10 +1878,6 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
       </div>
     );
   };
-        </div>
-      </div>
-    </div>
-  );
 };
 
 const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus, onBookmarkReorder }) => {
