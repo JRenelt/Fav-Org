@@ -880,62 +880,123 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   };
 
   // Live-Editing: Neue Kategorie erstellen
-  const handleCreateCategory = (e) => {
+  const handleCreateCategory = async (e) => {
     if (e.key === 'Enter' && newCategoryName.trim()) {
-      const newCategory = {
-        id: 'new_' + Date.now(),
-        name: newCategoryName.trim(),
-        parent_category: null,
-        bookmark_count: 0,
-        subcategory_count: 0,
-        created_at: new Date().toISOString()
-      };
-      
-      // Direkt an Backend senden (simuliert)
-      console.log('Creating new category:', newCategory);
-      toast.success(`Neue Kategorie "${newCategoryName}" erstellt`);
-      
-      setNewCategoryName('');
-      // In echter Implementation würde hier ein API-Call gemacht
+      try {
+        const newCategory = {
+          name: newCategoryName.trim(),
+          parent_category: null
+        };
+        
+        // API Call zum Backend
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newCategory)
+        });
+        
+        if (response.ok) {
+          toast.success(`Neue Kategorie "${newCategoryName}" erstellt`);
+          setNewCategoryName('');
+          await loadCategories(); // Kategorien neu laden
+        } else {
+          throw new Error('Kategorie konnte nicht erstellt werden');
+        }
+      } catch (error) {
+        console.error('Create category error:', error);
+        toast.error('Fehler beim Erstellen der Kategorie: ' + error.message);
+      }
     }
   };
 
   // Live-Editing: Neue Unterkategorie erstellen
-  const handleCreateSubcategory = (e) => {
+  const handleCreateSubcategory = async (e) => {
     if (e.key === 'Enter' && newSubcategoryName.trim() && selectedParentCategory) {
-      const newSubcategory = {
-        id: 'new_sub_' + Date.now(),
-        name: newSubcategoryName.trim(),
-        parent_category: selectedParentCategory,
-        bookmark_count: 0,
-        created_at: new Date().toISOString()
-      };
-      
-      // Direkt an Backend senden (simuliert)
-      console.log('Creating new subcategory:', newSubcategory);
-      toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
-      
-      setNewSubcategoryName('');
-      setSelectedParentCategory('');
-      // In echter Implementation würde hier ein API-Call gemacht
+      try {
+        const newSubcategory = {
+          name: newSubcategoryName.trim(),
+          parent_category: selectedParentCategory
+        };
+        
+        // API Call zum Backend
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newSubcategory)
+        });
+        
+        if (response.ok) {
+          toast.success(`Neue Unterkategorie "${newSubcategoryName}" unter "${selectedParentCategory}" erstellt`);
+          setNewSubcategoryName('');
+          setSelectedParentCategory('');
+          await loadCategories(); // Kategorien neu laden
+        } else {
+          throw new Error('Unterkategorie konnte nicht erstellt werden');
+        }
+      } catch (error) {
+        console.error('Create subcategory error:', error);
+        toast.error('Fehler beim Erstellen der Unterkategorie: ' + error.message);
+      }
     }
   };
 
   // Live-Editing: Kategorie umbenennen
-  const handleRenameCategory = (category, newName) => {
+  const handleRenameCategory = async (category, newName) => {
     if (newName.trim() && newName !== category.name) {
-      console.log('Renaming category:', category.name, 'to', newName);
-      toast.success(`Kategorie "${category.name}" zu "${newName}" umbenannt`);
-      setEditingCategory(null);
-      // In echter Implementation würde hier ein API-Call gemacht
+      try {
+        const updatedCategory = {
+          ...category,
+          name: newName.trim()
+        };
+        
+        // API Call zum Backend
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${category.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedCategory)
+        });
+        
+        if (response.ok) {
+          toast.success(`Kategorie "${category.name}" zu "${newName}" umbenannt`);
+          setEditingCategory(null);
+          await loadCategories(); // Kategorien neu laden
+        } else {
+          throw new Error('Kategorie konnte nicht umbenannt werden');
+        }
+      } catch (error) {
+        console.error('Rename category error:', error);
+        toast.error('Fehler beim Umbenennen der Kategorie: ' + error.message);
+      }
     }
   };
 
   // Live-Editing: Kategorie löschen
-  const handleDeleteCategory = (category) => {
-    console.log('Deleting category:', category.name);
-    toast.success(`Kategorie "${category.name}" gelöscht`);
-    // In echter Implementation würde hier ein API-Call gemacht
+  const handleDeleteCategory = async (category) => {
+    if (window.confirm(`Sind Sie sicher, dass Sie die Kategorie "${category.name}" löschen möchten? Alle Lesezeichen werden auf "Uncategorized" verschoben.`)) {
+      try {
+        // API Call zum Backend
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/categories/${category.id}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          toast.success(`Kategorie "${category.name}" gelöscht`);
+          await loadCategories(); // Kategorien neu laden
+          await loadBookmarks(); // Bookmarks neu laden (falls sich Zuordnungen geändert haben)
+        } else {
+          throw new Error('Kategorie konnte nicht gelöscht werden');
+        }
+      } catch (error) {
+        console.error('Delete category error:', error);
+        toast.error('Fehler beim Löschen der Kategorie: ' + error.message);
+      }
+    }
   };
 
   return (
