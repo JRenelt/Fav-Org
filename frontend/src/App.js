@@ -1802,6 +1802,7 @@ const CategorySidebar = ({ categories, activeCategory, activeSubcategory, onCate
               onCategoryDragEnd={handleCategoryDragEnd}
               dragOverCategory={dragOverCategory}
               toggleCategory={toggleCategory}
+              organizedCategories={organizedCategories}
             />
           ))}
         </div>
