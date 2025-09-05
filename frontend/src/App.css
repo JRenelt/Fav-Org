@@ -673,41 +673,58 @@ body {
   border-bottom: 2px solid var(--cyan-400);
 }
 
-/* Linien-Indikator beim Drag & Drop */
-.drag-line-indicator {
+/* DDI (Drag & Drop Indicator) System */
+
+/* ddi-Linie - Linie wie in Excel |---| */
+.ddi-line {
   position: absolute;
   left: 0;
   right: 0;
   height: 2px;
   background: var(--cyan-400);
   z-index: 1000;
-  opacity: 0.8;
+  opacity: 0.9;
   box-shadow: 0 0 4px var(--cyan-400);
+  pointer-events: none;
 }
 
-.drag-line-indicator::before {
+.ddi-line::before {
   content: '';
   position: absolute;
-  left: -4px;
-  top: -2px;
-  width: 8px;
-  height: 6px;
+  left: 0;
+  top: -8px;
+  width: 2px;
+  height: 18px;
   background: var(--cyan-400);
-  border-radius: 50%;
 }
 
-.drag-line-indicator::after {
+.ddi-line::after {
   content: '';
   position: absolute;
-  right: -4px;
-  top: -2px;
-  width: 8px;
-  height: 6px;
+  right: 0;
+  top: -8px;
+  width: 2px;
+  height: 18px;
   background: var(--cyan-400);
-  border-radius: 50%;
 }
 
-/* Drag handles für bessere UX */
+/* ddi-Rahmen - Gestrichelter Rahmen für Gruppen-Verschiebung */
+.ddi-frame {
+  border: 2px dashed var(--cyan-400) !important;
+  background: rgba(34, 197, 198, 0.1) !important;
+  box-shadow: 0 0 8px rgba(34, 197, 198, 0.3);
+  transition: all 0.2s ease;
+}
+
+/* Drag states für verschiedene Elemente */
+.category-item.dragging {
+  opacity: 0.6;
+  transform: rotate(1deg);
+  background: rgba(34, 197, 198, 0.08);
+  border: 1px dashed var(--cyan-400);
+  z-index: 999;
+}
+
 .category-item.draggable:hover {
   background: rgba(34, 197, 198, 0.05);
   border-left: 3px solid var(--cyan-400);
@@ -716,16 +733,20 @@ body {
 
 .category-item.draggable:active {
   cursor: grabbing;
-  opacity: 0.7;
 }
 
-/* Verhindert Verschwinden der Elemente beim Drag */
-.category-item.dragging {
-  opacity: 0.5;
-  transform: rotate(2deg);
-  background: rgba(34, 197, 198, 0.1);
-  border: 1px dashed var(--cyan-400);
+/* Keyboard modifier states */
+.category-item.ctrl-drag {
+  border: 2px solid var(--yellow-400) !important;
+  background: rgba(255, 255, 0, 0.1) !important;
 }
+
+/* Multi-level category indentation */
+.category-level-1 { padding-left: 0px; }
+.category-level-2 { padding-left: 20px; }
+.category-level-3 { padding-left: 40px; }
+.category-level-4 { padding-left: 60px; }
+.category-level-5 { padding-left: 80px; }
 
 .bookmark-title-section {
   display: flex;
