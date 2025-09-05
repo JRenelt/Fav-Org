@@ -2731,6 +2731,12 @@ function App() {
   const [gameActive, setGameActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
   const [mouseHidden, setMouseHidden] = useState(false);
+  
+  // Fahrzeug-Bewegungen State
+  const [vehiclePositions, setVehiclePositions] = useState({
+    bus: { x: 10, y: 45, direction: 1 }, // 1 = rechts, -1 = links
+    car: { x: 80, y: 35, direction: -1 }
+  });
   const [hideTimeLeft, setHideTimeLeft] = useState(0);
   const [gameTimer, setGameTimer] = useState(null);
   const [moveTimer, setMoveTimer] = useState(null);
