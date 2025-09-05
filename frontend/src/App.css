@@ -3656,28 +3656,317 @@ body {
   background: var(--cyan-500);
 }
 
-/* Test Data Button */
-.test-data-btn-modern {
-  width: 100%;
-  height: 44px;
-  background: var(--yellow-500);
-  color: white;
-  border: none;
-  font-weight: 500;
-  transition: var(--transition-colors);
-  margin-bottom: 16px;
+/* Live-Editing Category Management Dialog Styles */
+.category-manage-dialog-live {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  max-width: 700px;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
-.test-data-btn-modern:hover:not(:disabled) {
-  background: #d97706;
+.category-manage-title {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
-.test-data-info {
-  background: var(--bg-tertiary);
+.category-manage-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+.category-manage-live-content {
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Neue Kategorie Sektion */
+.new-category-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--cyan-400);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.new-category-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.new-category-icon {
+  color: var(--cyan-400);
+  font-size: 1.1rem;
+  font-weight: bold;
+  min-width: 24px;
+}
+
+.new-category-input {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+.new-category-input:focus {
+  border-color: var(--cyan-400);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+.new-category-input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* Neue Unterkategorie Sektion */
+.new-subcategory-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--green-400);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.new-subcategory-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.new-subcategory-icon {
+  color: var(--green-400);
+  font-size: 1rem;
+  font-weight: bold;
+  min-width: 24px;
+}
+
+.parent-category-select {
+  min-width: 200px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+.new-subcategory-input {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+.new-subcategory-input:focus {
+  border-color: var(--green-400);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.new-subcategory-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.new-subcategory-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Bestehende Kategorien Sektion */
+.existing-categories-section {
+  background: var(--bg-secondary);
   border: 1px solid var(--border-primary);
   border-radius: 8px;
-  padding: 12px;
-  margin-top: 8px;
+  padding: 16px;
+}
+
+.section-title {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.categories-live-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-live-group {
+  margin-bottom: 12px;
+}
+
+.category-live-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  min-height: 40px;
+  transition: all 0.2s ease;
+}
+
+.category-live-item:hover {
+  border-color: var(--cyan-400);
+  background: rgba(34, 211, 238, 0.05);
+}
+
+.category-live-item.main-category {
+  border-left: 3px solid var(--cyan-400);
+}
+
+.category-live-item.subcategory {
+  border-left: 3px solid var(--green-400);
+  margin-left: 20px;
+  margin-top: 4px;
+}
+
+.category-live-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.category-level-icon {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  min-width: 20px;
+}
+
+.category-name-editable {
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  flex: 1;
+}
+
+.category-name-editable:hover {
+  background: rgba(34, 211, 238, 0.1);
+  color: var(--cyan-400);
+}
+
+.category-edit-input {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--cyan-400);
+  color: var(--text-primary);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+}
+
+.category-edit-input:focus {
+  border-color: var(--cyan-400);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+.category-live-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.edit-category-btn-live,
+.delete-category-btn-live {
+  padding: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-category-btn-live:hover {
+  background: rgba(34, 211, 238, 0.1);
+  color: var(--cyan-400);
+}
+
+.delete-category-btn-live:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--red-500);
+}
+
+/* Minimale Dialog-Aktionen */
+.dialog-actions-minimal {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0 0 0;
+  border-top: 1px solid var(--border-primary);
+}
+
+.close-dialog-btn {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.close-dialog-btn:hover {
+  background: var(--cyan-400);
+  color: white;
+  border-color: var(--cyan-400);
+}
+
+/* Live-Editing Spezifische Styles */
+.category-manage-dialog-live .category-name-editable {
+  position: relative;
+}
+
+.category-manage-dialog-live .category-name-editable::after {
+  content: "✏️";
+  opacity: 0;
+  margin-left: 8px;
+  font-size: 0.8rem;
+  transition: opacity 0.2s ease;
+}
+
+.category-manage-dialog-live .category-name-editable:hover::after {
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .category-manage-dialog-live {
+    max-width: 95vw;
+    margin: 16px;
+  }
+  
+  .new-category-row,
+  .new-subcategory-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .parent-category-select {
+    min-width: auto;
+  }
+  
+  .category-live-item.subcategory {
+    margin-left: 10px;
+  }
 }
 
 /* Import/Export Navigation Menu */
