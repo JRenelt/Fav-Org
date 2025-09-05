@@ -613,8 +613,7 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
     title: '',
     url: '',
     category: 'Uncategorized',
-    subcategory: '__none__',
-    subcategories: [] // Neu: Array für mehrere Unterkategorien
+    subcategory: '__none__'
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
