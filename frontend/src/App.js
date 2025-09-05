@@ -779,32 +779,105 @@ const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
   const [newSubcategoryName, setNewSubcategoryName] = useState('');
   const [selectedParentCategory, setSelectedParentCategory] = useState('');
 
-  // Organisiere Kategorien hierarchisch
+  // Organisiere Kategorien hierarchisch - UNBEGRENZTE EBENEN
   const organizeCategories = () => {
-    const mainCategories = {};
-    const allCategories = [...categories];
+    const categoryMap = new Map();
+    const rootCategories = [];
     
-    // Zuerst alle Hauptkategorien sammeln
-    allCategories.forEach(category => {
+    // Erstelle Map aller Kategorien für schnelle Suche
+    categories.forEach(category => {
+      categoryMap.set(category.name, {
+        ...category,
+        children: []
+      });
+    });
+    
+    // Erstelle hierarchische Struktur
+    categories.forEach(category => {
+      const categoryObj = categoryMap.get(category.name);
+      
       if (!category.parent_category) {
-        mainCategories[category.name] = {
-          ...category,
-          subcategories: []
-        };
+        // Hauptkategorie
+        rootCategories.push(categoryObj);
+      } else {
+        // Unterkategorie - füge zu Parent hinzu
+        const parent = categoryMap.get(category.parent_category);
+        if (parent) {
+          parent.children.push(categoryObj);
+        } else {
+          // Parent nicht gefunden - wird zu Hauptkategorie
+          rootCategories.push(categoryObj);
+        }
       }
     });
-
-    // Dann Unterkategorien zuordnen
-    allCategories.forEach(category => {
-      if (category.parent_category && mainCategories[category.parent_category]) {
-        mainCategories[category.parent_category].subcategories.push(category);
-      }
-    });
-
-    return Object.values(mainCategories);
+    
+    return rootCategories;
   };
 
   const organizedCategories = organizeCategories();
+
+  // Rekursive Funktion zum Rendern von Kategorien aller Ebenen
+  const renderCategoryTree = (cats, level = 0) => {
+    return cats.map(category => (
+      <div key={category.id} className="category-live-group">
+        {/* Hauptkategorie */}
+        <div className="category-live-item main-category" style={{ marginLeft: `${level * 20}px` }}>
+          <div className="category-live-info">
+            <span className="category-level-icon">
+              {level === 0 ? '📁' : `${'└─'.repeat(level)}📂`}
+            </span>
+            {editingCategory === category.id ? (
+              <Input
+                defaultValue={category.name}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleRenameCategory(category, e.target.value);
+                  } else if (e.key === 'Escape') {
+                    setEditingCategory(null);
+                  }
+                }}
+                onBlur={(e) => handleRenameCategory(category, e.target.value)}
+                className="category-edit-input"
+                autoFocus
+              />
+            ) : (
+              <span 
+                className="category-name-editable"
+                onClick={() => setEditingCategory(category.id)}
+              >
+                {category.name} ({category.bookmark_count || 0})
+              </span>
+            )}
+          </div>
+          <div className="category-live-actions">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setEditingCategory(category.id)}
+              className="edit-category-btn-live"
+              title="Bearbeiten"
+            >
+              <Edit2 className="w-3 h-3" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => handleDeleteCategory(category)}
+              className="delete-category-btn-live"
+              title="Löschen"
+            >
+              <Trash2 className="w-3 h-3" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Rekursiv Kinder rendern */}
+        {category.children && category.children.length > 0 && 
+          renderCategoryTree(category.children, level + 1)
+        }
+      </div>
+    ));
+  };
 
   // Live-Editing: Neue Kategorie erstellen
   const handleCreateCategory = (e) => {
