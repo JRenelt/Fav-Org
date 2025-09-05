@@ -915,6 +915,118 @@ const BookmarkDialog = ({ isOpen, onClose, bookmark, onSave, categories }) => {
   );
 };
 
+// Category Management Dialog Component
+const CategoryManageDialog = ({ isOpen, onClose, categories, onSave }) => {
+  const [categoryList, setCategoryList] = useState([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setCategoryList(categories.map(cat => ({
+        ...cat,
+        editing: false,
+        newName: cat.name
+      })));
+    }
+  }, [isOpen, categories]);
+
+  const handleAddCategory = () => {
+    const newCategory = {
+      id: 'new_' + Date.now(),
+      name: '',
+      parent_category: null,
+      editing: true,
+      newName: '',
+      isNew: true
+    };
+    setCategoryList([...categoryList, newCategory]);
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="dialog-content category-manage-dialog">
+        <DialogHeader>
+          <DialogTitle>
+            🏷️ Kategorien verwalten
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="category-manage-content">
+          <div className="category-manage-actions">
+            <Button onClick={handleAddCategory} className="add-category-btn">
+              <Plus className="w-4 h-4 mr-2" />
+              Neue Kategorie
+            </Button>
+          </div>
+          
+          <div className="category-list-manage">
+            {categoryList.map((category, index) => (
+              <div key={category.id} className="category-manage-item">
+                <div className="category-manage-info">
+                  <span className="category-level">
+                    {category.parent_category ? '└─' : '📁'}
+                  </span>
+                  {category.editing ? (
+                    <Input
+                      value={category.newName}
+                      onChange={(e) => {
+                        const updated = [...categoryList];
+                        updated[index].newName = e.target.value;
+                        setCategoryList(updated);
+                      }}
+                      className="category-name-input"
+                      placeholder="Kategorie-Name"
+                    />
+                  ) : (
+                    <span className="category-name">{category.name}</span>
+                  )}
+                </div>
+                <div className="category-manage-actions">
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      const updated = [...categoryList];
+                      updated[index].editing = !updated[index].editing;
+                      setCategoryList(updated);
+                    }}
+                    className="edit-category-btn"
+                  >
+                    {category.editing ? <Check className="w-3 h-3" /> : <Edit2 className="w-3 h-3" />}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => {
+                      setCategoryList(categoryList.filter((_, i) => i !== index));
+                    }}
+                    className="delete-category-btn"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="dialog-actions">
+          <Button onClick={onClose} variant="outline">
+            Abbrechen
+          </Button>
+          <Button 
+            onClick={() => {
+              onSave(categoryList);
+              onClose();
+            }}
+            className="save-categories-btn"
+          >
+            Speichern
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 // Help Dialog Component with comprehensive content and new hierarchical submenu system
 const HelpDialog = ({ isOpen, onClose }) => {
   const [activeSection, setActiveSection] = useState('favorites-import');
