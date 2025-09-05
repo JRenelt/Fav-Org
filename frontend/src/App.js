@@ -3450,7 +3450,7 @@ function App() {
       
       if (editingBookmark) {
         await favoritesService.updateBookmark(editingBookmark.id, bookmarkData);
-        toast.success('Favorit aktualisiert.');
+        toast.success('Favorit aktualisiert');
       } else {
         // Beim Erstellen: Hauptbookmark speichern
         const response = await favoritesService.createBookmark(bookmarkData);
@@ -3467,17 +3467,48 @@ function App() {
           }
           toast.success(`Favorit mit ${formData.subcategories.length} Unterkategorien erstellt`);
         } else {
-          toast.success('Favorit erstellt.');
+          toast.success('Favorit erstellt');
         }
       }
       
-      setShowBookmarkDialog(false);
-      setEditingBookmark(null);
       await loadBookmarks();
       await loadCategories();
       await loadStatistics();
     } catch (error) {
-      toast.error('Speichern fehlgeschlagen: ' + error.message);
+      console.error('Save bookmark error:', error);
+      toast.error('Favorit speichern fehlgeschlagen: ' + error.message);
+    }
+  };
+
+  // Handler für Kategorie-Management
+  const handleSaveCategories = async (categoryList) => {
+    try {
+      // Hier würde normalerweise eine API-Anfrage an das Backend gemacht
+      // Für jetzt loggen wir die Änderungen und aktualisieren lokal
+      console.log('Kategorien gespeichert:', categoryList);
+      
+      // Simuliere Speicherung durch lokale Aktualisierung
+      const validCategories = categoryList
+        .filter(cat => cat.newName && cat.newName.trim() !== '')
+        .map(cat => ({
+          ...cat,
+          name: cat.newName,
+          editing: false
+        }));
+      
+      setCategories(validCategories);
+      
+      // Lokale Speicherung
+      localStorage.setItem('favorg-categories', JSON.stringify(validCategories));
+      
+      await loadCategories();
+      await loadBookmarks();
+      await loadStatistics();
+      
+      toast.success('Kategorien erfolgreich gespeichert');
+    } catch (error) {
+      console.error('Save categories error:', error);
+      toast.error('Kategorien speichern fehlgeschlagen: ' + error.message);
     }
   };
 
