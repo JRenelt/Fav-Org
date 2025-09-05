@@ -2680,7 +2680,7 @@ function App() {
           setGameActive(false);
           clearInterval(newGameTimer);
           if (moveTimer) clearInterval(moveTimer);
-          showCustomToast(`🎮 Spiel beendet! Du hast ${score} Mäuse gefangen!`, 'warning', 10000); // Gelb, 10 Sek
+          handleGameOver(score); // Verwende neue Ranglisten-Funktion
           return 0;
         }
         return prev - 1;
