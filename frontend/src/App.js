@@ -2773,10 +2773,8 @@ function App() {
     { type: '🌿', x: 15, y: 80, width: 8, height: 6 },   // Parkanlage
     { type: '🌻', x: 85, y: 75, width: 4, height: 4 },   // Blumen
     
-    // Verkehrs-Elemente
+    // Verkehrs-Elemente (statisch)
     { type: '🚏', x: 25, y: 45, width: 3, height: 6 },   // Bushaltestelle
-    { type: '🚗', x: 55, y: 35, width: 6, height: 4 },   // Auto
-    { type: '🚌', x: 10, y: 50, width: 8, height: 4 },   // Bus
   ];
 
   // Straßen-Layout (wird als CSS-Pattern gerendert)
