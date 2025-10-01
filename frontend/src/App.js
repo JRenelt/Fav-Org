@@ -3546,7 +3546,9 @@ function App() {
   
   // Paginierung State
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(50);
+  const [itemsPerPage, setItemsPerPage] = useState(() => {
+    return parseInt(localStorage.getItem('favorg-items-per-page') || '50');
+  });
 
   // Dialog States
   const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
