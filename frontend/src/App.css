@@ -3141,6 +3141,17 @@ body {
   color: var(--text-primary) !important;
 }
 
+/* Weitere Help-Texte für besseren Kontrast */
+.comprehensive-help-dialog .help-section,
+.comprehensive-help-dialog .help-section p,
+.comprehensive-help-dialog .help-section li,
+.comprehensive-help-dialog .help-section div,
+.help-content p,
+.help-content li,
+.help-content div {
+  color: var(--text-primary) !important;
+}
+
 .comprehensive-help-dialog .help-content-area {
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
