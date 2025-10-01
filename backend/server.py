@@ -1196,7 +1196,7 @@ class BookmarkManager:
             {"title": "Genome.gov", "url": "https://www.genome.gov", "category": "Science", "subcategory": "Biology", "description": "Human genome research"}
         ]
         
-        # Erstelle Bookmarks mit korrekten Status-Typen
+        # Erstelle Bookmarks mit korrekten Status-Typen - jetzt 100 Datensätze (10 Gruppen x 10)
         all_bookmark_groups = [
             (active_bookmarks, "active", False, False),
             (dead_bookmarks, "dead", True, False),
@@ -1204,7 +1204,10 @@ class BookmarkManager:
             (duplicate_bookmarks, "duplicate", False, False),
             (locked_bookmarks, "locked", False, True),
             (timeout_bookmarks, "timeout", False, False),
-            (unchecked_bookmarks, "unchecked", False, False)
+            (unchecked_bookmarks, "unchecked", False, False),
+            (sport_bookmarks, "active", False, False),  # Sport als active
+            (business_bookmarks, "active", False, False),  # Business als active 
+            (science_bookmarks, "active", False, False)  # Science als active
         ]
         
         total_created = 0
