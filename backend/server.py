@@ -1557,7 +1557,7 @@ async def create_sample_bookmarks():
 
 @api_router.post("/bookmarks/create-test-data")
 async def create_test_data():
-    """50 Testdaten mit Duplikaten und toten Links erstellen"""
+    """100 Testdaten mit verschiedenen Status-Typen erstellen"""
     result = await bookmark_manager.create_comprehensive_test_data()
     return result
 
