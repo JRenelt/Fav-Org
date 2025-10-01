@@ -4200,7 +4200,7 @@ function App() {
           onClearSearch={handleClearSearch}
           statusFilter={statusFilter}
           onStatusFilterChange={handleStatusFilterChange}
-          bookmarks={filteredBookmarks}
+          bookmarks={paginatedBookmarks}
           onDeleteBookmark={handleDeleteBookmark}
           onEditBookmark={handleEditBookmark}
           onToggleStatus={handleToggleStatus}
@@ -4212,6 +4212,18 @@ function App() {
           statistics={statistics}
           highlightSearchTerm={highlightSearchTerm}
         />
+
+        {/* Pagination Controls */}
+        {filteredBookmarks.length > 0 && (
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            totalItems={filteredBookmarks.length}
+            itemsPerPage={itemsPerPage}
+            statistics={statistics}
+          />
+        )}
       </div>
 
       {/* App-Fußzeile - außerhalb der app-body */}
