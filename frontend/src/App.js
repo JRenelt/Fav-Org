@@ -2416,6 +2416,13 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
                 Hinzugefügt: {new Date(bookmark.date_added).toLocaleDateString('de-DE')}
               </span>
             </div>
+            
+            {/* Beschreibung unter der Kategorie anzeigen */}
+            {bookmark.description && (
+              <div className="bookmark-description">
+                {bookmark.description}
+              </div>
+            )}
           </CardHeader>
         </Card>
       ))}
