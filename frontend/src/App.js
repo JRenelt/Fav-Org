@@ -158,18 +158,7 @@ const PaginationControls = ({
         </Button>
       </div>
       
-      {/* Statistiken wie gewünscht */}
-      <div className="pagination-stats">
-        {statistics && (
-          <>
-            <span className="stat-item">{statistics.active_links || 0} Aktiv</span>
-            <span className="stat-separator">•</span>
-            <span className="stat-item">{statistics.dead_links || 0} Tot</span>
-            <span className="stat-separator">•</span>
-            <span className="stat-item">{statistics.total_categories || 0} Kategorien</span>
-          </>
-        )}
-      </div>
+      {/* Statistiken entfernt - werden separat in der Fußzeile angezeigt */}
     </div>
   );
 };
