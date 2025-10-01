@@ -4233,17 +4233,29 @@ function App() {
           </div>
           
           <div className="footer-center">
-            <span className="footer-stats">
-              {statistics ? (
-                <>
-                  {statistics.active_links || 0} Aktiv • 
-                  {statistics.dead_links || 0} Tot • 
-                  {statistics.total_categories || 0} Kategorien
-                </>
-              ) : (
-                'Lade Statistiken...'
-              )}
-            </span>
+            {/* Seitennavigation ersetzt Statistiken */}
+            {filteredBookmarks.length > 0 && totalPages > 1 ? (
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+                totalItems={filteredBookmarks.length}
+                itemsPerPage={itemsPerPage}
+                statistics={statistics}
+              />
+            ) : (
+              <span className="footer-stats">
+                {statistics ? (
+                  <>
+                    {statistics.active_links || 0} Aktiv • 
+                    {statistics.dead_links || 0} Tot • 
+                    {statistics.total_categories || 0} Kategorien
+                  </>
+                ) : (
+                  'Lade Statistiken...'
+                )}
+              </span>
+            )}
           </div>
           
           <div className="footer-right">
