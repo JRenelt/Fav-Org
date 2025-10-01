@@ -49,10 +49,14 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
           'Dunkles und helles Theme'
         ],
         quickStart: [
-          '1. Importieren Sie Ihre Browser-Favoriten über "Datei wählen"',
-          '2. Organisieren Sie Links in Kategorien über die Sidebar',
-          '3. Verwenden Sie Filter um Links nach Status zu sortieren',
-          '4. Sperren Sie wichtige Links mit dem Schloss-Symbol',
+          '1. Erstellen Sie 100 Testdatensätze über Einstellungen → Erweitert',
+          '2. Importieren Sie Ihre Browser-Favoriten über "Datei wählen"',
+          '3. Organisieren Sie Links in Kategorien über die Sidebar',
+          '4. Fügen Sie Beschreibungen zu Ihren Bookmarks hinzu (erscheint unter der Kategorie)',
+          '5. Verwenden Sie die Suchfunktion - Treffer werden gelb hervorgehoben',
+          '6. Nutzen Sie die Seitennavigation [<<][<][>][>>] unten',
+          '7. Kollabieren Sie die Sidebar mit dem < > Button',
+          '8. Sperren Sie wichtige Links mit dem Schloss-Symbol',
           '5. Exportieren Sie Ihre Sammlung in verschiedenen Formaten'
         ]
       }
