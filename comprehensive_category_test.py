@@ -3,7 +3,7 @@ import json
 import time
 
 def comprehensive_category_test():
-    base_url = "https://test-audit-tool.preview.emergentagent.com/api"
+    base_url = "https://fav-auditor.preview.emergentagent.com/api"
     
     print("🎯 COMPREHENSIVE CATEGORY CRUD TESTING")
     print("🇩🇪 Teste alle User-gemeldeten Kategorie-Probleme")
@@ -121,7 +121,7 @@ def comprehensive_category_test():
         return False
 
 def test_subcategory_creation():
-    base_url = "https://test-audit-tool.preview.emergentagent.com/api"
+    base_url = "https://fav-auditor.preview.emergentagent.com/api"
     
     print(f"\n📋 TEST 4: Subcategory Creation (Multi-level)")
     
@@ -175,7 +175,7 @@ def test_subcategory_creation():
         return False
 
 def test_category_cleanup():
-    base_url = "https://test-audit-tool.preview.emergentagent.com/api"
+    base_url = "https://fav-auditor.preview.emergentagent.com/api"
     
     print(f"\n📋 TEST 5: Category Cleanup")
     

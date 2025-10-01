@@ -44,7 +44,7 @@ def test_frontend_backend_integration():
     try:
         # Simuliere Frontend-Request mit CORS
         headers = {
-            'Origin': 'https://test-audit-tool.preview.emergentagent.com',
+            'Origin': 'https://fav-auditor.preview.emergentagent.com',
             'Access-Control-Request-Method': 'POST',
             'Access-Control-Request-Headers': 'Content-Type'
         }
@@ -73,8 +73,8 @@ def test_frontend_backend_integration():
         # Simuliere Frontend Request
         headers = {
             'Content-Type': 'application/json',
-            'Origin': 'https://test-audit-tool.preview.emergentagent.com',
-            'Referer': 'https://test-audit-tool.preview.emergentagent.com/',
+            'Origin': 'https://fav-auditor.preview.emergentagent.com',
+            'Referer': 'https://fav-auditor.preview.emergentagent.com/',
             'User-Agent': 'Mozilla/5.0 (Frontend Test)'
         }
         
