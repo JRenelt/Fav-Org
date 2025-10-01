@@ -2598,6 +2598,10 @@ body {
 
 .bookmark-url {
   flex: 1;
+  word-wrap: break-word; /* Lange URLs umbrechen */
+  overflow-wrap: break-word;
+  white-space: normal; /* Mehrzeilig erlauben */
+  line-height: 1.4;
 }
 
 .bookmark-link {
