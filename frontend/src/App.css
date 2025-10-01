@@ -2617,12 +2617,18 @@ body {
 
 .bookmark-categories {
   display: flex;
-  align-items: flex-start; /* GEÄNDERT: oben ausrichten für mehrzeiligen Inhalt */
+  flex-direction: column; /* GEÄNDERT: vertikal für Kategorie-Zeile und Datum */
   gap: 8px;
   font-size: 0.8125rem;
   color: var(--text-secondary);
-  flex-wrap: wrap; /* Umbrechen erlauben */
-  word-wrap: break-word;
+}
+
+/* Kategorie-Zeile: horizontal zentriert */
+.category-row {
+  display: flex;
+  align-items: center; /* KORRIGIERT: horizontal zentriert */
+  gap: 8px;
+}
 }
 
 .category-label {
