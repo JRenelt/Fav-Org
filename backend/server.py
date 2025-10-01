@@ -1049,7 +1049,7 @@ class BookmarkManager:
         }
 
     async def create_comprehensive_test_data(self):
-        """Modulare Testdaten-Generierung mit exakten Status-Zahlen für Phase 2 Rebuild"""
+        """Modulare Testdaten-Generierung mit 100 Testdatensätzen - exakte Status-Zahlen für Phase 2 Rebuild"""
         # Bereinigung vor Neuerstellung
         await self.db.bookmarks.delete_many({})
         await self.db.categories.delete_many({})
