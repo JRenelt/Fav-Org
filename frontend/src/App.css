@@ -1686,6 +1686,7 @@ body {
   flex-direction: row;
   align-items: stretch;
   justify-content: flex-start;
+  padding-left: 0px; /* Toggle-Button hat fixed Position */
 }
 
 /* Externer Toggle Button */
