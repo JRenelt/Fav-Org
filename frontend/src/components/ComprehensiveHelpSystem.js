@@ -121,6 +121,69 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
         ]
       }
     },
+    navigation: {
+      title: 'Suche & Navigation',
+      icon: <Search className="w-5 h-5" />,
+      content: {
+        title: 'Erweiterte Such- und Navigationsfunktionen',
+        description: 'Nutzen Sie die verbesserten Such-, Filter- und Navigationsmöglichkeiten für optimale Bookmark-Verwaltung.',
+        sections: [
+          {
+            title: 'Gelbe Such-Hervorhebung',
+            steps: [
+              '🔍 **Suchfeld verwenden**: Geben Sie Text in das Suchfeld oben ein',
+              '💛 **Automatische Hervorhebung**: Treffer werden gelb markiert in Titel, URL und Beschreibung',
+              '📊 **Tabellenansicht**: Such-Hervorhebung funktioniert auch in der Tabellen-Darstellung',
+              '🎯 **Multi-Feld-Suche**: Durchsucht Titel, URL, Kategorie, Unterkategorie und Beschreibung',
+              '⚡ **Live-Suche**: Ergebnisse werden während der Eingabe aktualisiert'
+            ]
+          },
+          {
+            title: 'Seitennavigation [<<][<][>][>>]',
+            steps: [
+              '📄 **50 Einträge pro Seite**: Standard-Ansicht für bessere Performance',
+              '⏪ **[<<]**: Springe zur ersten Seite',
+              '◀️ **[<]**: Vorherige Seite',
+              '📍 **[1 von X]**: Aktuelle Seite und Gesamtanzahl',
+              '▶️ **[>]**: Nächste Seite',
+              '⏩ **[>>]**: Springe zur letzten Seite',
+              '📊 **Live-Statistiken**: "X Aktiv • Y Tot • Z Kategorien" werden angezeigt',
+              '🔄 **Auto-Scroll**: Scrollt automatisch nach oben bei Seitenwechsel'
+            ]
+          },
+          {
+            title: 'Sidebar-Kollaps & Vollbild',
+            steps: [
+              '👈 **[<] Button**: Kollabiert die Sidebar für mehr Platz',
+              '👉 **[>] Button**: Öffnet die kollabierte Sidebar wieder',
+              '📱 **Fixer Toggle**: Bei kollabierter Sidebar erscheint Toggle-Button links',
+              '💻 **Vollbild-Modus**: Maximaler Platz für Bookmark-Anzeige',
+              '🎯 **Responsive Design**: Optimiert für alle Bildschirmgrößen'
+            ]
+          },
+          {
+            title: '80% Zoom-Optimierung',
+            steps: [
+              '🖥️ **Große Monitore**: Automatische Anpassung bei Bildschirmbreite >1600px',
+              '📏 **Kompakte Darstellung**: 20% kleinere UI-Elemente für bessere Übersicht',
+              '📋 **Mehr Inhalt**: Bis zu 30% mehr Bookmarks gleichzeitig sichtbar',
+              '🎨 **Optimierte Abstände**: Angepasste Margins und Paddings',
+              '⚡ **Performance**: Bessere Nutzung des verfügbaren Bildschirmplatzes'
+            ]
+          },
+          {
+            title: 'Modernes Loading-System',
+            steps: [
+              '⏳ **Spinner-Animation**: Eleganter Loader2-Spinner während Operationen',
+              '🌫️ **Backdrop-Blur**: Dezenter Hintergrund-Weichzeichner',
+              '💬 **Status-Nachrichten**: "System arbeitet..." Information',
+              '🎨 **Moderne Animation**: Sanfte Ein-/Ausblendungen',
+              '🔄 **Automatisches Erscheinen**: Bei allen längeren Operationen (Import, Validierung, etc.)'
+            ]
+          }
+        ]
+      }
+    },
     bookmarks: {
       title: 'Lesezeichen-Verwaltung',
       icon: <MousePointer2 className="w-5 h-5" />,
