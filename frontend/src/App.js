@@ -2502,11 +2502,13 @@ const BookmarkList = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleSta
             </div>
             
             <div className="bookmark-categories">
-              <span className="category-label">Kategorie:</span>
-              <span className="category-value">
-                {bookmark.category}
-                {bookmark.subcategory && ` → ${bookmark.subcategory}`}
-              </span>
+              <div className="category-row">
+                <span className="category-label">Kategorie:</span>
+                <span className="category-value">
+                  {bookmark.category}
+                  {bookmark.subcategory && ` → ${bookmark.subcategory}`}
+                </span>
+              </div>
               <span className="date-added">
                 Hinzugefügt: {new Date(bookmark.date_added).toLocaleDateString('de-DE')}
               </span>
