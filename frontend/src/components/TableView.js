@@ -229,7 +229,7 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
                       className="bookmark-link-table"
                       title={bookmark.url}
                     >
-                      {bookmark.url}
+                      {highlightSearchTerm ? highlightSearchTerm(bookmark.url, searchQuery) : bookmark.url}
                     </a>
                   </div>
                 </td>
