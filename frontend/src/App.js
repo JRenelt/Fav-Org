@@ -3459,6 +3459,10 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     return localStorage.getItem('favorg-sidebar-collapsed') === 'true';
   });
+  
+  // Paginierung State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
 
   // Dialog States
   const [showBookmarkDialog, setShowBookmarkDialog] = useState(false);
