@@ -3524,7 +3524,7 @@ body {
   margin-bottom: 8px;
   padding-left: 16px;
   position: relative;
-  color: var(--text-secondary);
+  color: var(--text-primary) !important; /* Schwarz für besseren Kontrast */
   line-height: 1.4;
 }
 
