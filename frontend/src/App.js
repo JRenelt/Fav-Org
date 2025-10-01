@@ -90,6 +90,90 @@ const LoadingOverlay = ({ message = "Lädt..." }) => (
   </div>
 );
 
+// Seitennavigation Komponente mit spezifischen Symbolen
+const PaginationControls = ({ 
+  currentPage, 
+  totalPages, 
+  onPageChange, 
+  totalItems, 
+  itemsPerPage,
+  statistics 
+}) => {
+  if (totalPages <= 1) return null;
+
+  return (
+    <div className="pagination-container">
+      <div className="pagination-controls">
+        {/* Erste Seite */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onPageChange(1)}
+          disabled={currentPage === 1}
+          className="pagination-btn"
+          title="Erste Seite"
+        >
+          {"<<"}
+        </Button>
+        
+        {/* Vorherige Seite */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="pagination-btn"
+          title="Vorherige Seite"
+        >
+          {"<"}
+        </Button>
+        
+        {/* Seitenzahl */}
+        <div className="pagination-info">
+          {currentPage} von {totalPages}
+        </div>
+        
+        {/* Nächste Seite */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="pagination-btn"
+          title="Nächste Seite"
+        >
+          {">"}
+        </Button>
+        
+        {/* Letzte Seite */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage === totalPages}
+          className="pagination-btn"
+          title="Letzte Seite"
+        >
+          {">>"}
+        </Button>
+      </div>
+      
+      {/* Statistiken wie gewünscht */}
+      <div className="pagination-stats">
+        {statistics && (
+          <>
+            <span className="stat-item">{statistics.active_links || 0} Aktiv</span>
+            <span className="stat-separator">•</span>
+            <span className="stat-item">{statistics.dead_links || 0} Tot</span>
+            <span className="stat-separator">•</span>
+            <span className="stat-item">{statistics.total_categories || 0} Kategorien</span>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // Objektorientierte Frontend-Services
 
 class FavoritesService {
