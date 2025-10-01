@@ -195,9 +195,11 @@ const ComprehensiveHelpSystem = ({ isOpen, onClose }) => {
             title: 'Lesezeichen hinzufügen',
             steps: [
               'Klicken Sie auf "Neu" im Header',
-              'Geben Sie Titel, URL und Beschreibung ein',
+              'Geben Sie Titel, URL und aussagekräftige Beschreibung ein',
               'Wählen Sie Kategorie und Unterkategorie',
-              'Klicken Sie "Speichern"'
+              'Klicken Sie "Speichern"',
+              '📝 **Beschreibung wird angezeigt**: Erscheint unter der Kategorie in der Karte',
+              '🔍 **Durchsuchbar**: Beschreibungen werden in der Suche miteinbezogen'
             ]
           },
           {
