@@ -2032,7 +2032,10 @@ body {
   border: 1px solid var(--border-primary);
   border-radius: 8px;
   transition: var(--transition-base);
-  overflow: hidden;
+  overflow: visible; /* ÄNDERUNG: visible statt hidden für vollständigen Inhalt */
+  min-height: 180px; /* ERHÖHT: mehr Platz für vollständige Inhalte */
+  display: flex;
+  flex-direction: column;
 }
 
 .bookmark-card:hover {
