@@ -80,6 +80,16 @@ import {
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+// Moderne Loading-Komponente
+const LoadingOverlay = ({ message = "Lädt..." }) => (
+  <div className="loading-overlay">
+    <div className="loading-content">
+      <Loader2 className="loading-spinner" size={40} />
+      <p className="loading-message">{message}</p>
+    </div>
+  </div>
+);
+
 // Objektorientierte Frontend-Services
 
 class FavoritesService {
