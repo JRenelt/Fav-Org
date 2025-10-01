@@ -3066,6 +3066,33 @@ body {
   position: fixed !important;
 }
 
+/* Form Textarea Styling mit besserem Kontrast */
+.form-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px 16px;
+  border: 2px solid var(--border-primary);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary) !important;
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  transition: var(--transition-colors);
+}
+
+.form-textarea::placeholder {
+  color: var(--text-primary) !important; /* Schwarz statt hellgrau */
+  opacity: 0.8;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--cyan-400);
+  box-shadow: 0 0 0 1px var(--cyan-400);
+}
+
 /* Bookmark Dialog spezifische Z-Index Einstellungen */
 .bookmark-dialog {
   z-index: 100000 !important;
