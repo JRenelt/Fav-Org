@@ -1662,42 +1662,30 @@ body {
   display: none !important;
 }
 
-/* Main Content nimmt vollen Platz ein wenn Sidebar kollabiert */
+/* Main Content nimmt vollen Platz ein wenn Sidebar kollabiert - VEREINFACHT */
 .app-body.sidebar-collapsed .main-content {
-  margin-left: 0px !important;
-  width: 100% !important;
+  margin-left: 60px !important; /* Platz für Toggle-Button */
+  width: calc(100% - 80px) !important;
   flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: var(--bg-primary) !important;
+  min-height: calc(100vh - 130px) !important;
 }
 
-/* App-Body Layout für Sidebar Collapse */
+/* App Body Layout bei kollabierter Sidebar - VEREINFACHT */
 .app-body {
   display: flex;
   width: 100%;
+  min-height: calc(100vh - 130px);
 }
 
 .app-body.sidebar-collapsed {
   flex-direction: row;
-}
-
-.app-body.sidebar-collapsed .main-content {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  margin-left: 0 !important;
-  width: calc(100% - 20px) !important;
-  padding-left: 60px !important; /* Platz für Toggle-Button */
-  flex: 1 !important;
-}
-
-/* Zusätzliche Absicherung für Main Content bei kollabierter Sidebar */
-.app-body.sidebar-collapsed {
-  justify-content: flex-start !important;
-}
-
-.sidebar-collapsed + .main-content {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
+  align-items: stretch;
+  justify-content: flex-start;
 }
 
 /* Externer Toggle Button */
