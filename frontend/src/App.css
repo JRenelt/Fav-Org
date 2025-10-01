@@ -2632,7 +2632,6 @@ body {
   align-items: center; /* KORRIGIERT: horizontal zentriert */
   gap: 8px;
 }
-}
 
 .category-label {
   font-weight: 500;
