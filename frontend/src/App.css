@@ -1662,10 +1662,12 @@ body {
   display: none !important;
 }
 
-/* Main Content nimmt vollen Platz ein wenn Sidebar kollabiert - KORREKTE BERECHNUNG */
+/* Main Content nimmt vollen Platz ein wenn Sidebar kollabiert - FINALE LÖSUNG */
 .app-body.sidebar-collapsed .main-content {
-  margin-left: 60px !important; /* Platz für Toggle-Button */
-  width: calc(100% - 60px) !important; /* KORRIGIERT: 60px statt 80px */
+  margin-left: 0 !important; /* Kein margin - Toggle-Button hat fixed Position */
+  width: 100% !important; /* Volle Breite */
+  padding-left: 70px !important; /* Padding für Toggle-Button */
+  padding-right: 20px !important; /* Rechter Abstand */
   flex: 1 !important;
   display: flex !important;
   flex-direction: column !important;
