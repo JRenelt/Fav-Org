@@ -236,8 +236,8 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
                 <td style={{ width: columnWidths.category }}>
                   <div className="cell-content category-cell">
                     <span className="category-text">
-                      {bookmark.category}
-                      {bookmark.subcategory && ` → ${bookmark.subcategory}`}
+                      {highlightSearchTerm ? highlightSearchTerm(bookmark.category, searchQuery) : bookmark.category}
+                      {bookmark.subcategory && ` → ${highlightSearchTerm ? highlightSearchTerm(bookmark.subcategory, searchQuery) : bookmark.subcategory}`}
                     </span>
                   </div>
                 </td>
