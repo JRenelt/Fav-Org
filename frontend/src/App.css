@@ -1683,6 +1683,21 @@ body {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
+  margin-left: 0 !important;
+  width: calc(100% - 20px) !important;
+  padding-left: 60px !important; /* Platz für Toggle-Button */
+  flex: 1 !important;
+}
+
+/* Zusätzliche Absicherung für Main Content bei kollabierter Sidebar */
+.app-body.sidebar-collapsed {
+  justify-content: flex-start !important;
+}
+
+.sidebar-collapsed + .main-content {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
 }
 
 /* Externer Toggle Button */
