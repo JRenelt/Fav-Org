@@ -3276,6 +3276,8 @@ const MainContent = ({ searchQuery, onSearchChange, onClearSearch, statusFilter,
             onEditBookmark={onEditBookmark}
             onToggleStatus={onToggleStatus}
             onBookmarkReorder={onBookmarkReorder}
+            searchQuery={searchQuery}
+            highlightSearchTerm={highlightSearchTerm}
             headerButtons={
               <div className="table-header-actions-compact">
                 <Button
