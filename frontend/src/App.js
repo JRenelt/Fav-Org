@@ -4215,17 +4215,7 @@ function App() {
           highlightSearchTerm={highlightSearchTerm}
         />
 
-        {/* Pagination Controls */}
-        {filteredBookmarks.length > 0 && (
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            totalItems={filteredBookmarks.length}
-            itemsPerPage={itemsPerPage}
-            statistics={statistics}
-          />
-        )}
+        {/* Pagination Controls entfernt - gehört in die Fußzeile */}
       </div>
 
       {/* App-Fußzeile - außerhalb der app-body */}
