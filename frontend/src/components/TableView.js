@@ -213,7 +213,7 @@ const TableView = ({ bookmarks, onDeleteBookmark, onEditBookmark, onToggleStatus
                   <div className="cell-content title-cell">
                     <GripVertical className="drag-handle table-drag" />
                     <span className="bookmark-title-table" title={bookmark.title}>
-                      {bookmark.title}
+                      {highlightSearchTerm ? highlightSearchTerm(bookmark.title, searchQuery) : bookmark.title}
                     </span>
                     <Badge variant="outline" className="source-badge">
                       Chrome
