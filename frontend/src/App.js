@@ -4148,6 +4148,13 @@ function App() {
         </div>
       </footer>
 
+      {/* Modernes Loading Overlay */}
+      {isLoading && (
+        <LoadingOverlay 
+          message="System arbeitet..."
+        />
+      )}
+
       {/* Dialoge */}
       <BookmarkDialog
         isOpen={showBookmarkDialog}
