@@ -3116,16 +3116,16 @@ body {
 .bookmark-description {
   margin-top: 8px;
   padding: 8px 12px;
-  background-color: var(--bg-tertiary);
-  border-left: 3px solid var(--cyan-400);
+  background-color: #ceab14; /* GEÄNDERT: gelber Hintergrund wie gewünscht */
+  border-left: 3px solid var(--cyan-400); /* Blaue Linie wie gewünscht */
   border-radius: 4px;
   font-size: 13px;
   line-height: 1.4;
   color: var(--text-primary);
   font-style: italic;
-  max-height: none; /* GEÄNDERT: keine maximale Höhe - vollständig sichtbar */
-  overflow: visible; /* GEÄNDERT: vollständig sichtbar */
-  word-wrap: break-word; /* Lange Texte umbrechen */
+  max-height: none;
+  overflow: visible;
+  word-wrap: break-word;
 }
 
 .bookmark-description:empty {
