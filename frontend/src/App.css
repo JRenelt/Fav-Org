@@ -3306,7 +3306,7 @@ body {
   
   /* Anpassungen für bessere Darstellung bei 80% Zoom */
   .bookmark-card {
-    min-height: 140px; /* Etwas kompakter */
+    min-height: 160px; /* ERHÖHT: ausreichend Platz auch bei 80% Zoom */
   }
   
   .sidebar {
