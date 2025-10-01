@@ -1142,16 +1142,58 @@ class BookmarkManager:
         
         # 10 Ungeprüft (unchecked - noch nicht validierte Links)
         unchecked_bookmarks = [
-            {"title": "Checked Link 1", "url": "https://checked1.example", "category": "Development", "description": "Previously checked development link"},
-            {"title": "Checked Link 2", "url": "https://checked2.example", "category": "News", "description": "Previously checked news link"},
-            {"title": "Checked Link 3", "url": "https://checked3.example", "category": "Tools", "description": "Previously checked tool"},
-            {"title": "Checked Link 4", "url": "https://checked4.example", "category": "Social Media", "description": "Previously checked social link"},
-            {"title": "Checked Link 5", "url": "https://checked5.example", "category": "Entertainment", "description": "Previously checked entertainment link"},
-            {"title": "Checked Link 6", "url": "https://checked6.example", "category": "Reference", "description": "Previously checked reference"},
-            {"title": "Checked Link 7", "url": "https://checked7.example", "category": "Shopping", "description": "Previously checked shopping link"},
-            {"title": "Checked Link 8", "url": "https://checked8.example", "category": "Education", "description": "Previously checked education link"},
-            {"title": "Checked Link 9", "url": "https://checked9.example", "category": "Health", "description": "Previously checked health link"},
-            {"title": "Checked Link 10", "url": "https://checked10.example", "category": "Finance", "description": "Previously checked finance link"}
+            {"title": "Unchecked Link 1", "url": "https://unchecked1.example", "category": "Development", "description": "Not yet validated development link"},
+            {"title": "Unchecked Link 2", "url": "https://unchecked2.example", "category": "News", "description": "Not yet validated news link"},
+            {"title": "Unchecked Link 3", "url": "https://unchecked3.example", "category": "Tools", "description": "Not yet validated tool"},
+            {"title": "Unchecked Link 4", "url": "https://unchecked4.example", "category": "Social Media", "description": "Not yet validated social link"},
+            {"title": "Unchecked Link 5", "url": "https://unchecked5.example", "category": "Entertainment", "description": "Not yet validated entertainment link"},
+            {"title": "Unchecked Link 6", "url": "https://unchecked6.example", "category": "Reference", "description": "Not yet validated reference"},
+            {"title": "Unchecked Link 7", "url": "https://unchecked7.example", "category": "Shopping", "description": "Not yet validated shopping link"},
+            {"title": "Unchecked Link 8", "url": "https://unchecked8.example", "category": "Education", "description": "Not yet validated education link"},
+            {"title": "Unchecked Link 9", "url": "https://unchecked9.example", "category": "Health", "description": "Not yet validated health link"},
+            {"title": "Unchecked Link 10", "url": "https://unchecked10.example", "category": "Finance", "description": "Not yet validated finance link"}
+        ]
+        
+        # 10 zusätzliche Sport Links
+        sport_bookmarks = [
+            {"title": "ESPN", "url": "https://www.espn.com", "category": "Sport", "subcategory": "News", "description": "Sports news and updates"},
+            {"title": "FIFA", "url": "https://www.fifa.com", "category": "Sport", "subcategory": "Football", "description": "FIFA official website"},
+            {"title": "NBA", "url": "https://www.nba.com", "category": "Sport", "subcategory": "Basketball", "description": "Official NBA website"},
+            {"title": "UEFA", "url": "https://www.uefa.com", "category": "Sport", "subcategory": "Football", "description": "UEFA European football"},
+            {"title": "Olympics", "url": "https://olympics.com", "category": "Sport", "subcategory": "International", "description": "Olympic Games official site"},
+            {"title": "Bundesliga", "url": "https://www.bundesliga.com", "category": "Sport", "subcategory": "Football", "description": "German Bundesliga"},
+            {"title": "Wimbledon", "url": "https://www.wimbledon.com", "category": "Sport", "subcategory": "Tennis", "description": "Wimbledon Tennis Championships"},
+            {"title": "Formula 1", "url": "https://www.formula1.com", "category": "Sport", "subcategory": "Racing", "description": "Formula 1 official website"},
+            {"title": "NHL", "url": "https://www.nhl.com", "category": "Sport", "subcategory": "Hockey", "description": "National Hockey League"},
+            {"title": "Golf Digest", "url": "https://www.golfdigest.com", "category": "Sport", "subcategory": "Golf", "description": "Golf news and tips"}
+        ]
+        
+        # 10 zusätzliche Business Links
+        business_bookmarks = [
+            {"title": "Forbes", "url": "https://www.forbes.com", "category": "Business", "subcategory": "News", "description": "Business news and insights"},
+            {"title": "Bloomberg", "url": "https://www.bloomberg.com", "category": "Business", "subcategory": "Finance", "description": "Financial news and markets"},
+            {"title": "Harvard Business Review", "url": "https://hbr.org", "category": "Business", "subcategory": "Strategy", "description": "Business strategy and management"},
+            {"title": "McKinsey & Company", "url": "https://www.mckinsey.com", "category": "Business", "subcategory": "Consulting", "description": "Management consulting insights"},
+            {"title": "Entrepreneur", "url": "https://www.entrepreneur.com", "category": "Business", "subcategory": "Startup", "description": "Entrepreneurship resources"},
+            {"title": "Inc. Magazine", "url": "https://www.inc.com", "category": "Business", "subcategory": "Growth", "description": "Business growth strategies"},
+            {"title": "Fast Company", "url": "https://www.fastcompany.com", "category": "Business", "subcategory": "Innovation", "description": "Business innovation news"},
+            {"title": "Wall Street Journal", "url": "https://www.wsj.com", "category": "Business", "subcategory": "Finance", "description": "Financial and business news"},
+            {"title": "TechCrunch", "url": "https://techcrunch.com", "category": "Business", "subcategory": "Tech News", "description": "Technology startup news"},
+            {"title": "Crunchbase", "url": "https://www.crunchbase.com", "category": "Business", "subcategory": "Startup", "description": "Startup and investor database"}
+        ]
+        
+        # 10 zusätzliche Science Links 
+        science_bookmarks = [
+            {"title": "Nature", "url": "https://www.nature.com", "category": "Science", "subcategory": "Research", "description": "Scientific research journal"},
+            {"title": "Science Magazine", "url": "https://www.science.org", "category": "Science", "subcategory": "Research", "description": "Scientific research and news"},
+            {"title": "NASA", "url": "https://www.nasa.gov", "category": "Science", "subcategory": "Space", "description": "NASA space agency"},
+            {"title": "Scientific American", "url": "https://www.scientificamerican.com", "category": "Science", "subcategory": "Popular Science", "description": "Popular science magazine"},
+            {"title": "MIT Technology Review", "url": "https://www.technologyreview.com", "category": "Science", "subcategory": "Technology", "description": "Technology and science news"},
+            {"title": "National Geographic", "url": "https://www.nationalgeographic.com", "category": "Science", "subcategory": "Geography", "description": "Geography and nature"},
+            {"title": "Smithsonian", "url": "https://www.smithsonianmag.com", "category": "Science", "subcategory": "History", "description": "Science and history magazine"},
+            {"title": "New Scientist", "url": "https://www.newscientist.com", "category": "Science", "subcategory": "Research", "description": "Science news and research"},
+            {"title": "CERN", "url": "https://home.cern", "category": "Science", "subcategory": "Physics", "description": "European physics research"},
+            {"title": "Genome.gov", "url": "https://www.genome.gov", "category": "Science", "subcategory": "Biology", "description": "Human genome research"}
         ]
         
         # Erstelle Bookmarks mit korrekten Status-Typen
