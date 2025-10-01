@@ -106,11 +106,14 @@ body {
 
 /* Main Content neben der Sidebar */
 .main-content {
-  flex: 1; /* Nimmt restlichen Platz ein */
+  flex: 1;
   padding: 20px;
   overflow-y: auto;
   min-width: 0;
-  height: calc(100vh - 80px - 50px); /* Header + Footer abziehen */
+  width: 90%; /* GEÄNDERT: 90% Breite wie gewünscht */
+  margin: 0 auto; /* Zentriert */
+  height: calc(100vh - 80px - 50px);
+  padding-bottom: 10px; /* GEÄNDERT: 10px Abstand zur Fußzeile */
   background: var(--bg-primary);
 }
 
