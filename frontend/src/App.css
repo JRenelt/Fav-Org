@@ -2053,6 +2053,10 @@ body {
 
 .bookmark-header {
   padding: 16px;
+  flex: 1; /* Nimmt verfügbaren Platz ein */
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Abstand zwischen Elementen */
 }
 
 .bookmark-title-row {
