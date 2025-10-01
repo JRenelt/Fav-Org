@@ -4114,6 +4114,23 @@ function App() {
     return true;
   });
 
+  // Paginierung berechnen
+  const totalPages = Math.ceil(filteredBookmarks.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedBookmarks = filteredBookmarks.slice(startIndex, endIndex);
+
+  // Seite zurücksetzen wenn Filter sich ändert
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter, activeCategory, activeSubcategory]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    // Scroll nach oben bei Seitenwechsel
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Calculate counts for various statuses
   const deadLinksCount = bookmarks.filter(b => b.status_type === 'dead' || b.is_dead_link).length;
   const duplicateCount = bookmarks.filter(b => b.status_type === 'duplicate').length;
